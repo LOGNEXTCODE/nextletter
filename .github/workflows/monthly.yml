@@ -1,0 +1,102 @@
+name: NextLetter — Generación mensual
+
+on:
+  schedule:
+    - cron: "0 7 1 * *"
+  workflow_dispatch:
+    inputs:
+      edition_number:
+        description: "Número de edición (ej: 02)"
+        required: false
+        default: "auto"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 📥 Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: 🔢 Calcular número de edición
+        id: edition
+        run: |
+          if [ "${{ github.event.inputs.edition_number }}" = "auto" ] || [ -z "${{ github.event.inputs.edition_number }}" ]; then
+            MONTH=$(date +%-m)
+            START_MONTH=5
+            START_YEAR=2025
+            YEAR=$(date +%Y)
+            EDITION=$(( (YEAR - START_YEAR) * 12 + MONTH - START_MONTH + 1 ))
+            printf -v EDITION_STR "%02d" $EDITION
+          else
+            EDITION_STR="${{ github.event.inputs.edition_number }}"
+          fi
+          echo "number=$EDITION_STR" >> $GITHUB_OUTPUT
+          echo "Edición: #$EDITION_STR"
+
+      - name: 🚀 Generar NextLetter
+        env:
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          MS_TENANT_ID:       ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID:       ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET:   ${{ secrets.MS_CLIENT_SECRET }}
+          MS_SENDER_EMAIL:    ${{ secrets.MS_SENDER_EMAIL }}
+          REVIEWER_EMAIL:     ${{ secrets.REVIEWER_EMAIL }}
+          EDITION_NUMBER:     ${{ steps.edition.outputs.number }}
+        run: python main.py
+
+      - name: 📁 Preparar carpeta para GitHub Pages
+        run: |
+          mkdir -p ./public/${{ steps.edition.outputs.number }}
+          cp nextletter_preview.html ./public/${{ steps.edition.outputs.number }}/index.html
+          cat > ./public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0; url=./01/">
+            <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+              body { background:#000029; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; font-family:'Space Grotesk',sans-serif; }
+              .logo { font-size:48px; font-weight:700; color:#fff; }
+              .logo span { color:#FA3C0F; font-weight:300; }
+            </style>
+          </head>
+          <body>
+            <div class="logo">NEXT<span>LETTER</span></div>
+          </body>
+          </html>
+          EOF
+
+      - name: ⚙️ Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: 📤 Subir artefacto a Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+      - name: 🌐 Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
