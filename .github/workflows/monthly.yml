@@ -44,8 +44,8 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.edition_number }}" = "auto" ] || [ -z "${{ github.event.inputs.edition_number }}" ]; then
             MONTH=$(date +%-m)
-            START_MONTH=5
-            START_YEAR=2025
+            START_MONTH=4
+            START_YEAR=2026
             YEAR=$(date +%Y)
             EDITION=$(( (YEAR - START_YEAR) * 12 + MONTH - START_MONTH + 1 ))
             printf -v EDITION_STR "%02d" $EDITION
