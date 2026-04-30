@@ -594,6 +594,13 @@ body {
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 
+/* ── TABLET PORTRAIT ── */
+@media (max-width: 768px) {
+  .links-grid { grid-template-columns: 1fr 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer { padding: 40px 28px 28px; }
+}
+
 @media (max-width: 600px) {
   .logo-next, .logo-letter { font-size: 48px; letter-spacing: -2px; }
   .card-title { font-size: 18px; }
@@ -603,6 +610,15 @@ body {
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
   .footer-legal { gap: 12px; }
+  /* Topbar móvil: ocultar SVG logo grande, solo NEXTLETTER + edición */
+  .topbar { padding: 10px 16px; }
+  .topbar-logo svg { display: none; }
+  .topbar-divider { display: none; }
+  .topbar-name { font-size: 13px; }
+  .topbar-edition { font-size: 9px; letter-spacing: 1px; white-space: nowrap; }
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom { flex-direction: column; align-items: center; }
+  .links-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
