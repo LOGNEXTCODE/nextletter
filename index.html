@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextLetter #01 — LOGNEXT</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Google Analytics GA4 — sustituir G-XXXXXXXXXX por tu ID real -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+
+  // Evento personalizado: lectura por sección
+  function trackSection(section) {
+    gtag('event', 'section_read', { section_name: section, edition: '01' });
+  }
+  // Evento: clic en enlace externo
+  function trackLink(label, url) {
+    gtag('event', 'outbound_click', { link_label: label, link_url: url, edition: '01' });
+    return true;
+  }
+  // Evento: participación en prueba phishing
+  function trackPhishing(action) {
+    gtag('event', 'phishing_test', { action: action, edition: '01' });
+  }
+</script>
+
+<style>
+:root {
+  --navy:   #000029;
+  --red:    #FA3C0F;
+  --cyan:   #3CE6E6;
+  --yellow: #FFFA96;
+  --green:  #64F07D;
+  --violet: #C896FF;
+  --blue:   #3791F5;
+  --grey:   #E1E1E8;
+  --dark:   #00001a;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--dark);
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--grey);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR — oculto en móvil ── */
+.cursor, .cursor-ring { display: none; }
+@media (pointer: fine) {
+  .cursor {
+    display: block;
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    display: block;
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--cyan);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    opacity: 0.6;
+  }
+  body { cursor: none; }
+}
+
+/* ── FONDO ── */
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(250,60,15,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250,60,15,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+.bg-glow {
+  position: fixed; width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(250,60,15,0.05) 0%, transparent 70%);
+  border-radius: 50%; top: -200px; left: -150px;
+  pointer-events: none; z-index: 0;
+  animation: glowMove 8s ease-in-out infinite alternate;
+}
+.bg-glow2 {
+  position: fixed; width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(60,230,230,0.04) 0%, transparent 70%);
+  border-radius: 50%; bottom: -100px; right: -100px;
+  pointer-events: none; z-index: 0;
+  animation: glowMove2 10s ease-in-out infinite alternate;
+}
+@keyframes glowMove { from{transform:translate(0,0)} to{transform:translate(80px,60px)} }
+@keyframes glowMove2 { from{transform:translate(0,0)} to{transform:translate(-60px,-40px)} }
+
+/* ── TOPBAR LOGNEXT ── */
+.topbar {
+  background: rgba(0,0,20,0.95);
+  border-bottom: 1px solid rgba(250,60,15,0.15);
+  padding: 12px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.topbar-logo {
+  display: flex; align-items: center; gap: 16px;
+}
+.topbar-lognext {
+  font-size: 11px; font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 3px; text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding-right: 16px;
+}
+.topbar-name {
+  font-size: 14px; font-weight: 700;
+  color: #fff; letter-spacing: -0.5px;
+}
+.topbar-name span { color: var(--red); font-weight: 300; }
+.topbar-edition {
+  font-size: 10px; color: var(--red);
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px; font-weight: 700;
+}
+
+/* ── WRAPPER ANCHO COMPLETO ── */
+.wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative; z-index: 1;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--navy);
+  border-top: 5px solid var(--red);
+  padding: 56px 64px 40px;
+  position: relative; overflow: hidden;
+  animation: fadeDown 0.6s ease both;
+}
+.header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 4px);
+  pointer-events: none;
+}
+.header-scan {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  animation: scan 3s linear infinite; opacity: 0.5;
+}
+@keyframes scan { from{top:0} to{top:100%} }
+
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px; align-items: end;
+}
+.logo-row {
+  display: flex; align-items: baseline; gap: 0;
+  margin-bottom: 8px;
+}
+.logo-next {
+  font-size: 88px; font-weight: 700;
+  color: #fff; letter-spacing: -4px; line-height: 1;
+}
+.logo-letter {
+  font-size: 88px; font-weight: 300;
+  color: var(--red); letter-spacing: -4px; line-height: 1;
+}
+.header-tagline-big {
+  font-size: 13px; letter-spacing: 2px;
+  text-transform: uppercase; opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 20px;
+}
+.header-dots { display: flex; gap: 8px; }
+.hdot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+.header-stats {
+  display: flex; flex-direction: column;
+  gap: 16px; align-items: flex-end;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  padding-left: 40px;
+}
+.stat-item { text-align: right; }
+.stat-number {
+  font-size: 32px; font-weight: 700; color: var(--red); line-height: 1;
+  font-family: 'JetBrains Mono', monospace;
+}
+.stat-label {
+  font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.header-meta {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  margin-top: 24px; padding-top: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.header-issue {
+  font-size: 11px; color: var(--red); font-weight: 700;
+  letter-spacing: 3px; font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── INTRO ── */
+.intro {
+  background: rgba(250,60,15,0.06);
+  border-left: 4px solid var(--red);
+  padding: 24px 40px;
+  margin-top: 4px; font-size: 15px;
+  line-height: 1.9; color: var(--grey);
+  animation: fadeDown 0.6s 0.1s ease both;
+}
+
+/* ── SEPARADOR ── */
+.sep {
+  height: 4px;
+  background: linear-gradient(90deg, var(--red) 0%, var(--red) 33%, var(--cyan) 33%, var(--cyan) 66%, var(--yellow) 66%);
+  margin-top: 4px;
+}
+
+/* ── GRID PRINCIPAL ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 4px;
+}
+.full-width { grid-column: 1 / -1; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--navy);
+  padding: 36px 44px;
+  position: relative; overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  animation: fadeUp 0.5s ease both;
+}
+.card::after {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.card:hover::after { opacity: 1; }
+
+.card-esto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(250,60,15,0.1), transparent 70%); }
+.card-caso::after  { background: radial-gradient(ellipse at 50% 0%, rgba(255,250,150,0.08), transparent 70%); }
+.card-consejo::after { background: radial-gradient(ellipse at 50% 0%, rgba(100,240,125,0.08), transparent 70%); }
+.card-reto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.08), transparent 70%); }
+.card-phishing::after { background: radial-gradient(ellipse at 50% 0%, rgba(200,150,255,0.1), transparent 70%); }
+
+.card-esto   { box-shadow: inset 0 1px 0 rgba(250,60,15,0.3); }
+.card-caso   { background: #05051f; border-left: 4px solid var(--yellow); }
+.card-consejo { box-shadow: inset 0 1px 0 rgba(100,240,125,0.2); }
+.card-reto   { background: #001a05; border: 1px solid rgba(100,240,125,0.2); }
+.card-phishing { background: #0a0020; border: 1px solid rgba(200,150,255,0.2); }
+.card-links  { background: #000029; box-shadow: inset 0 1px 0 rgba(200,150,255,0.2); }
+
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: 4px;
+  text-transform: uppercase; font-weight: 700;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-tag::after {
+  content: ''; flex: 1; height: 1px;
+  background: currentColor; opacity: 0.12;
+}
+.card-title {
+  font-size: 22px; font-weight: 700;
+  color: #fff; line-height: 1.3; margin-bottom: 16px;
+}
+.card-text {
+  font-size: 14px; line-height: 1.9;
+  color: var(--grey); opacity: 0.85; margin-bottom: 20px;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px; text-decoration: none;
+  padding: 10px 20px; border: 1px solid currentColor;
+  transition: all 0.25s ease;
+}
+.card-link:hover { opacity: 0.95; }
+.card-esto .card-link:hover   { background: var(--red);    color: #fff !important; }
+.card-caso .card-link:hover   { background: var(--yellow); color: var(--navy) !important; }
+.card-consejo .card-link:hover { background: var(--green); color: var(--navy) !important; }
+.card-reto .card-link:hover   { background: var(--cyan);   color: var(--navy) !important; }
+.card-link .arrow { transition: transform 0.2s ease; }
+.card-link:hover .arrow { transform: translateX(4px); }
+
+/* ── RETO ── */
+.reto-badge {
+  display: inline-block; background: var(--green);
+  color: var(--navy); font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  padding: 4px 14px; margin-bottom: 16px;
+}
+.reto-progress {
+  margin-top: 24px; height: 3px;
+  background: rgba(100,240,125,0.15);
+  border-radius: 2px; overflow: hidden;
+}
+.reto-progress-bar {
+  height: 100%; width: 0%;
+  background: var(--green); border-radius: 2px;
+  animation: progressFill 2s 1s ease forwards;
+}
+@keyframes progressFill { to { width: 65%; } }
+.reto-label {
+  display: flex; justify-content: space-between;
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  margin-top: 8px; opacity: 0.5;
+}
+
+/* ── PHISHING SECTION ── */
+.phishing-inner {
+  background: rgba(200,150,255,0.05);
+  border: 1px solid rgba(200,150,255,0.1);
+  border-radius: 4px; padding: 24px;
+  margin-top: 16px;
+}
+.phishing-email-preview {
+  background: #fff; border-radius: 4px;
+  padding: 16px; margin-bottom: 16px;
+  font-family: Arial, sans-serif; color: #333;
+}
+.phishing-email-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px; margin-bottom: 10px;
+  font-size: 12px; color: #666;
+}
+.phishing-email-subject {
+  font-weight: bold; font-size: 14px; color: #111;
+  margin-bottom: 4px;
+}
+.phishing-email-body {
+  font-size: 13px; line-height: 1.6; color: #444;
+}
+.phishing-email-body a {
+  color: #1a73e8; text-decoration: underline;
+}
+.phishing-question {
+  font-size: 15px; font-weight: 600; color: #fff;
+  margin-bottom: 16px; line-height: 1.5;
+}
+.phishing-buttons {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.phishing-btn {
+  padding: 12px 24px; font-size: 13px; font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  border: none; cursor: pointer;
+  transition: all 0.25s ease; letter-spacing: 0.5px;
+  flex: 1; min-width: 120px;
+}
+.phishing-btn-yes {
+  background: rgba(250,60,15,0.15);
+  color: var(--red); border: 1px solid var(--red);
+}
+.phishing-btn-yes:hover { background: var(--red); color: #fff; }
+.phishing-btn-no {
+  background: rgba(100,240,125,0.1);
+  color: var(--green); border: 1px solid var(--green);
+}
+.phishing-btn-no:hover { background: var(--green); color: var(--navy); }
+.phishing-result {
+  display: none; padding: 16px; border-radius: 4px;
+  font-size: 14px; line-height: 1.7; margin-top: 12px;
+}
+.phishing-result.show { display: block; }
+.phishing-result.correct {
+  background: rgba(100,240,125,0.1);
+  border: 1px solid rgba(100,240,125,0.3);
+  color: var(--green);
+}
+.phishing-result.wrong {
+  background: rgba(250,60,15,0.1);
+  border: 1px solid rgba(250,60,15,0.3);
+  color: var(--red);
+}
+.phishing-clues {
+  margin-top: 12px; padding: 12px;
+  background: rgba(0,0,0,0.3); border-radius: 4px;
+}
+.phishing-clue {
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+  color: var(--grey); opacity: 0.8; margin-bottom: 4px;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+
+/* ── RADAR ── */
+.card-radar { box-shadow: inset 0 1px 0 rgba(60,230,230,0.2); }
+.card-radar::after { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.07), transparent 70%); }
+.radar-list { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+.radar-item {
+  display: block; text-decoration: none; color: var(--grey);
+  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+}
+.radar-item:last-child { border-bottom: none; padding-bottom: 0; }
+.radar-item:hover { padding-left: 8px; }
+.radar-source { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.radar-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+.radar-org {
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; font-family: 'JetBrains Mono', monospace; opacity: 0.6;
+}
+.radar-headline { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 4px; }
+.radar-item:hover .radar-headline { color: var(--cyan); }
+.radar-meta { font-size: 10px; opacity: 0.35; font-family: 'JetBrains Mono', monospace; }
+
+/* ── LINKS GRID ── */
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px; margin-top: 4px;
+}
+.link-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 24px; text-decoration: none; color: var(--grey);
+  transition: all 0.25s ease;
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.link-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.link-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); }
+.link-card:hover::before { transform: scaleX(1); }
+.lc-news::before  { background: var(--red); }
+.lc-video::before { background: var(--cyan); }
+.lc-quiz::before  { background: var(--yellow); }
+.link-icon { font-size: 28px; }
+.link-label {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px; text-transform: uppercase; opacity: 0.4;
+}
+.link-title {
+  font-size: 14px; font-weight: 600;
+  color: #fff; line-height: 1.4;
+}
+.link-source {
+  font-size: 11px; opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace; margin-top: auto;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: #000015; padding: 48px 64px;
+  margin-top: 4px; text-align: center;
+  animation: fadeUp 0.5s 0.6s ease both;
+}
+.footer-logo { font-size: 32px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+.footer-logo span { color: var(--red); font-weight: 300; }
+.footer-line { width: 40px; height: 1px; background: var(--red); margin: 16px auto; opacity: 0.4; }
+.footer-meta {
+  font-size: 11px; opacity: 0.3;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 1px; line-height: 2.2;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .header-inner { grid-template-columns: 1fr; }
+  .header-stats { flex-direction: row; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 20px; align-items: flex-start; }
+  .logo-next, .logo-letter { font-size: 64px; }
+  .links-grid { grid-template-columns: 1fr; }
+  .header { padding: 36px 28px 28px; }
+  .card { padding: 28px 28px; }
+  .topbar { padding: 12px 20px; }
+  .wrapper { padding: 0 12px 60px; }
+}
+
+@media (max-width: 600px) {
+  .logo-next, .logo-letter { font-size: 48px; letter-spacing: -2px; }
+  .card-title { font-size: 18px; }
+  .header { padding: 28px 20px 24px; }
+  .card { padding: 24px 20px; }
+  .topbar-lognext { display: none; }
+  .phishing-buttons { flex-direction: column; }
+  .stat-number { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow2"></div>
+
+<!-- TOPBAR CON LOGO LOGNEXT -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <span class="topbar-lognext">LOGNEXT</span>
+    <span class="topbar-name">NEXT<span>LETTER</span></span>
+  </div>
+  <span class="topbar-edition">EDICIÓN #01 · MAYO 2026</span>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-scan"></div>
+    <div class="header-inner">
+      <div>
+        <div class="logo-row">
+          <span class="logo-next">NEXT</span><span class="logo-letter">LETTER</span>
+        </div>
+        <div class="header-tagline-big">La carta de los que van un paso por delante</div>
+        <div class="header-dots">
+          <div class="hdot" style="background:var(--red);animation-delay:0s"></div>
+          <div class="hdot" style="background:var(--cyan);animation-delay:0.3s"></div>
+          <div class="hdot" style="background:var(--yellow);animation-delay:0.6s"></div>
+          <div class="hdot" style="background:var(--green);animation-delay:0.9s"></div>
+          <div class="hdot" style="background:var(--violet);animation-delay:1.2s"></div>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item">
+          <div class="stat-number">#01</div>
+          <div class="stat-label">Edición</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Secciones</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">~5'</div>
+          <div class="stat-label">Lectura</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span style="font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;letter-spacing:2px;">BY LOGNEXT · DEPARTAMENTO IT</span>
+      <span class="header-issue">MAYO 2026</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro" onmouseenter="trackSection('intro')">
+    Bienvenidos a la primera edición de NextLetter. Cada mes, sin tecnicismos aburridos ni correos corporativos genéricos — solo lo que necesitáis saber, contado como os lo contaría un compañero que sabe demasiado y no puede callarse. Arrancamos.
+  </div>
+
+  <!-- SEPARADOR -->
+  <div class="sep"></div>
+
+  <!-- GRID PRINCIPAL -->
+  <div class="main-grid">
+
+    <!-- ESTO PASÓ — ancho completo -->
+    <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
+      <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
+      <div class="card-title">23 millones de registros médicos expuestos en España por un servidor mal configurado</div>
+      <div class="card-text">Un proveedor sanitario dejó una base de datos abierta a internet durante semanas. Sin contraseña. Sin cifrado. Ahí fuera. Nombres, DNIs, diagnósticos, medicamentos. Todo accesible para cualquiera que supiera buscar. La buena noticia: lo encontró un investigador de seguridad antes que alguien con malas intenciones. La mala: que pasara durante semanas sin que nadie lo detectara internamente.</div>
+      <a href="#" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
+    </div>
+
+    <!-- CASO DEL MES -->
+    <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
+      <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
+      <div class="card-title">Cómo una empresa perdió 47M€ por un email que tardó 3 segundos en leer</div>
+      <div class="card-text">El CFO de una constructora alemana recibió un email de su "CEO" pidiéndole una transferencia urgente. Era viernes. El CEO estaba "de viaje". El email tenía el logo correcto, el tono correcto y hasta el nombre del banco correcto. Aprobó la transferencia. Tres días después descubrieron que era phishing. El dinero: desaparecido. La lección: nunca apruebes transferencias grandes por email sin verificación por voz.</div>
+      <a href="#" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
+    </div>
+
+    <!-- CONSEJO -->
+    <div class="card card-consejo" onmouseenter="trackSection('consejo')">
+      <div class="section-tag" style="color:var(--green)">💡 El consejo del mes</div>
+      <div class="card-title">El gestor de contraseñas: el amigo que nunca olvida nada (y tú sí)</div>
+      <div class="card-text">Si usas la misma contraseña en más de un sitio — y sabemos que sí — estás a un breach de distancia de un problema gordo. Un gestor de contraseñas genera contraseñas únicas para cada servicio y las recuerda por ti. Tú solo necesitas recordar una. Bitwarden es gratuito, open source y funciona en todos tus dispositivos.</div>
+      <a href="https://bitwarden.com" class="card-link" style="color:var(--green)" onclick="trackLink('consejo_bitwarden', this.href)" target="_blank">Ver Bitwarden <span class="arrow">→</span></a>
+    </div>
+
+    <!-- RETO -->
+    <div class="card card-reto" onmouseenter="trackSection('reto')">
+      <div class="section-tag" style="color:var(--green)">🎯 El reto de mayo</div>
+      <div class="reto-badge">RETO ACTIVO</div>
+      <div class="card-title">Activa el doble factor en tu cuenta personal esta semana</div>
+      <div class="card-text">No en la del trabajo — en esa ya lo tenéis. En tu cuenta de Google, Apple, Instagram, lo que uses. 2 minutos. Una app como Google Authenticator o Authy. Y si alguien roba tu contraseña, que le den.</div>
+      <div class="reto-progress"><div class="reto-progress-bar"></div></div>
+      <div class="reto-label">
+        <span>MAYO 2026</span>
+        <span>¿Lo has hecho ya? ✓</span>
+      </div>
+    </div>
+
+    <!-- EN EL RADAR -->
+    <div class="card card-radar" onmouseenter="trackSection('radar')">
+      <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
+      <div class="card-title">Lo que no puedes perderte este mes</div>
+      <div class="radar-list">
+
+        <a href="https://www.incibe.es/avisos" target="_blank" class="radar-item" onclick="trackLink('incibe_aviso', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--red)"></span>
+            <span class="radar-org">INCIBE</span>
+          </div>
+          <div class="radar-headline">Nueva campaña de phishing suplantando a la Agencia Tributaria afecta a miles de usuarios</div>
+          <div class="radar-meta">Hace 3 días · incibe.es</div>
+        </a>
+
+        <a href="https://www.ccn-cert.cni.es" target="_blank" class="radar-item" onclick="trackLink('ccncert', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--yellow)"></span>
+            <span class="radar-org">CCN-CERT</span>
+          </div>
+          <div class="radar-headline">Vulnerabilidad crítica en Windows Server permite escalada de privilegios sin autenticación</div>
+          <div class="radar-meta">Hace 5 días · ccn-cert.cni.es</div>
+        </a>
+
+        <a href="https://thehackernews.com" target="_blank" class="radar-item" onclick="trackLink('hackernews', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--cyan)"></span>
+            <span class="radar-org">The Hacker News</span>
+          </div>
+          <div class="radar-headline">Ransomware LockBit regresa con nueva infraestructura tras operación policial internacional</div>
+          <div class="radar-meta">Hace 1 semana · thehackernews.com</div>
+        </a>
+
+        <a href="https://unaaldia.hispasec.com" target="_blank" class="radar-item" onclick="trackLink('hispasec', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--violet)"></span>
+            <span class="radar-org">Hispasec</span>
+          </div>
+          <div class="radar-headline">España, tercer país europeo más atacado por malware en el primer trimestre de 2026</div>
+          <div class="radar-meta">Hace 2 semanas · hispasec.com</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- SECCIÓN PHISHING INTERACTIVA — ancho completo -->
+    <div class="card card-phishing full-width" onmouseenter="trackSection('phishing_test')">
+      <div class="section-tag" style="color:var(--violet)">🎯 Pon a prueba tu ojo — Test del mes</div>
+      <div class="card-title">¿Detectarías este email antes de hacer clic?</div>
+      <div class="card-text">Este es el tipo de correo que usan los atacantes. Tiene todos los ingredientes: urgencia, remitente aparentemente legítimo y un enlace tentador. ¿Sabrías que es falso?</div>
+
+      <div class="phishing-inner">
+        <!-- Email falso de ejemplo -->
+        <div class="phishing-email-preview">
+          <div class="phishing-email-header">
+            <div><strong>De:</strong> soporte@microsoft-365security.com</div>
+            <div><strong>Para:</strong> tu@lognext.com</div>
+            <div class="phishing-email-subject">⚠️ URGENTE: Tu cuenta de Microsoft 365 será suspendida en 24h</div>
+          </div>
+          <div class="phishing-email-body">
+            Hola,<br><br>
+            Hemos detectado actividad sospechosa en tu cuenta corporativa. Para evitar la suspensión inmediata de tu acceso, debes verificar tu identidad en las próximas <strong>24 horas</strong>.<br><br>
+            <a href="#">→ Verificar mi cuenta ahora</a><br><br>
+            Si no realizas esta verificación, tu acceso quedará bloqueado y deberás contactar con el departamento de IT para restaurarlo.<br><br>
+            Atentamente,<br>
+            Equipo de Seguridad de Microsoft
+          </div>
+        </div>
+
+        <div class="phishing-question">¿Es este email legítimo o un intento de phishing?</div>
+        <div class="phishing-buttons">
+          <button class="phishing-btn phishing-btn-yes" onclick="answerPhishing(false)">
+            ⚠️ Es phishing — No haría clic
+          </button>
+          <button class="phishing-btn phishing-btn-no" onclick="answerPhishing(true)">
+            ✅ Parece legítimo — Haría clic
+          </button>
+        </div>
+
+        <div class="phishing-result" id="phishing-result"></div>
+      </div>
+    </div>
+
+    <!-- ENLACES — ancho completo -->
+    <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
+      <div class="section-tag" style="color:var(--violet)">🔗 Por si queréis caer en el agujero</div>
+      <div class="links-grid">
+        <a href="https://cybermap.kaspersky.com" class="link-card lc-news" target="_blank" onclick="trackLink('kaspersky_map', this.href)">
+          <span class="link-icon">📰</span>
+          <span class="link-label">Artículo</span>
+          <span class="link-title">El mapa de ciberataques en tiempo real que no podréis dejar de mirar</span>
+          <span class="link-source">Kaspersky Cyberthreat Map</span>
+        </a>
+        <a href="https://www.youtube.com/results?search_query=hackear+wifi+seguridad" class="link-card lc-video" target="_blank" onclick="trackLink('youtube_wifi', this.href)">
+          <span class="link-icon">▶️</span>
+          <span class="link-label">Vídeo · 8 min</span>
+          <span class="link-title">Cómo hackean tu WiFi y qué puedes hacer para evitarlo</span>
+          <span class="link-source">YouTube — S4vitar</span>
+        </a>
+        <a href="https://phishingquiz.withgoogle.com" class="link-card lc-quiz" target="_blank" onclick="trackLink('google_phishing_quiz', this.href)">
+          <span class="link-icon">🎮</span>
+          <span class="link-label">Quiz interactivo</span>
+          <span class="link-title">¿Sabrías detectar este phishing? Pon a prueba tu ojo</span>
+          <span class="link-source">Google Phishing Quiz</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /main-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">NEXT<span>LETTER</span></div>
+    <div class="footer-line"></div>
+    <div class="footer-meta">
+      by LOGNEXT · Equipo IT · Mayo 2026<br>
+      ¿Algo raro en tu equipo? sistemas@lognext.com · +34 636 668 059<br>
+      lognext.com · nextletter.lognext.com
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ── CURSOR PERSONALIZADO ──────────────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+if (cursor && ring) {
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top  = my - 6 + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx - 18 + 'px';
+    ring.style.top  = ry - 18 + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('.card, .link-card, .card-link, .phishing-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2)';
+      ring.style.borderColor = 'var(--red)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.borderColor = 'var(--cyan)';
+    });
+  });
+  document.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth  - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    const glow = document.querySelector('.bg-glow');
+    if (glow) glow.style.transform = `translate(${x}px, ${y}px)`;
+  });
+}
+
+// ── PHISHING TEST ─────────────────────────────────────────────────────────────
+function answerPhishing(clickedYes) {
+  const result = document.getElementById('phishing-result');
+  const isPhishing = true; // Este email SÍ es phishing
+
+  if (!clickedYes) {
+    // Respuesta correcta: detectó el phishing
+    trackPhishing('correct');
+    result.className = 'phishing-result show correct';
+    result.innerHTML = `
+      <strong>✅ ¡Correcto! Este email es phishing.</strong><br><br>
+      Buen ojo. Aquí tienes las pistas que lo delatan:
+      <div class="phishing-clues">
+        <div class="phishing-clue">⚠️ <span>El dominio del remitente es <strong>microsoft-365security.com</strong>, no microsoft.com</span></div>
+        <div class="phishing-clue">⚠️ <span>Microsoft nunca os pedirá verificación por email con <strong>urgencia de 24h</strong></span></div>
+        <div class="phishing-clue">⚠️ <span>El enlace "Verificar mi cuenta" lleva a un dominio desconocido, no a microsoft.com</span></div>
+        <div class="phishing-clue">✅ <span>Ante la duda: <strong>llamad a IT</strong> antes de hacer clic en cualquier enlace urgente</span></div>
+      </div>`;
+  } else {
+    // Respuesta incorrecta: habría caído
+    trackPhishing('incorrect');
+    result.className = 'phishing-result show wrong';
+    result.innerHTML = `
+      <strong>❌ ¡Cuidado! Este email es phishing.</strong><br><br>
+      Habrías caído. Estas son las señales de alarma que pasaste por alto:
+      <div class="phishing-clues">
+        <div class="phishing-clue">🚨 <span>El dominio del remitente es <strong>microsoft-365security.com</strong> — NO es Microsoft</span></div>
+        <div class="phishing-clue">🚨 <span>La urgencia artificial ("24h") es la táctica más usada para que no pienses</span></div>
+        <div class="phishing-clue">🚨 <span>Microsoft nunca suspende cuentas por email sin avisos previos en el portal</span></div>
+        <div class="phishing-clue">✅ <span>Regla de oro: <strong>ante la duda, llama a IT</strong> antes de hacer clic</span></div>
+      </div>`;
+  }
+
+  // Desactivar botones tras responder
+  document.querySelectorAll('.phishing-btn').forEach(b => {
+    b.disabled = true; b.style.opacity = '0.5'; b.style.cursor = 'default';
+  });
+}
+
+// ── INTERSECTION OBSERVER — medir scroll por sección ─────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const section = entry.target.dataset.section;
+      if (section) trackSection(section + '_scroll');
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-section]').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
