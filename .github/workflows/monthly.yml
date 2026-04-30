@@ -2,7 +2,9 @@ name: NextLetter — Generación mensual
 
 on:
   schedule:
-    - cron: "0 7 1 * *"
+    # Primer lunes de cada mes a las 9:00 hora España (8:00 UTC verano / 7:00 UTC invierno)
+    # "1-7 * 1" = lunes (1) entre días 1 y 7 del mes = siempre primer lunes
+    - cron: "0 8 1-7 * 1"
   workflow_dispatch:
     inputs:
       edition_number:
@@ -44,8 +46,8 @@ jobs:
         run: |
           if [ "${{ github.event.inputs.edition_number }}" = "auto" ] || [ -z "${{ github.event.inputs.edition_number }}" ]; then
             MONTH=$(date +%-m)
-            START_MONTH=4
-            START_YEAR=2026
+            START_MONTH=5
+            START_YEAR=2025
             YEAR=$(date +%Y)
             EDITION=$(( (YEAR - START_YEAR) * 12 + MONTH - START_MONTH + 1 ))
             printf -v EDITION_STR "%02d" $EDITION
