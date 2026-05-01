@@ -233,8 +233,24 @@ def verify_content(content: Dict, edition: str) -> List[str]:
 
 def build_html(content: Dict, edition: str) -> str:
     """Monta el HTML del correo con el branding oficial de LOGNEXT."""
-    mes = datetime.now().strftime("%B %Y").capitalize()
+    mes  = datetime.now().strftime("%B %Y").capitalize()
     year = datetime.now().year
+
+    # Extraer secciones en variables para evitar problemas con {} dentro de f-strings
+    intro          = content.get("intro", "")
+    esto_titulo    = content.get("esto_paso", {}).get("titulo", "")
+    esto_texto     = content.get("esto_paso", {}).get("texto", "")
+    esto_url       = content.get("esto_paso", {}).get("url", "#")
+    caso_titulo    = content.get("caso_real", {}).get("titulo", "")
+    caso_texto     = content.get("caso_real", {}).get("texto", "")
+    caso_url       = content.get("caso_real", {}).get("url", "#")
+    consejo_titulo = content.get("consejo", {}).get("titulo", "")
+    consejo_texto  = content.get("consejo", {}).get("texto", "")
+    reto_titulo    = content.get("reto", {}).get("titulo", "")
+    reto_texto     = content.get("reto", {}).get("texto", "")
+    ia_titulo      = content.get("ia_dia", {}).get("titulo", "")
+    ia_texto       = content.get("ia_dia", {}).get("texto", "")
+    ia_url         = content.get("ia_dia", {}).get("url", "#")
 
     # ── Radar HTML ──
     radar_colors = [RED, YELLOW, CYAN, VIOLET]
@@ -301,7 +317,7 @@ def build_html(content: Dict, edition: str) -> str:
 
     <!-- INTRO -->
     <div style="background:{NAVY};padding:24px 40px;border-top:1px solid rgba(255,255,255,0.06);margin-bottom:4px;">
-      <p style="color:{GREY};font-size:15px;line-height:1.7;margin:0;">{content.get('intro', '')}</p>
+      <p style="color:{GREY};font-size:15px;line-height:1.7;margin:0;">{intro}</p>
     </div>
 
     <!-- SEPARADOR -->
@@ -310,32 +326,32 @@ def build_html(content: Dict, edition: str) -> str:
     <!-- ESTO PASÓ -->
     <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(250,60,15,0.3);">
       <div style="font-size:10px;color:{RED};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🗞️ ESTO PASÓ</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{content.get('esto_paso', {{}}).get('titulo', '')}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{content.get('esto_paso', {{}}).get('texto', '')}</p>
-      <a href="{content.get('esto_paso', {{}}).get('url', '#')}" style="color:{CYAN};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {CYAN};display:inline-block;">Leer la historia completa →</a>
+      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{esto_titulo}</div>
+      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{esto_texto}</p>
+      <a href="{esto_url}" style="color:{CYAN};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {CYAN};display:inline-block;">Leer la historia completa →</a>
     </div>
 
     <!-- CASO DEL MES -->
     <div style="background:#05051f;padding:28px 40px;margin-bottom:4px;border-left:4px solid {YELLOW};">
       <div style="font-size:10px;color:{YELLOW};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">😱 EL CASO DEL MES</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{content.get('caso_real', {{}}).get('titulo', '')}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{content.get('caso_real', {{}}).get('texto', '')}</p>
-      <a href="{content.get('caso_real', {{}}).get('url', '#')}" style="color:{YELLOW};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {YELLOW};display:inline-block;">Ver el caso completo →</a>
+      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{caso_titulo}</div>
+      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{caso_texto}</p>
+      <a href="{caso_url}" style="color:{YELLOW};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {YELLOW};display:inline-block;">Ver el caso completo →</a>
     </div>
 
     <!-- CONSEJO -->
     <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(100,240,125,0.2);">
       <div style="font-size:10px;color:{GREEN};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">💡 EL CONSEJO DEL MES</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{content.get('consejo', {{}}).get('titulo', '')}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0;">{content.get('consejo', {{}}).get('texto', '')}</p>
+      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{consejo_titulo}</div>
+      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0;">{consejo_texto}</p>
     </div>
 
     <!-- RETO -->
     <div style="background:#001a05;padding:24px 40px;margin-bottom:4px;border:1px solid rgba(100,240,125,0.2);">
       <div style="font-size:10px;color:{GREEN};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🎯 EL RETO DE ESTE MES</div>
       <div style="display:inline-block;background:{GREEN};color:{NAVY};font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 12px;margin-bottom:12px;">RETO ACTIVO</div>
-      <div style="font-size:17px;font-weight:600;color:{WHITE};margin-bottom:8px;">{content.get('reto', {{}}).get('titulo', '')}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.7;margin:0;">{content.get('reto', {{}}).get('texto', '')}</p>
+      <div style="font-size:17px;font-weight:600;color:{WHITE};margin-bottom:8px;">{reto_titulo}</div>
+      <p style="color:{GREY};font-size:14px;line-height:1.7;margin:0;">{reto_texto}</p>
     </div>
 
     <!-- EN EL RADAR -->
@@ -350,9 +366,9 @@ def build_html(content: Dict, edition: str) -> str:
     <!-- IA AL DÍA -->
     <div style="background:#000e22;padding:28px 40px;margin-bottom:4px;border-left:4px solid {BLUE};">
       <div style="font-size:10px;color:{BLUE};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🤖 IA AL DÍA</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{content.get('ia_dia', {{}}).get('titulo', '')}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{content.get('ia_dia', {{}}).get('texto', '')}</p>
-      <a href="{content.get('ia_dia', {{}}).get('url', '#')}" style="color:{BLUE};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {BLUE};display:inline-block;">Leer el análisis completo →</a>
+      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{ia_titulo}</div>
+      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{ia_texto}</p>
+      <a href="{ia_url}" style="color:{BLUE};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {BLUE};display:inline-block;">Leer el análisis completo →</a>
     </div>
 
     <!-- AGUJERO / ENLACES -->
