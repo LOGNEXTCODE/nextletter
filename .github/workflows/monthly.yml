@@ -105,10 +105,21 @@ jobs:
           git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} — $(date +'%B %Y')"
           git push origin gh-pages
 
+      - name: 🏷️ Nombre de artefacto seguro
+        if: always()
+        id: artifact_name
+        run: |
+          NUM="${{ steps.edition.outputs.number }}"
+          # Fallback a "00" si el output está vacío o contiene caracteres inválidos
+          if [[ -z "$NUM" || "$NUM" == *":"* || "$NUM" == *" "* ]]; then
+            NUM="00"
+          fi
+          echo "name=nextletter-preview-${NUM}" >> $GITHUB_OUTPUT
+
       - name: 📤 Guardar preview como artefacto
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nextletter-preview-${{ steps.edition.outputs.number }}
+          name: ${{ steps.artifact_name.outputs.name }}
           path: nextletter_preview.html
           retention-days: 90
