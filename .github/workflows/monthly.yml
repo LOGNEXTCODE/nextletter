@@ -1,0 +1,114 @@
+name: NextLetter — Generación mensual
+
+on:
+  # Todos los lunes a las 07:00 UTC = 09:00 CEST (hora Madrid en verano)
+  # El paso "Verificar primer lunes" cancela si no es la primera semana del mes
+  schedule:
+    - cron: "0 7 * * 1"
+
+  # Lanzamiento manual desde GitHub Actions (para tests y ediciones urgentes)
+  workflow_dispatch:
+    inputs:
+      edition_number:
+        description: "Número de edición (ej: 01). Déjalo vacío para calcular automáticamente."
+        required: false
+        default: "auto"
+
+jobs:
+  generate-nextletter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write   # Necesario para el push a gh-pages
+
+    steps:
+      - name: 📥 Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: 📅 Verificar que es el primer lunes del mes
+        id: check_date
+        run: |
+          DAY=$(date +%-d)
+          # En workflow_dispatch siempre se ejecuta (test manual)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Lanzamiento manual — ignorando restricción de fecha."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          elif [ "$DAY" -gt 7 ]; then
+            echo "Hoy es día $DAY — no es el primer lunes del mes. Cancelando."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Hoy es día $DAY — primer lunes del mes. Continuando."
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🐍 Configurar Python
+        if: steps.check_date.outputs.skip == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Instalar dependencias
+        if: steps.check_date.outputs.skip == 'false'
+        run: pip install -r requirements.txt
+
+      - name: 🔢 Calcular número de edición
+        if: steps.check_date.outputs.skip == 'false'
+        id: edition
+        run: |
+          if [ "${{ github.event.inputs.edition_number }}" = "auto" ] || [ -z "${{ github.event.inputs.edition_number }}" ]; then
+            MONTH=$(date +%-m)
+            START_MONTH=5
+            START_YEAR=2026
+            YEAR=$(date +%Y)
+            EDITION=$(( (YEAR - START_YEAR) * 12 + MONTH - START_MONTH + 1 ))
+            printf -v EDITION_STR "%02d" $EDITION
+          else
+            EDITION_STR="${{ github.event.inputs.edition_number }}"
+          fi
+          echo "number=$EDITION_STR" >> $GITHUB_OUTPUT
+          echo "  📌 Edición: #$EDITION_STR"
+
+      - name: 🚀 Generar y enviar NextLetter
+        if: steps.check_date.outputs.skip == 'false'
+        env:
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          MS_TENANT_ID:       ${{ secrets.MS_TENANT_ID }}
+          MS_CLIENT_ID:       ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET:   ${{ secrets.MS_CLIENT_SECRET }}
+          MS_SENDER_EMAIL:    ${{ secrets.MS_SENDER_EMAIL }}
+          REVIEWER_EMAIL:     ${{ secrets.REVIEWER_EMAIL }}
+          EDITION_NUMBER:     ${{ steps.edition.outputs.number }}
+        run: python main.py
+
+      - name: 🌐 Publicar edición en GitHub Pages
+        if: steps.check_date.outputs.skip == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages
+          git checkout gh-pages
+          mkdir -p ${{ steps.edition.outputs.number }}
+          cp nextletter_preview.html ${{ steps.edition.outputs.number }}/index.html
+          # El index raíz redirige siempre a la última edición publicada
+          cat > index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="0;url=/${{ steps.edition.outputs.number }}/">
+            <title>NextLetter — LOGNEXT</title>
+          </head>
+          <body></body>
+          </html>
+          EOF
+          git add -A
+          git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} — $(date +'%B %Y')"
+          git push origin gh-pages
+
+      - name: 📤 Guardar preview como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextletter-preview-${{ steps.edition.outputs.number }}
+          path: nextletter_preview.html
+          retention-days: 90
