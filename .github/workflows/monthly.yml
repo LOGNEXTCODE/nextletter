@@ -80,30 +80,14 @@ jobs:
           EDITION_NUMBER:     ${{ steps.edition.outputs.number }}
         run: python main.py
 
-      - name: 🌐 Publicar edición en GitHub Pages
+      - name: 🌐 Publicar index.html en main (GitHub Pages)
         if: steps.check_date.outputs.skip == 'false'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin gh-pages
-          git checkout gh-pages
-          mkdir -p ${{ steps.edition.outputs.number }}
-          cp nextletter_preview.html ${{ steps.edition.outputs.number }}/index.html
-          # El index raíz redirige siempre a la última edición publicada
-          cat > index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="es">
-          <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="refresh" content="0;url=/${{ steps.edition.outputs.number }}/">
-            <title>NextLetter — LOGNEXT</title>
-          </head>
-          <body></body>
-          </html>
-          EOF
-          git add -A
-          git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} — $(date +'%B %Y')"
-          git push origin gh-pages
+          git add index.html nextletter_preview.html
+          git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} publicado — $(date +'%B %Y')"
+          git push origin main
 
       - name: 🏷️ Nombre de artefacto seguro
         if: always()
