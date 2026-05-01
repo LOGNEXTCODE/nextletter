@@ -3,6 +3,7 @@ scraper.py — NextLetter
 Extrae noticias de ciberseguridad y tecnología desde feeds RSS oficiales.
 """
 
+import re
 import feedparser
 import requests
 from datetime import datetime, timedelta
@@ -10,6 +11,7 @@ from typing import List, Dict
 
 # ─── FUENTES RSS ───────────────────────────────────────────────────────────────
 SOURCES = [
+    # Prioridad alta: fuentes oficiales españolas
     {
         "name": "INCIBE",
         "url": "https://www.incibe.es/feed",
@@ -22,6 +24,26 @@ SOURCES = [
         "category": "seguridad",
         "priority": 1,
     },
+    # Medios internacionales de seguridad
+    {
+        "name": "The Hacker News",
+        "url": "https://feeds.feedburner.com/TheHackersNews",
+        "category": "seguridad",
+        "priority": 1,
+    },
+    {
+        "name": "Bleeping Computer",
+        "url": "https://www.bleepingcomputer.com/feed/",
+        "category": "seguridad",
+        "priority": 1,
+    },
+    {
+        "name": "Hispasec / Una al día",
+        "url": "https://unaaldia.hispasec.com/feed",
+        "category": "seguridad",
+        "priority": 1,
+    },
+    # Medios tecnológicos en español
     {
         "name": "El País Tecnología",
         "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/tecnologia/portada",
@@ -40,15 +62,8 @@ SOURCES = [
         "category": "tecnologia",
         "priority": 2,
     },
-    {
-        "name": "Bleeping Computer",
-        "url": "https://www.bleepingcomputer.com/feed/",
-        "category": "seguridad",
-        "priority": 1,
-    },
 ]
 
-# Cuántos días hacia atrás buscar noticias
 DAYS_LOOKBACK = 35
 
 
@@ -56,7 +71,7 @@ def fetch_articles(max_per_source: int = 10) -> List[Dict]:
     """
     Descarga artículos de todas las fuentes RSS.
     Filtra por fecha (últimos DAYS_LOOKBACK días).
-    Devuelve lista de artículos ordenados por fuente y fecha.
+    Devuelve lista ordenada por prioridad y fecha descendente.
     """
     cutoff = datetime.now() - timedelta(days=DAYS_LOOKBACK)
     articles = []
@@ -71,26 +86,21 @@ def fetch_articles(max_per_source: int = 10) -> List[Dict]:
                 if count >= max_per_source:
                     break
 
-                # Parsear fecha
                 pub_date = None
                 if hasattr(entry, "published_parsed") and entry.published_parsed:
                     pub_date = datetime(*entry.published_parsed[:6])
                 elif hasattr(entry, "updated_parsed") and entry.updated_parsed:
                     pub_date = datetime(*entry.updated_parsed[:6])
 
-                # Filtrar por fecha
                 if pub_date and pub_date < cutoff:
                     continue
 
-                # Extraer resumen limpio
                 summary = ""
                 if hasattr(entry, "summary"):
                     summary = entry.summary
                 elif hasattr(entry, "description"):
                     summary = entry.description
 
-                # Limpiar HTML básico del resumen
-                import re
                 summary = re.sub(r"<[^>]+>", "", summary).strip()
                 summary = summary[:500] + "..." if len(summary) > 500 else summary
 
@@ -110,7 +120,6 @@ def fetch_articles(max_per_source: int = 10) -> List[Dict]:
             print(f"  ⚠️  Error en {source['name']}: {e}")
             continue
 
-    # Ordenar: primero por prioridad, luego por fecha descendente
     articles.sort(
         key=lambda x: (x["priority"], -(x["date_raw"].timestamp() if x["date_raw"] else 0))
     )
@@ -119,8 +128,47 @@ def fetch_articles(max_per_source: int = 10) -> List[Dict]:
     return articles
 
 
+def validate_freshness(articles: List[Dict]) -> Dict:
+    """
+    Detecta escasez de contenido antes de llamar a la API.
+    Devuelve warnings si hay pocos artículos frescos o de seguridad.
+    El generador los pasa a Claude para que no invente cobertura.
+    """
+    cutoff_fresh = datetime.now() - timedelta(days=7)
+    fresh = [a for a in articles if a["date_raw"] and a["date_raw"] > cutoff_fresh]
+    security = [a for a in articles if a["category"] == "seguridad"]
+
+    warnings = []
+    if len(fresh) < 5:
+        warnings.append(
+            f"Solo {len(fresh)} artículos de los últimos 7 días — "
+            f"posible caída de feeds RSS"
+        )
+    if len(security) < 3:
+        warnings.append(
+            f"Solo {len(security)} artículos de seguridad — "
+            f"posible caída de INCIBE/CCN-CERT/THN"
+        )
+    if not articles:
+        warnings.append("Sin artículos — scraping completamente fallido")
+
+    if warnings:
+        print("\n  ⚠️  ALERTAS DE COBERTURA:")
+        for w in warnings:
+            print(f"     • {w}")
+
+    return {
+        "warnings": warnings,
+        "total": len(articles),
+        "fresh_count": len(fresh),
+        "security_count": len(security),
+    }
+
+
 if __name__ == "__main__":
     print("\n🔍 Iniciando scraping de fuentes...\n")
     arts = fetch_articles()
+    stats = validate_freshness(arts)
+    print(f"\n  📊 Frescos (7d): {stats['fresh_count']} | Seguridad: {stats['security_count']}")
     for a in arts[:5]:
         print(f"  [{a['source']}] {a['title']} — {a['date']}")

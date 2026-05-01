@@ -7,7 +7,7 @@ import os
 import sys
 from datetime import datetime
 
-from scraper import fetch_articles
+from scraper import fetch_articles, validate_freshness
 from generator import generate
 from mailer import send_draft
 
@@ -26,11 +26,14 @@ def run():
         print("❌ No se encontraron artículos. Abortando.")
         sys.exit(1)
 
-    # 2. Generar el NextLetter con Claude
-    print("\n✍️  PASO 2: Generando NextLetter con Claude API...\n")
-    html = generate(articles)
+    # Validar frescura y cobertura antes de llamar a la API
+    freshness = validate_freshness(articles)
 
-    # 3. Guardar preview local (útil para debug)
+    # 2. Generar el NextLetter con Claude (+ verificación editorial automática)
+    print("\n✍️  PASO 2: Generando NextLetter con Claude API...\n")
+    html = generate(articles, warnings=freshness["warnings"])
+
+    # 3. Guardar preview local
     preview_path = "nextletter_preview.html"
     with open(preview_path, "w", encoding="utf-8") as f:
         f.write(html)
