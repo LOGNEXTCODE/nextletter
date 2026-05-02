@@ -26,12 +26,436 @@ BLUE   = "#3791F5"
 GREY   = "#E1E1E8"
 WHITE  = "#FFFFFF"
 
-# Palabras que destrozan el tono de NextLetter
 FORBIDDEN_WORDS = [
     "disruptivo", "disrupción", "ecosistema", "sinergia",
     "innovador", "innovación", "paradigma", "disruptive"
 ]
 
+_MONTHS_ES = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]
+
+
+def _next_month_label(year: int, month: int, delta: int) -> str:
+    idx = (month - 1 + delta) % 12
+    y   = year + (month - 1 + delta) // 12
+    return f"{_MONTHS_ES[idx]} {y}"
+
+
+# ─── CONSTANTES DE DISEÑO (strings planos — sin f-string) ──────────────────────
+
+_FAVICON_SVG = (
+    "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 521 438'>"
+    "<polygon fill='%23000029' points='175,119 116,119 201,219 115,320 175,320 243,243 243,196'/>"
+    "<polygon fill='%23000029' points='344,119 403,119 318,219 404,320 344,320 276,243 276,196'/>"
+    "<polygon fill='%23FA3C0F' points='92,348 27,408 86,408 149,348'/>"
+    "<polygon fill='%23FA3C0F' points='425,90 489,30 430,30 369,90'/></svg>"
+)
+
+_LOGNEXT_WORDMARK_SVG = (
+    '<svg height="22" viewBox="0 0 1920 437.9" xmlns="http://www.w3.org/2000/svg"'
+    ' style="margin-right:20px;flex-shrink:0;">'
+    '<polygon fill="#FFFFFF" points="1417.7,117.4 1358.3,117.4 1443,218 1357.9,318.7 1417.7,318.7 1485.6,241.8 1485.6,194.3"/>'
+    '<polygon fill="#FFFFFF" points="1585.9,117.4 1645.3,117.4 1560.5,218 1645.7,318.7 1585.9,318.7 1518,241.8 1518,194.3"/>'
+    '<polygon fill="#FA3C0F" points="1334.7,346.7 1269.7,406.4 1328.5,406.4 1391,346.7"/>'
+    '<polygon fill="#FA3C0F" points="1667.5,88.6 1730.6,28.9 1671.8,28.9 1611.2,88.6"/>'
+    '<path fill="#FFFFFF" d="M230.7,271.4v47.4H43.3V117.4h52.3v154H230.7z"/>'
+    '<path fill="#FFFFFF" d="M1175.7,161.1v38.3h161.1v37.4h-161.1v40.8h161.1v41.1h-212.9V117.4h212.9v43.7H1175.7z"/>'
+    '<path fill="#FFFFFF" d="M1032.6,117.6v195.7h-1.5l-96.8-195.7H826.5v201.2h52.3V123h1.5l96.5,195.7h108.1V117.6H1032.6z"/>'
+    '<polygon fill="#FFFFFF" points="1685,117.3 1645.5,163.2 1733.8,163.2 1733.8,318.7 1786,318.7 1786,163.2 1876.7,163.2 1876.7,117.3"/>'
+    '<path fill="#FFFFFF" d="M245.6,217.8c0-68.7,39.1-106.4,130.4-106.4c91,0,130.4,37.9,130.4,106.4'
+    'c0,68.7-39.4,107-130.4,107C284.7,324.8,245.6,286.8,245.6,217.8z M454,217.8c0-42.1-22.4-62.6-78.1-62.6'
+    'c-55.7,0-78,20.3-78,62.6c0,42.7,22.5,63.3,78,63.3C431.4,281.1,454,260.2,454,217.8z"/>'
+    '<path fill="#FFFFFF" d="M791.7,200.8H658.1v36.7h78.4c-6.4,28.8-28.3,43.9-74.3,43.9'
+    'c-55.4,0-78.6-21-78.6-63.7c0-42.4,22.9-63.2,78.6-63.2c35,0,55.5,9.3,66.6,25.5h58.8'
+    'c-13.1-44.5-52.8-68.7-125.4-68.7c-91.3,0-130.4,37.6-130.4,106.4c0,69,42.3,107,130.4,107'
+    'c88.2,0,130.4-38.2,130.4-107C792.6,211.9,792.3,206.3,791.7,200.8z"/>'
+    '</svg>'
+)
+
+_CURSOR_SVG = (
+    '<svg class="cursor-logo" id="cursorLogo" viewBox="0 0 521 437.9" xmlns="http://www.w3.org/2000/svg">'
+    '<polygon fill="#FFFFFF" points="175.2,118.7 115.8,118.7 200.5,219.4 115.4,320 175.2,320 243.1,243.1 243.1,195.6"/>'
+    '<polygon fill="#FFFFFF" points="343.4,118.7 402.8,118.7 318,219.4 403.2,320 343.4,320 275.5,243.1 275.5,195.6"/>'
+    '<polygon fill="#FA3C0F" points="92.2,348.1 27.2,407.7 86,407.7 148.5,348.1"/>'
+    '<polygon fill="#FA3C0F" points="425,89.9 488.1,30.3 429.3,30.3 368.7,89.9"/>'
+    '</svg>'
+)
+
+# GA4 script — __EDITION__ se sustituye en build_html()
+_GA4_SCRIPT = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+  function trackSection(section) {
+    gtag('event', 'section_read', { section_name: section, edition: '__EDITION__' });
+  }
+  function trackLink(label, url) {
+    gtag('event', 'outbound_click', { link_label: label, link_url: url, edition: '__EDITION__' });
+    return true;
+  }
+  function trackPhishing(action) {
+    gtag('event', 'phishing_test', { action: action, edition: '__EDITION__' });
+  }
+</script>"""
+
+# CSS completo — string plano sin f-string para evitar conflictos con {}
+_CSS = """
+:root {
+  --navy:   #000029;
+  --red:    #FA3C0F;
+  --cyan:   #3CE6E6;
+  --yellow: #FFFA96;
+  --green:  #64F07D;
+  --violet: #C896FF;
+  --blue:   #3791F5;
+  --grey:   #E1E1E8;
+  --dark:   #080820;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: linear-gradient(160deg, #0e0e35 0%, #080820 60%, #0a0a2a 100%);
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--grey);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: none;
+}
+.cursor-logo, .cursor-ring { display: none; }
+@media (pointer: fine) {
+  .cursor-logo {
+    display: block; position: fixed;
+    width: 28px; height: 24px;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease;
+    filter: drop-shadow(0 0 5px rgba(250,60,15,0.7));
+  }
+  .cursor-logo.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    filter: drop-shadow(0 0 10px rgba(250,60,15,1));
+  }
+  .cursor-ring {
+    display: block; position: fixed;
+    width: 44px; height: 44px;
+    border: 1px solid rgba(60,230,230,0.5);
+    border-radius: 50%; pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+  .cursor-ring.hover { width: 58px; height: 58px; border-color: rgba(250,60,15,0.5); }
+  body { cursor: none; }
+}
+#nebula-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(250,60,15,0.08) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none; z-index: 0;
+}
+.topbar {
+  background: rgba(0,0,20,0.95);
+  border-bottom: 1px solid rgba(250,60,15,0.15);
+  padding: 12px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.topbar-logo { display: flex; align-items: center; gap: 16px; }
+.topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.1); margin: 0 16px; flex-shrink: 0; }
+.topbar-name { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+.topbar-name span { color: var(--red); font-weight: 300; }
+.topbar-edition { font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
+.wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
+.header {
+  background: var(--navy); border-top: 5px solid var(--red);
+  padding: 56px 64px 40px; position: relative; overflow: hidden;
+  animation: fadeDown 0.6s ease both;
+}
+.header::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 4px);
+  pointer-events: none;
+}
+.header-scan {
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  animation: scan 3s linear infinite; opacity: 0.5;
+}
+@keyframes scan { from{top:0} to{top:100%} }
+.header-inner { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; }
+.logo-row { display: flex; align-items: baseline; gap: 0; margin-bottom: 8px; }
+.logo-next { font-size: 88px; font-weight: 700; color: #fff; letter-spacing: -4px; line-height: 1; }
+.logo-letter { font-size: 88px; font-weight: 300; color: var(--red); letter-spacing: -4px; line-height: 1; }
+.header-tagline-big {
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace; margin-bottom: 20px;
+}
+.header-dots { display: flex; gap: 8px; }
+.hdot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+.header-stats { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 40px; }
+.stat-item { text-align: right; }
+.stat-number { font-size: 32px; font-weight: 700; color: var(--red); line-height: 1; font-family: 'JetBrains Mono', monospace; }
+.stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; font-family: 'JetBrains Mono', monospace; }
+.header-meta { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 24px; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+.header-issue { font-size: 11px; color: var(--red); font-weight: 700; letter-spacing: 3px; font-family: 'JetBrains Mono', monospace; }
+.intro { background: rgba(250,60,15,0.06); border-left: 4px solid var(--red); padding: 24px 40px; margin-top: 4px; font-size: 15px; line-height: 1.9; color: var(--grey); animation: fadeDown 0.6s 0.1s ease both; }
+.sep { height: 4px; background: linear-gradient(90deg, var(--red) 0%, var(--red) 33%, var(--cyan) 33%, var(--cyan) 66%, var(--yellow) 66%); margin-top: 4px; }
+.main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px; }
+.full-width { grid-column: 1 / -1; }
+.card { background: var(--navy); padding: 36px 44px; position: relative; overflow: hidden; transition: all 0.3s ease; cursor: pointer; animation: fadeUp 0.5s ease both; }
+.card::after { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.card:hover::after { opacity: 1; }
+.card-esto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(250,60,15,0.1), transparent 70%); }
+.card-caso::after  { background: radial-gradient(ellipse at 50% 0%, rgba(255,250,150,0.08), transparent 70%); }
+.card-consejo::after { background: radial-gradient(ellipse at 50% 0%, rgba(100,240,125,0.08), transparent 70%); }
+.card-reto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.08), transparent 70%); }
+.card-phishing::after { background: radial-gradient(ellipse at 50% 0%, rgba(200,150,255,0.1), transparent 70%); }
+.card-esto   { box-shadow: inset 0 1px 0 rgba(250,60,15,0.3); }
+.card-caso   { background: #05051f; border-left: 4px solid var(--yellow); }
+.card-consejo { box-shadow: inset 0 1px 0 rgba(100,240,125,0.2); }
+.card-reto   { background: #001a05; border: 1px solid rgba(100,240,125,0.2); }
+.card-phishing { background: #0a0020; border: 1px solid rgba(200,150,255,0.2); }
+.card-links  { background: #000029; box-shadow: inset 0 1px 0 rgba(200,150,255,0.2); }
+.card-ia     { background: #000e22; border-left: 4px solid var(--blue); box-shadow: inset 0 1px 0 rgba(55,145,245,0.25); }
+.card-ia::after { background: radial-gradient(ellipse at 50% 0%, rgba(55,145,245,0.1), transparent 70%); }
+.section-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.section-tag::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.12; }
+.card-title { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 16px; }
+.card-text  { font-size: 14px; line-height: 1.9; color: var(--grey); opacity: 0.85; margin-bottom: 20px; }
+.card-link { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; text-decoration: none; padding: 10px 20px; border: 1px solid currentColor; transition: all 0.25s ease; }
+.card-link:hover { opacity: 0.95; }
+.card-esto .card-link:hover    { background: var(--red);    color: #fff !important; }
+.card-caso .card-link:hover    { background: var(--yellow); color: var(--navy) !important; }
+.card-consejo .card-link:hover { background: var(--green);  color: var(--navy) !important; }
+.card-reto .card-link:hover    { background: var(--cyan);   color: var(--navy) !important; }
+.card-link .arrow { transition: transform 0.2s ease; }
+.card-link:hover .arrow { transform: translateX(4px); }
+.reto-badge { display: inline-block; background: var(--green); color: var(--navy); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 14px; margin-bottom: 16px; }
+.reto-progress { margin-top: 24px; height: 3px; background: rgba(100,240,125,0.15); border-radius: 2px; overflow: hidden; }
+.reto-progress-bar { height: 100%; width: 0%; background: var(--green); border-radius: 2px; animation: progressFill 2s 1s ease forwards; }
+@keyframes progressFill { to { width: 65%; } }
+.reto-label { display: flex; justify-content: space-between; font-size: 11px; font-family: 'JetBrains Mono', monospace; margin-top: 8px; opacity: 0.5; }
+.phishing-inner { background: rgba(200,150,255,0.05); border: 1px solid rgba(200,150,255,0.1); border-radius: 4px; padding: 24px; margin-top: 16px; }
+.phishing-email-preview { background: #fff; border-radius: 4px; padding: 16px; margin-bottom: 16px; font-family: Arial, sans-serif; color: #333; }
+.phishing-email-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 12px; color: #666; }
+.phishing-email-subject { font-weight: bold; font-size: 14px; color: #111; margin-bottom: 4px; }
+.phishing-email-body { font-size: 13px; line-height: 1.6; color: #444; }
+.phishing-email-body a { color: #1a73e8; text-decoration: underline; }
+.phishing-question { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.phishing-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+.phishing-btn { padding: 12px 24px; font-size: 13px; font-weight: 600; font-family: 'Space Grotesk', sans-serif; border: none; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.5px; flex: 1; min-width: 120px; }
+.phishing-btn-yes { background: rgba(250,60,15,0.15); color: var(--red); border: 1px solid var(--red); }
+.phishing-btn-yes:hover { background: var(--red); color: #fff; }
+.phishing-btn-no  { background: rgba(100,240,125,0.1); color: var(--green); border: 1px solid var(--green); }
+.phishing-btn-no:hover  { background: var(--green); color: var(--navy); }
+.phishing-result { display: none; padding: 16px; border-radius: 4px; font-size: 14px; line-height: 1.7; margin-top: 12px; }
+.phishing-result.show { display: block; }
+.phishing-result.correct { background: rgba(100,240,125,0.1); border: 1px solid rgba(100,240,125,0.3); color: var(--green); }
+.phishing-result.wrong   { background: rgba(250,60,15,0.1);  border: 1px solid rgba(250,60,15,0.3);  color: var(--red); }
+.phishing-clues { margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+.phishing-clue { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--grey); opacity: 0.8; margin-bottom: 4px; display: flex; gap: 8px; align-items: flex-start; }
+.card-radar { box-shadow: inset 0 1px 0 rgba(60,230,230,0.2); }
+.card-radar::after { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.07), transparent 70%); }
+.radar-list { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
+.radar-item { display: block; text-decoration: none; color: var(--grey); padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.2s ease; }
+.radar-item:last-child { border-bottom: none; padding-bottom: 0; }
+.radar-item:hover { padding-left: 8px; }
+.radar-source { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.radar-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+.radar-org { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; opacity: 0.6; }
+.radar-headline { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 4px; }
+.radar-item:hover .radar-headline { color: var(--cyan); }
+.radar-meta { font-size: 10px; opacity: 0.35; font-family: 'JetBrains Mono', monospace; }
+.links-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 4px; }
+.link-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 24px; text-decoration: none; color: var(--grey); transition: all 0.25s ease; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden; }
+.link-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+.link-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); }
+.link-card:hover::before { transform: scaleX(1); }
+.lc-news::before  { background: var(--red); }
+.lc-video::before { background: var(--cyan); }
+.lc-quiz::before  { background: var(--yellow); }
+.link-icon  { font-size: 28px; }
+.link-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
+.link-title { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
+.link-desc  { font-size: 12px; opacity: 0.55; line-height: 1.6; }
+.link-source { font-size: 11px; opacity: 0.4; font-family: 'JetBrains Mono', monospace; margin-top: auto; }
+.footer { background: #000015; border-top: 1px solid rgba(250,60,15,0.15); padding: 56px 64px 40px; margin-top: 4px; animation: fadeUp 0.5s 0.6s ease both; }
+.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; max-width: 1100px; margin: 0 auto 40px; }
+.footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; color: var(--red); margin-bottom: 6px; }
+.footer-col-rule { width: 32px; height: 2px; background: var(--red); margin-bottom: 20px; }
+.footer-brand-name { font-size: 28px; font-weight: 700; letter-spacing: -1px; color: #fff; margin-bottom: 12px; }
+.footer-brand-name span { color: var(--red); font-weight: 300; }
+.footer-brand-text { font-size: 13px; line-height: 1.8; opacity: 0.45; max-width: 260px; }
+.footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links-list li a { font-size: 13px; color: var(--grey); text-decoration: none; opacity: 0.55; transition: opacity 0.2s ease, padding-left 0.2s ease; display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
+.footer-links-list li a:hover { opacity: 1; padding-left: 6px; }
+.footer-links-list li a::before { content: '→'; color: var(--red); font-size: 10px; }
+.footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+.footer-contact-icon { color: var(--red); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-top: 2px; opacity: 0.7; }
+.footer-contact-text { opacity: 0.55; line-height: 1.5; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.footer-contact-text a { color: var(--grey); text-decoration: none; transition: color 0.2s ease; }
+.footer-contact-text a:hover { color: var(--red); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: center; align-items: center; max-width: 1100px; margin: 0 auto; }
+.footer-copy { font-size: 11px; opacity: 0.3; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: linear-gradient(160deg, #0e0e35 0%, #080820 60%, #0a0a2a 100%); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+@media (max-width: 900px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .header-inner { grid-template-columns: 1fr; }
+  .header-stats { flex-direction: row; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 20px; align-items: flex-start; }
+  .logo-next, .logo-letter { font-size: 64px; }
+  .links-grid { grid-template-columns: 1fr; }
+  .header { padding: 36px 28px 28px; }
+  .card { padding: 28px 28px; }
+  .topbar { padding: 12px 20px; }
+  .wrapper { padding: 0 12px 60px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .footer { padding: 40px 28px 28px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  .logo-next, .logo-letter { font-size: 48px; letter-spacing: -2px; }
+  .card-title { font-size: 18px; }
+  .header { padding: 28px 20px 24px; }
+  .card { padding: 24px 20px; }
+  .topbar-lognext { display: none; }
+  .phishing-buttons { flex-direction: column; }
+  .stat-number { font-size: 24px; }
+}
+"""
+
+# JS — string plano (contiene template literals JS con ${} que no son Python f-string)
+_JS = r"""
+const cursorLogo = document.getElementById('cursorLogo');
+const ring = document.getElementById('cursorRing');
+if (cursorLogo && ring) {
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursorLogo.style.left = mx + 'px';
+    cursorLogo.style.top  = my + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('.card, .link-card, .card-link, .phishing-btn, .topbar, .footer-links-list a, .footer-contact-text a').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursorLogo.classList.add('hover'); ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { cursorLogo.classList.remove('hover'); ring.classList.remove('hover'); });
+  });
+}
+const nc = document.getElementById('nebula-canvas');
+const nx = nc.getContext('2d');
+function resizeNebula() { nc.width = window.innerWidth; nc.height = window.innerHeight; }
+resizeNebula();
+window.addEventListener('resize', resizeNebula);
+const nebPoints = Array.from({length: 10}, () => ({
+  x: Math.random() * nc.width, y: Math.random() * nc.height,
+  r: Math.random() * 250 + 120,
+  color: ['rgba(250,60,15','rgba(60,230,230','rgba(200,150,255','rgba(55,145,245','rgba(100,240,125'][Math.floor(Math.random()*5)],
+  speed: (Math.random() - 0.5) * 0.25, angle: Math.random() * Math.PI * 2,
+}));
+const stars = Array.from({length: 150}, () => ({
+  x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+  r: Math.random() * 1.2, a: Math.random() * 0.5 + 0.1, tw: Math.random() * Math.PI * 2,
+}));
+const shooters = Array.from({length: 3}, () => newShooter());
+function newShooter() {
+  return { x: Math.random() * window.innerWidth * 1.5, y: -10,
+    len: Math.random() * 90 + 50, speed: Math.random() * 6 + 3,
+    angle: Math.PI / 4 + (Math.random()-0.5)*0.2, alpha: 0, fading: true };
+}
+function drawNebula() {
+  nx.fillStyle = 'rgba(8,8,32,0.18)';
+  nx.fillRect(0, 0, nc.width, nc.height);
+  nebPoints.forEach(n => {
+    n.angle += 0.003; n.x += Math.cos(n.angle) * n.speed; n.y += Math.sin(n.angle) * n.speed;
+    if (n.x < -n.r) n.x = nc.width + n.r; if (n.x > nc.width + n.r) n.x = -n.r;
+    if (n.y < -n.r) n.y = nc.height + n.r; if (n.y > nc.height + n.r) n.y = -n.r;
+    const g = nx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+    g.addColorStop(0, n.color + ',0.045)'); g.addColorStop(0.5, n.color + ',0.02)'); g.addColorStop(1, n.color + ',0)');
+    nx.fillStyle = g; nx.beginPath(); nx.arc(n.x, n.y, n.r, 0, Math.PI*2); nx.fill();
+  });
+  stars.forEach(s => {
+    s.tw += 0.018;
+    const a = s.a * (0.5 + Math.sin(s.tw) * 0.5);
+    nx.fillStyle = `rgba(255,255,255,${a})`; nx.beginPath(); nx.arc(s.x, s.y, s.r, 0, Math.PI*2); nx.fill();
+  });
+  shooters.forEach((s, i) => {
+    if (s.fading) { s.alpha += 0.04; if (s.alpha >= 1) s.fading = false; }
+    else { s.alpha -= 0.025; }
+    if (s.alpha <= 0) { shooters[i] = newShooter(); return; }
+    s.x += Math.cos(s.angle) * s.speed; s.y += Math.sin(s.angle) * s.speed;
+    const gr = nx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle)*s.len, s.y - Math.sin(s.angle)*s.len);
+    gr.addColorStop(0, `rgba(255,255,255,${s.alpha})`);
+    gr.addColorStop(0.4, `rgba(250,60,15,${s.alpha*0.4})`);
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
+    nx.strokeStyle = gr; nx.lineWidth = 1.2;
+    nx.beginPath(); nx.moveTo(s.x, s.y); nx.lineTo(s.x - Math.cos(s.angle)*s.len, s.y - Math.sin(s.angle)*s.len); nx.stroke();
+    if (s.x > nc.width + 100 || s.y > nc.height + 100) shooters[i] = newShooter();
+  });
+  requestAnimationFrame(drawNebula);
+}
+drawNebula();
+function answerPhishing(clickedYes) {
+  const result = document.getElementById('phishing-result');
+  if (!clickedYes) {
+    trackPhishing('correct');
+    result.className = 'phishing-result show correct';
+    result.innerHTML = '<strong>✅ ¡Correcto! Este email es phishing.</strong><br><br>Buen ojo. Aquí tienes las pistas que lo delatan:<div class="phishing-clues"><div class="phishing-clue">⚠️ <span>El dominio del remitente es <strong>microsoft-365security.com</strong>, no microsoft.com</span></div><div class="phishing-clue">⚠️ <span>Microsoft nunca os pedirá verificación por email con <strong>urgencia de 24h</strong></span></div><div class="phishing-clue">⚠️ <span>El enlace "Verificar mi cuenta" lleva a un dominio desconocido, no a microsoft.com</span></div><div class="phishing-clue">✅ <span>Ante la duda: <strong>llamad a IT</strong> antes de hacer clic en cualquier enlace urgente</span></div></div>';
+  } else {
+    trackPhishing('incorrect');
+    result.className = 'phishing-result show wrong';
+    result.innerHTML = '<strong>❌ ¡Cuidado! Este email es phishing.</strong><br><br>Habrías caído. Estas son las señales de alarma que pasaste por alto:<div class="phishing-clues"><div class="phishing-clue">🚨 <span>El dominio del remitente es <strong>microsoft-365security.com</strong> — NO es Microsoft</span></div><div class="phishing-clue">🚨 <span>La urgencia artificial ("24h") es la táctica más usada para que no pienses</span></div><div class="phishing-clue">🚨 <span>Microsoft nunca suspende cuentas por email sin avisos previos en el portal</span></div><div class="phishing-clue">✅ <span>Regla de oro: <strong>ante la duda, llama a IT</strong> antes de hacer clic</span></div></div>';
+  }
+  document.querySelectorAll('.phishing-btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; b.style.cursor = 'default'; });
+}
+"""
+
+# ─── SECCIÓN PHISHING ESTÁTICA ─────────────────────────────────────────────────
+_PHISHING_HTML = """
+    <div class="card card-phishing full-width" onmouseenter="trackSection('phishing_test')">
+      <div class="section-tag" style="color:var(--violet)">&#127919; Pon a prueba tu ojo &#8212; Test del mes</div>
+      <div class="card-title">&#191;Detectar&#237;as este email antes de hacer clic?</div>
+      <div class="card-text">Este es el tipo de correo que usan los atacantes. Tiene todos los ingredientes: urgencia, remitente aparentemente leg&#237;timo y un enlace tentador. &#191;Sabr&#237;as que es falso?</div>
+      <div class="phishing-inner">
+        <div class="phishing-email-preview">
+          <div class="phishing-email-header">
+            <div><strong>De:</strong> soporte@microsoft-365security.com</div>
+            <div><strong>Para:</strong> tu@lognext.com</div>
+            <div class="phishing-email-subject">&#9888;&#65039; URGENTE: Tu cuenta de Microsoft 365 ser&#225; suspendida en 24h</div>
+          </div>
+          <div class="phishing-email-body">
+            Hola,<br><br>
+            Hemos detectado actividad sospechosa en tu cuenta corporativa. Para evitar la suspensi&#243;n inmediata de tu acceso, debes verificar tu identidad en las pr&#243;ximas <strong>24 horas</strong>.<br><br>
+            <a href="javascript:void(0)" onclick="return false;" style="color:#1a73e8;text-decoration:underline;cursor:not-allowed;">&#8594; Verificar mi cuenta ahora</a><br><br>
+            Si no realizas esta verificaci&#243;n, tu acceso quedar&#225; bloqueado y deber&#225;s contactar con el departamento de IT para restaurarlo.<br><br>
+            Atentamente,<br>
+            Equipo de Seguridad de Microsoft
+          </div>
+        </div>
+        <div class="phishing-question">&#191;Es este email leg&#237;timo o un intento de phishing?</div>
+        <div class="phishing-buttons">
+          <button class="phishing-btn phishing-btn-yes" onclick="answerPhishing(false)">&#9888;&#65039; Es phishing &#8212; No har&#237;a clic</button>
+          <button class="phishing-btn phishing-btn-no"  onclick="answerPhishing(true)">&#9989; Parece leg&#237;timo &#8212; Har&#237;a clic</button>
+        </div>
+        <div class="phishing-result" id="phishing-result"></div>
+      </div>
+    </div>"""
+
+
+# ─── SELECCIÓN Y REDACCIÓN ─────────────────────────────────────────────────────
 
 def select_and_draft(articles: List[Dict], warnings: List[str] = None) -> Dict:
     """
@@ -53,7 +477,6 @@ def select_and_draft(articles: List[Dict], warnings: List[str] = None) -> Dict:
 
     mes_actual = datetime.now().strftime("%B %Y").capitalize()
 
-    # Contexto de alerta editorial si el scraping fue débil
     aviso_scraping = ""
     if warnings:
         aviso_scraping = f"""
@@ -166,7 +589,6 @@ ARTÍCULOS DISPONIBLES — {mes_actual}
 
     content = json.loads(raw)
 
-    # Mostrar razonamiento editorial en logs
     if "razonamiento" in content:
         print("\n  📝 Razonamiento editorial:")
         for k, v in content["razonamiento"].items():
@@ -184,46 +606,38 @@ def verify_content(content: Dict, edition: str) -> List[str]:
     issues = []
     mes = datetime.now().strftime("%B %Y").capitalize()
 
-    # Subject line del CLAUDE.md: máx 45 caracteres
     subject = f"NextLetter #{edition} — {mes}"
     if len(subject) > 45:
         issues.append(f"Subject demasiado largo: {len(subject)} chars (máx 45)")
 
-    # esto_paso debe tener dato numérico
     texto_esto = content.get("esto_paso", {}).get("texto", "")
     if not any(c.isdigit() for c in texto_esto):
         issues.append("esto_paso sin dato numérico — añadir cifra de impacto")
 
-    # URLs válidas en secciones dinámicas clave
     for seccion in ["esto_paso", "caso_real", "ia_dia"]:
         url = content.get(seccion, {}).get("url", "")
         if not url.startswith("http"):
             issues.append(f"{seccion} sin URL válida (tiene: '{url}')")
 
-    # Radar: exactamente 4 ítems
     radar = content.get("radar", [])
     if len(radar) != 4:
         issues.append(f"Radar con {len(radar)} ítems — necesita exactamente 4")
 
-    # Palabras prohibidas en cualquier campo de texto
     all_text = json.dumps(content, ensure_ascii=False).lower()
     found = [w for w in FORBIDDEN_WORDS if w in all_text]
     if found:
         issues.append(f"Palabras prohibidas encontradas: {', '.join(found)}")
 
-    # consejo: máx 3 frases
     consejo_text = content.get("consejo", {}).get("texto", "")
     frases = [f for f in re.split(r'[.!?]', consejo_text) if f.strip()]
     if len(frases) > 3:
         issues.append(f"consejo.texto con {len(frases)} frases — máx 3")
 
-    # reto: máx 2 frases
     reto_text = content.get("reto", {}).get("texto", "")
     frases_reto = [f for f in re.split(r'[.!?]', reto_text) if f.strip()]
     if len(frases_reto) > 2:
         issues.append(f"reto.texto con {len(frases_reto)} frases — máx 2")
 
-    # enlaces: exactamente 3
     enlaces = content.get("enlaces", [])
     if len(enlaces) != 3:
         issues.append(f"enlaces con {len(enlaces)} ítems — necesita exactamente 3")
@@ -232,11 +646,14 @@ def verify_content(content: Dict, edition: str) -> List[str]:
 
 
 def build_html(content: Dict, edition: str) -> str:
-    """Monta el HTML del correo con el branding oficial de LOGNEXT."""
-    mes  = datetime.now().strftime("%B %Y").capitalize()
-    year = datetime.now().year
+    """Monta el HTML del NextLetter replicando exactamente el diseño oficial."""
+    now       = datetime.now()
+    mes       = now.strftime("%B %Y").capitalize()
+    mes_upper = now.strftime("%B %Y").upper()
+    year      = now.year
+    month     = now.month
 
-    # Extraer secciones en variables para evitar problemas con {} dentro de f-strings
+    # ── Extraer contenido en variables locales ──────────────────────────────
     intro          = content.get("intro", "")
     esto_titulo    = content.get("esto_paso", {}).get("titulo", "")
     esto_texto     = content.get("esto_paso", {}).get("texto", "")
@@ -252,155 +669,279 @@ def build_html(content: Dict, edition: str) -> str:
     ia_texto       = content.get("ia_dia", {}).get("texto", "")
     ia_url         = content.get("ia_dia", {}).get("url", "#")
 
-    # ── Radar HTML ──
-    radar_colors = [RED, YELLOW, CYAN, VIOLET]
+    # ── Radar HTML ──────────────────────────────────────────────────────────
+    radar_dot_colors = [RED, YELLOW, CYAN, VIOLET]
     radar_html = ""
     for i, item in enumerate(content.get("radar", [])):
-        color = radar_colors[i % len(radar_colors)]
-        radar_html += f"""
-        <tr>
-          <td style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-              <span style="width:6px;height:6px;border-radius:50%;background:{color};display:inline-block;flex-shrink:0;"></span>
-              <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:0.6;color:{GREY};">{item.get('org', '')}</span>
-            </div>
-            <a href="{item.get('url', '#')}" style="color:{WHITE};font-size:13px;font-weight:600;text-decoration:none;line-height:1.4;display:block;margin-bottom:3px;">{item.get('titulo', '')}</a>
-            <div style="font-size:10px;opacity:0.35;color:{GREY};">{item.get('fecha', '')}</div>
-          </td>
-        </tr>"""
+        dot_color = radar_dot_colors[i % len(radar_dot_colors)]
+        r_titulo = item.get("titulo", "")
+        r_org    = item.get("org", "")
+        r_url    = item.get("url", "#")
+        r_fecha  = item.get("fecha", "")
+        radar_html += (
+            f'<a href="{r_url}" target="_blank" class="radar-item"'
+            f' onclick="trackLink(\'radar_{i}\', this.href)">\n'
+            f'  <div class="radar-source">'
+            f'<span class="radar-dot" style="background:{dot_color}"></span>'
+            f'<span class="radar-org">{r_org}</span></div>\n'
+            f'  <div class="radar-headline">{r_titulo}</div>\n'
+            f'  <div class="radar-meta">{r_fecha}</div>\n'
+            f'</a>\n'
+        )
 
-    # ── Enlaces HTML (3 recursos tipo artículo / vídeo / quiz) ──
+    # ── Enlaces HTML ────────────────────────────────────────────────────────
     tipo_icons  = {"articulo": "📰", "video": "▶️", "quiz": "🎮"}
-    tipo_labels = {"articulo": "ARTÍCULO", "video": "VÍDEO", "quiz": "QUIZ INTERACTIVO"}
-    tipo_colors = {"articulo": RED, "video": CYAN, "quiz": YELLOW}
+    tipo_labels = {"articulo": "Artículo", "video": "Vídeo", "quiz": "Quiz interactivo"}
+    tipo_class  = {"articulo": "lc-news", "video": "lc-video", "quiz": "lc-quiz"}
     enlaces_html = ""
     for e in content.get("enlaces", []):
-        tipo  = e.get("tipo", "articulo")
-        icon  = tipo_icons.get(tipo, "🔗")
-        label = tipo_labels.get(tipo, "ENLACE")
-        color = tipo_colors.get(tipo, CYAN)
-        enlaces_html += f"""
-        <tr>
-          <td style="padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);vertical-align:top;width:33%;">
-            <div style="font-size:24px;margin-bottom:8px;">{icon}</div>
-            <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:6px;color:{GREY};">{label}</div>
-            <a href="{e.get('url', '#')}" style="color:{WHITE};font-size:13px;font-weight:600;text-decoration:none;line-height:1.4;display:block;margin-bottom:8px;">{e.get('titulo', '')}</a>
-            <div style="color:{GREY};font-size:12px;opacity:0.55;margin-bottom:8px;">{e.get('descripcion', '')}</div>
-            <div style="font-size:10px;opacity:0.35;color:{GREY};">{e.get('fuente', '')}</div>
-          </td>
-          <td style="width:4px;"></td>"""
-    # Cerrar última fila correctamente
-    enlaces_html = f"<tr>{enlaces_html}</tr>"
+        tipo    = e.get("tipo", "articulo")
+        icon    = tipo_icons.get(tipo, "🔗")
+        label   = tipo_labels.get(tipo, "Enlace")
+        lc_cls  = tipo_class.get(tipo, "lc-news")
+        e_titulo = e.get("titulo", "")
+        e_desc   = e.get("descripcion", "")
+        e_url    = e.get("url", "#")
+        e_fuente = e.get("fuente", "")
+        enlaces_html += (
+            f'<a href="{e_url}" class="link-card {lc_cls}" target="_blank"'
+            f' onclick="trackLink(\'{tipo}\', this.href)">\n'
+            f'  <span class="link-icon">{icon}</span>\n'
+            f'  <span class="link-label">{label}</span>\n'
+            f'  <span class="link-title">{e_titulo}</span>\n'
+            f'  <span class="link-desc">{e_desc}</span>\n'
+            f'  <span class="link-source">{e_fuente}</span>\n'
+            f'</a>\n'
+        )
 
-    html = f"""<!DOCTYPE html>
+    # ── Footer: lista de ediciones (actual + 2 próximas) ────────────────────
+    edition_int   = int(edition)
+    now_badge     = (
+        '<span style="display:inline-flex;align-items:center;gap:5px;margin-left:6px;'
+        'background:rgba(250,60,15,0.15);border:1px solid rgba(250,60,15,0.4);'
+        'padding:1px 7px;font-size:9px;letter-spacing:1.5px;color:var(--red);vertical-align:middle;">'
+        '<span style="width:5px;height:5px;border-radius:50%;background:var(--red);'
+        'display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>NOW</span>'
+    )
+    footer_editions = ""
+    for delta in range(3):
+        ed_num = edition_int + delta
+        ed_str = f"{ed_num:02d}"
+        ed_mes = _next_month_label(year, month, delta)
+        if delta == 0:
+            footer_editions += f'<li><a href="#">#{ed_str} — {ed_mes} {now_badge}</a></li>\n'
+        else:
+            footer_editions += (
+                f'<li><a href="#" style="opacity:0.25;pointer-events:none;">'
+                f'#{ed_str} — {ed_mes}</a></li>\n'
+            )
+
+    # ── GA4 script con edición sustituida ───────────────────────────────────
+    ga4_script = _GA4_SCRIPT.replace("__EDITION__", edition)
+
+    # ── HTML completo ────────────────────────────────────────────────────────
+    return f"""<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<title>NextLetter #{edition}</title>
+<title>NextLetter #{edition} — LOGNEXT</title>
+<link rel="icon" type="image/svg+xml" href="{_FAVICON_SVG}">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+{ga4_script}
+<style>
+{_CSS}
+</style>
 </head>
-<body style="margin:0;padding:0;background:#080820;font-family:'Space Grotesk',Arial,sans-serif;">
+<body>
 
-  <div style="max-width:680px;margin:0 auto;padding:32px 16px;">
+{_CURSOR_SVG}
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- CABECERA -->
-    <div style="background:{NAVY};border-top:5px solid {RED};padding:32px 40px 24px;margin-bottom:4px;">
+<canvas id="nebula-canvas"></canvas>
+<div class="bg-grid"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    {_LOGNEXT_WORDMARK_SVG}
+    <span class="topbar-divider"></span>
+    <span class="topbar-name">NEXT<span>LETTER</span></span>
+  </div>
+  <span class="topbar-edition">EDICIÓN #{edition} · {mes_upper}</span>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-scan"></div>
+    <div class="header-inner">
       <div>
-        <span style="font-size:52px;font-weight:700;color:{WHITE};letter-spacing:-2px;line-height:1;">NEXT</span><span style="font-size:52px;font-weight:300;color:{RED};letter-spacing:-2px;line-height:1;">LETTER</span>
+        <div class="logo-row">
+          <span class="logo-next">NEXT</span><span class="logo-letter">LETTER</span>
+        </div>
+        <div class="header-tagline-big">La carta de los que van un paso por delante</div>
+        <div class="header-dots">
+          <div class="hdot" style="background:var(--red);animation-delay:0s"></div>
+          <div class="hdot" style="background:var(--cyan);animation-delay:0.3s"></div>
+          <div class="hdot" style="background:var(--yellow);animation-delay:0.6s"></div>
+          <div class="hdot" style="background:var(--green);animation-delay:0.9s"></div>
+          <div class="hdot" style="background:var(--violet);animation-delay:1.2s"></div>
+        </div>
       </div>
-      <div style="border-top:1px solid rgba(255,255,255,0.1);margin-top:12px;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:11px;color:{GREY};letter-spacing:2px;text-transform:uppercase;opacity:0.6;">La carta de los que van un paso por delante</span>
-        <span style="font-size:11px;color:{RED};font-weight:600;letter-spacing:2px;">#{edition} · {mes}</span>
+      <div class="header-stats">
+        <div class="stat-item">
+          <div class="stat-number">#{edition}</div>
+          <div class="stat-label">Edición</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">6</div>
+          <div class="stat-label">Secciones</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">~5'</div>
+          <div class="stat-label">Lectura</div>
+        </div>
       </div>
     </div>
-
-    <!-- INTRO -->
-    <div style="background:{NAVY};padding:24px 40px;border-top:1px solid rgba(255,255,255,0.06);margin-bottom:4px;">
-      <p style="color:{GREY};font-size:15px;line-height:1.7;margin:0;">{intro}</p>
+    <div class="header-meta">
+      <span style="font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;letter-spacing:2px;">BY LOGNEXT · DEPARTAMENTO IT</span>
+      <span class="header-issue">{mes_upper}</span>
     </div>
+  </div>
 
-    <!-- SEPARADOR -->
-    <div style="height:4px;background:linear-gradient(90deg,{RED} 0%,{RED} 33%,{CYAN} 33%,{CYAN} 66%,{YELLOW} 66%);margin-bottom:4px;"></div>
+  <!-- INTRO -->
+  <div class="intro" onmouseenter="trackSection('intro')">
+    {intro}
+  </div>
+
+  <!-- SEPARADOR -->
+  <div class="sep"></div>
+
+  <!-- GRID PRINCIPAL -->
+  <div class="main-grid">
 
     <!-- ESTO PASÓ -->
-    <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(250,60,15,0.3);">
-      <div style="font-size:10px;color:{RED};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🗞️ ESTO PASÓ</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{esto_titulo}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{esto_texto}</p>
-      <a href="{esto_url}" style="color:{CYAN};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {CYAN};display:inline-block;">Leer la historia completa →</a>
+    <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
+      <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
+      <div class="card-title">{esto_titulo}</div>
+      <div class="card-text">{esto_texto}</div>
+      <a href="{esto_url}" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
     <!-- CASO DEL MES -->
-    <div style="background:#05051f;padding:28px 40px;margin-bottom:4px;border-left:4px solid {YELLOW};">
-      <div style="font-size:10px;color:{YELLOW};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">😱 EL CASO DEL MES</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{caso_titulo}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{caso_texto}</p>
-      <a href="{caso_url}" style="color:{YELLOW};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {YELLOW};display:inline-block;">Ver el caso completo →</a>
+    <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
+      <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
+      <div class="card-title">{caso_titulo}</div>
+      <div class="card-text">{caso_texto}</div>
+      <a href="{caso_url}" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
     <!-- CONSEJO -->
-    <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(100,240,125,0.2);">
-      <div style="font-size:10px;color:{GREEN};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">💡 EL CONSEJO DEL MES</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{consejo_titulo}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0;">{consejo_texto}</p>
+    <div class="card card-consejo" onmouseenter="trackSection('consejo')">
+      <div class="section-tag" style="color:var(--green)">💡 El consejo del mes</div>
+      <div class="card-title">{consejo_titulo}</div>
+      <div class="card-text">{consejo_texto}</div>
     </div>
 
     <!-- RETO -->
-    <div style="background:#001a05;padding:24px 40px;margin-bottom:4px;border:1px solid rgba(100,240,125,0.2);">
-      <div style="font-size:10px;color:{GREEN};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🎯 EL RETO DE ESTE MES</div>
-      <div style="display:inline-block;background:{GREEN};color:{NAVY};font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 12px;margin-bottom:12px;">RETO ACTIVO</div>
-      <div style="font-size:17px;font-weight:600;color:{WHITE};margin-bottom:8px;">{reto_titulo}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.7;margin:0;">{reto_texto}</p>
-    </div>
-
-    <!-- EN EL RADAR -->
-    <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(60,230,230,0.2);">
-      <div style="font-size:10px;color:{CYAN};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:12px;">📡 EN EL RADAR</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:16px;">Lo que no puedes perderte este mes</div>
-      <table style="width:100%;border-collapse:collapse;">
-        {radar_html}
-      </table>
-    </div>
-
-    <!-- IA AL DÍA -->
-    <div style="background:#000e22;padding:28px 40px;margin-bottom:4px;border-left:4px solid {BLUE};">
-      <div style="font-size:10px;color:{BLUE};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:10px;">🤖 IA AL DÍA</div>
-      <div style="font-size:20px;font-weight:700;color:{WHITE};margin-bottom:12px;line-height:1.3;">{ia_titulo}</div>
-      <p style="color:{GREY};font-size:14px;line-height:1.8;margin:0 0 14px;">{ia_texto}</p>
-      <a href="{ia_url}" style="color:{BLUE};font-size:12px;font-weight:600;text-decoration:none;padding:8px 16px;border:1px solid {BLUE};display:inline-block;">Leer el análisis completo →</a>
-    </div>
-
-    <!-- AGUJERO / ENLACES -->
-    <div style="background:{NAVY};padding:28px 40px;margin-bottom:4px;box-shadow:inset 0 1px 0 rgba(200,150,255,0.2);">
-      <div style="font-size:10px;color:{VIOLET};letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:16px;">🔗 POR SI QUERÉIS CAER EN EL AGUJERO</div>
-      <table style="width:100%;border-collapse:collapse;">
-        {enlaces_html}
-      </table>
-    </div>
-
-    <!-- FOOTER -->
-    <div style="background:#000015;padding:28px 40px;margin-top:4px;text-align:center;">
-      <div style="font-size:22px;font-weight:700;color:{WHITE};letter-spacing:-1px;">NEXT<span style="color:{RED};font-weight:300;">LETTER</span></div>
-      <div style="height:2px;width:32px;background:{RED};margin:10px auto;"></div>
-      <div style="font-size:11px;color:{GREY};opacity:0.4;letter-spacing:1px;line-height:1.8;">
-        by LOGNEXT · Departamento IT · {year}<br>
-        ¿Dudas? <a href="mailto:sistemas@lognext.com" style="color:{GREY};opacity:0.6;">sistemas@lognext.com</a>
+    <div class="card card-reto" onmouseenter="trackSection('reto')">
+      <div class="section-tag" style="color:var(--green)">🎯 El reto de {mes}</div>
+      <div class="reto-badge">RETO ACTIVO</div>
+      <div class="card-title">{reto_titulo}</div>
+      <div class="card-text">{reto_texto}</div>
+      <div class="reto-progress"><div class="reto-progress-bar"></div></div>
+      <div class="reto-label">
+        <span>{mes_upper}</span>
+        <span>¿Lo has hecho ya? ✓</span>
       </div>
     </div>
 
+    <!-- EN EL RADAR -->
+    <div class="card card-radar" onmouseenter="trackSection('radar')">
+      <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
+      <div class="card-title">Lo que no puedes perderte este mes</div>
+      <div class="radar-list">
+        {radar_html}
+      </div>
+    </div>
+
+    <!-- IA AL DÍA -->
+    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
+      <div class="card-title">{ia_titulo}</div>
+      <div class="card-text">{ia_texto}</div>
+      <a href="{ia_url}" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+    </div>
+
+{_PHISHING_HTML}
+
+    <!-- ENLACES -->
+    <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
+      <div class="section-tag" style="color:var(--violet)">🔗 Por si queréis caer en el agujero</div>
+      <div class="links-grid">
+        {enlaces_html}
+      </div>
+    </div>
+
+  </div><!-- /main-grid -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+
+      <div>
+        <div class="footer-col-title">Somos Nexters</div>
+        <div class="footer-col-rule"></div>
+        <div class="footer-brand-name">NEXT<span>LETTER</span></div>
+        <div class="footer-brand-text">La newsletter de LOGNEXT para todos los Nexters. Sin tecnicismos aburridos, sin correos genéricos. Solo lo que importa, cada mes.</div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Ediciones</div>
+        <div class="footer-col-rule"></div>
+        <ul class="footer-links-list">
+          {footer_editions}
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contacto IT</div>
+        <div class="footer-col-rule"></div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">✉</span>
+          <span class="footer-contact-text"><a href="mailto:sistemas@lognext.com">sistemas@lognext.com</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">☎</span>
+          <span class="footer-contact-text"><a href="tel:+34636668059">+34 636 668 059</a></span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="footer-contact-icon">◎</span>
+          <span class="footer-contact-text"><a href="https://lognext.com" target="_blank">lognext.com</a></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© {year} LOGNEXT · Todos los derechos reservados.</span>
+    </div>
   </div>
+
+</div><!-- /wrapper -->
+
+<script>
+{_JS}
+</script>
 </body>
 </html>"""
-
-    return html
 
 
 def generate(articles: List[Dict], warnings: List[str] = None) -> str:
     """Función principal: genera el HTML del NextLetter."""
     content = select_and_draft(articles, warnings=warnings)
 
-    # Verificar criterios editoriales
     issues = verify_content(content, EDITION_NUMBER)
     if issues:
         print(f"\n  ⚠️  {len(issues)} issue(s) editorial(es) detectado(s):")
