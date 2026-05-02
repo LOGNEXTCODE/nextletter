@@ -159,16 +159,15 @@ body {
 .topbar {
   background: rgba(0,0,20,0.95);
   border-bottom: 1px solid rgba(250,60,15,0.15);
-  padding: 12px 40px;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px;
   position: sticky; top: 0; z-index: 100;
   backdrop-filter: blur(10px);
 }
-.topbar-logo { display: flex; align-items: center; gap: 16px; }
-.topbar-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.1); margin: 0 16px; flex-shrink: 0; }
-.topbar-name { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+.topbar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
+.topbar-name { flex: 1; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
 .topbar-name span { color: var(--red); font-weight: 300; }
-.topbar-edition { font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
+.topbar-center { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.topbar-edition { flex: 1; text-align: right; font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
 .wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
 .header {
   background: var(--navy); border-top: 5px solid var(--red);
@@ -507,6 +506,7 @@ PASO 2 — REDACCIÓN (con estas restricciones obligatorias)
 • esto_paso.texto: DEBE incluir al menos 1 dato numérico o porcentaje.
 • Palabras PROHIBIDAS (reescribe si aparecen): {', '.join(FORBIDDEN_WORDS)}
 • URLs: siempre de los artículos proporcionados. NUNCA inventadas.
+• ESTO_PASO, CASO_REAL e IA_DIA: campo "imagen" — 2-4 palabras en inglés para búsqueda en Unsplash que ilustren visualmente la noticia (ej: "cybersecurity hacker laptop dark", "power grid outage city", "artificial intelligence robot code blue"). Palabras clave concretas, evita términos abstractos.
 • intro: 2-3 líneas. Cálida, directa. Mencionar edición #{EDITION_NUMBER}.
 • radar: EXACTAMENTE 4 ítems, de fuentes distintas.
 • enlaces: EXACTAMENTE 3 recursos (1 artículo, 1 vídeo, 1 quiz/herramienta).
@@ -549,8 +549,8 @@ Responde ÚNICAMENTE con JSON válido con esta estructura exacta:
     "ia_dia": "Elegí [título] porque..."
   }},
   "intro": "...",
-  "esto_paso": {{"titulo": "...", "texto": "...", "url": "..."}},
-  "caso_real": {{"titulo": "...", "texto": "...", "url": "..."}},
+  "esto_paso": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "2-4 english keywords"}},
+  "caso_real": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "2-4 english keywords"}},
   "consejo": {{"titulo": "...", "texto": "..."}},
   "reto": {{"titulo": "...", "texto": "..."}},
   "radar": [
@@ -559,7 +559,7 @@ Responde ÚNICAMENTE con JSON válido con esta estructura exacta:
     {{"titulo": "...", "org": "...", "url": "...", "fecha": "..."}},
     {{"titulo": "...", "org": "...", "url": "...", "fecha": "..."}}
   ],
-  "ia_dia": {{"titulo": "...", "texto": "...", "url": "..."}},
+  "ia_dia": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "2-4 english keywords"}},
   "enlaces": [
     {{"tipo": "articulo", "titulo": "...", "descripcion": "...", "url": "...", "fuente": "..."}},
     {{"tipo": "video",    "titulo": "...", "descripcion": "...", "url": "...", "fuente": "..."}},
@@ -669,6 +669,11 @@ def build_html(content: Dict, edition: str) -> str:
     ia_texto       = content.get("ia_dia", {}).get("texto", "")
     ia_url         = content.get("ia_dia", {}).get("url", "#")
 
+    # Palabras clave para imágenes Unsplash (espacios → comas para la URL)
+    esto_img = content.get("esto_paso", {}).get("imagen", "cybersecurity technology").replace(" ", ",")
+    caso_img = content.get("caso_real", {}).get("imagen", "hacker security breach").replace(" ", ",")
+    ia_img   = content.get("ia_dia",    {}).get("imagen", "artificial intelligence robot").replace(" ", ",")
+
     # ── Radar HTML ──────────────────────────────────────────────────────────
     radar_dot_colors = [RED, YELLOW, CYAN, VIOLET]
     radar_html = ""
@@ -763,12 +768,13 @@ def build_html(content: Dict, edition: str) -> str:
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-logo">
-    {_LOGNEXT_WORDMARK_SVG}
-    <span class="topbar-divider"></span>
+  <div class="topbar-inner">
     <span class="topbar-name">NEXT<span>LETTER</span></span>
+    <div class="topbar-center">
+      {_LOGNEXT_WORDMARK_SVG}
+    </div>
+    <span class="topbar-edition">EDICIÓN #{edition} · {mes_upper}</span>
   </div>
-  <span class="topbar-edition">EDICIÓN #{edition} · {mes_upper}</span>
 </div>
 
 <div class="wrapper">
@@ -824,6 +830,10 @@ def build_html(content: Dict, edition: str) -> str:
 
     <!-- ESTO PASÓ -->
     <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
+      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="https://source.unsplash.com/1200x220/?{esto_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
       <div class="card-title">{esto_titulo}</div>
       <div class="card-text">{esto_texto}</div>
@@ -832,6 +842,10 @@ def build_html(content: Dict, edition: str) -> str:
 
     <!-- CASO DEL MES -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
+      <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
+        <img src="https://source.unsplash.com/800x160/?{caso_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
       <div class="card-title">{caso_titulo}</div>
       <div class="card-text">{caso_texto}</div>
@@ -869,6 +883,10 @@ def build_html(content: Dict, edition: str) -> str:
 
     <!-- IA AL DÍA -->
     <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="https://source.unsplash.com/1200x220/?{ia_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
       <div class="card-title">{ia_titulo}</div>
       <div class="card-text">{ia_texto}</div>
