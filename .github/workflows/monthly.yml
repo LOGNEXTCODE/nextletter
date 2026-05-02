@@ -80,12 +80,15 @@ jobs:
           EDITION_NUMBER:     ${{ steps.edition.outputs.number }}
         run: python main.py
 
-      - name: 🌐 Publicar index.html en main (GitHub Pages)
+      - name: 🌐 Publicar en main (GitHub Pages — raíz + carpeta edición)
         if: steps.check_date.outputs.skip == 'false'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html nextletter_preview.html
+          # Carpeta de edición (ej: 01/index.html → nextletter.lognext.com/01/)
+          mkdir -p ${{ steps.edition.outputs.number }}
+          cp index.html ${{ steps.edition.outputs.number }}/index.html
+          git add index.html nextletter_preview.html ${{ steps.edition.outputs.number }}/
           git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} publicado — $(date +'%B %Y')"
           git push origin main
 
