@@ -45,22 +45,22 @@ def _next_month_label(year: int, month: int, delta: int) -> str:
 
 # ─── IMÁGENES UNSPLASH (IDs verificados, CDN directo sin API key) ───────────────
 _UNSPLASH_PHOTOS = {
-    "cybersecurity": "1550751827-4bd374c3f58b",
-    "data-breach":   "1558494949-ef010cbdcc31",
-    "hacker":        "1614064641938-3bbee52942c7",
-    "network":       "1544197150-b99a580bb7be",
-    "server":        "1558494949-ef010cbdcc31",
-    "cloud":         "1451187580459-43490279c0fa",
-    "code":          "1516981747738-7b83b2914d22",
-    "ai":            "1676299081847-824916de030a",
-    "robot":         "1485827404703-89b55fcc595e",
-    "phishing":      "1526374965328-7f61d4dc18c5",
-    "privacy":       "1610337673044-720471f83677",
-    "energy":        "1473341304170-971dccb5ac1e",
-    "business":      "1515378791036-0648a3ef77b2",
-    "mobile":        "1512941937669-90a1b58e7e9c",
-    "spain":         "1539037116277-4db20889f2d4",
-    "technology":    "1518770660439-4636190af475",
+    "cybersecurity": "1550751827-4bd374c3f58b",   # blue digital lock
+    "data-breach":   "1555963879-ea7c5a52a1e0",   # red warning / alert
+    "hacker":        "1614064641938-3bbee52942c7", # dark hooded figure (confirmed)
+    "network":       "1544197150-b99a580bb7be",    # fiber optic cables
+    "server":        "1558618742-b04c9b8c5ee5",    # dark server rack room
+    "cloud":         "1451187580459-43490279c0fa", # data center aerial
+    "code":          "1517694712202-14dd9538aa97", # dark terminal / code screen
+    "ai":            "1676299081847-824916de030a", # AI abstract (confirmed)
+    "robot":         "1485827404703-89b55fcc595e", # robot / automation
+    "phishing":      "1526374965328-7f61d4dc18c5", # email phishing hook
+    "privacy":       "1610337673044-720471f83677", # privacy / lock
+    "energy":        "1473341304170-971dccb5ac1e", # energy / power grid
+    "business":      "1573497019236-17f8177b81e8", # IT professional at desk
+    "mobile":        "1512941937669-90a1b58e7e9c", # mobile / smartphone
+    "spain":         "1539037116277-4db20889f2d4", # Spain / city
+    "technology":    "1518770660439-4636190af475", # tech abstract
 }
 
 
@@ -194,7 +194,9 @@ body {
 .topbar-name { flex: 1; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
 .topbar-name span { color: var(--red); font-weight: 300; }
 .topbar-center { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.topbar-edition { flex: 1; text-align: right; font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
+.topbar-right { flex: 1; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.topbar-edition-num { font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
+.topbar-edition-date { font-size: 9px; color: rgba(255,255,255,0.4); font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; font-weight: 400; }
 .wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
 .header {
   background: var(--navy); border-top: 5px solid var(--red);
@@ -223,8 +225,8 @@ body {
 .header-dots { display: flex; gap: 8px; }
 .hdot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
-.header-stats { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 40px; }
-.stat-item { text-align: right; }
+.header-stats { display: flex; flex-direction: row; gap: 32px; align-items: center; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 40px; }
+.stat-item { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .stat-number { font-size: 32px; font-weight: 700; color: var(--red); line-height: 1; font-family: 'JetBrains Mono', monospace; }
 .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; font-family: 'JetBrains Mono', monospace; }
 .header-meta { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 24px; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
@@ -337,7 +339,7 @@ body {
 @media (max-width: 900px) {
   .main-grid { grid-template-columns: 1fr; }
   .header-inner { grid-template-columns: 1fr; }
-  .header-stats { flex-direction: row; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 20px; align-items: flex-start; }
+  .header-stats { flex-direction: row; gap: 20px; border-left: none; border-top: 1px solid rgba(255,255,255,0.08); padding-left: 0; padding-top: 20px; align-items: center; justify-content: space-around; }
   .logo-next, .logo-letter { font-size: 64px; }
   .links-grid { grid-template-columns: 1fr; }
   .header { padding: 36px 28px 28px; }
@@ -356,7 +358,8 @@ body {
   .topbar-inner { flex-direction: column; gap: 6px; padding: 12px 16px; text-align: center; }
   .topbar-name { flex: none; font-size: 13px; }
   .topbar-center svg { height: 16px; }
-  .topbar-edition { flex: none; text-align: center; font-size: 9px; }
+  .topbar-right { flex: none; align-items: center; }
+  .topbar-edition-num, .topbar-edition-date { text-align: center; }
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
 }
@@ -803,7 +806,10 @@ def build_html(content: Dict, edition: str) -> str:
     <div class="topbar-center">
       {_LOGNEXT_WORDMARK_SVG}
     </div>
-    <span class="topbar-edition">EDICIÓN #{edition} · {mes_upper}</span>
+    <div class="topbar-right">
+      <span class="topbar-edition-num">EDICIÓN #{edition}</span>
+      <span class="topbar-edition-date">{mes_upper}</span>
+    </div>
   </div>
 </div>
 
