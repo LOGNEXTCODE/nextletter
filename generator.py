@@ -43,6 +43,33 @@ def _next_month_label(year: int, month: int, delta: int) -> str:
     return f"{_MONTHS_ES[idx]} {y}"
 
 
+# ─── IMÁGENES UNSPLASH (IDs verificados, CDN directo sin API key) ───────────────
+_UNSPLASH_PHOTOS = {
+    "cybersecurity": "1550751827-4bd374c3f58b",
+    "data-breach":   "1558494949-ef010cbdcc31",
+    "hacker":        "1614064641938-3bbee52942c7",
+    "network":       "1544197150-b99a580bb7be",
+    "server":        "1558494949-ef010cbdcc31",
+    "cloud":         "1451187580459-43490279c0fa",
+    "code":          "1516981747738-7b83b2914d22",
+    "ai":            "1676299081847-824916de030a",
+    "robot":         "1485827404703-89b55fcc595e",
+    "phishing":      "1526374965328-7f61d4dc18c5",
+    "privacy":       "1610337673044-720471f83677",
+    "energy":        "1473341304170-971dccb5ac1e",
+    "business":      "1515378791036-0648a3ef77b2",
+    "mobile":        "1512941937669-90a1b58e7e9c",
+    "spain":         "1539037116277-4db20889f2d4",
+    "technology":    "1518770660439-4636190af475",
+}
+
+
+def _unsplash_url(keyword: str, w: int = 1200, h: int = 220) -> str:
+    key = keyword.lower().split(",")[0].replace(" ", "-").strip()
+    photo_id = _UNSPLASH_PHOTOS.get(key, _UNSPLASH_PHOTOS["technology"])
+    return f"https://images.unsplash.com/photo-{photo_id}?auto=format&fit=crop&w={w}&h={h}&q=80"
+
+
 # ─── CONSTANTES DE DISEÑO (strings planos — sin f-string) ──────────────────────
 
 _FAVICON_SVG = (
@@ -163,7 +190,7 @@ body {
   position: sticky; top: 0; z-index: 100;
   backdrop-filter: blur(10px);
 }
-.topbar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
+.topbar-inner { max-width: 1100px; margin: 0 auto; width: 100%; padding: 0 24px; display: flex; align-items: center; }
 .topbar-name { flex: 1; font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
 .topbar-name span { color: var(--red); font-weight: 300; }
 .topbar-center { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
@@ -315,7 +342,7 @@ body {
   .links-grid { grid-template-columns: 1fr; }
   .header { padding: 36px 28px 28px; }
   .card { padding: 28px 28px; }
-  .topbar { padding: 12px 20px; }
+  .topbar { padding: 12px 0; }
   .wrapper { padding: 0 12px 60px; }
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .footer { padding: 40px 28px 28px; }
@@ -326,7 +353,10 @@ body {
   .card-title { font-size: 18px; }
   .header { padding: 28px 20px 24px; }
   .card { padding: 24px 20px; }
-  .topbar-lognext { display: none; }
+  .topbar-inner { flex-direction: column; gap: 6px; padding: 12px 16px; text-align: center; }
+  .topbar-name { flex: none; font-size: 13px; }
+  .topbar-center svg { height: 16px; }
+  .topbar-edition { flex: none; text-align: center; font-size: 9px; }
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
 }
@@ -506,7 +536,7 @@ PASO 2 — REDACCIÓN (con estas restricciones obligatorias)
 • esto_paso.texto: DEBE incluir al menos 1 dato numérico o porcentaje.
 • Palabras PROHIBIDAS (reescribe si aparecen): {', '.join(FORBIDDEN_WORDS)}
 • URLs: siempre de los artículos proporcionados. NUNCA inventadas.
-• ESTO_PASO, CASO_REAL e IA_DIA: campo "imagen" — 2-4 palabras en inglés para búsqueda en Unsplash que ilustren visualmente la noticia (ej: "cybersecurity hacker laptop dark", "power grid outage city", "artificial intelligence robot code blue"). Palabras clave concretas, evita términos abstractos.
+• ESTO_PASO, CASO_REAL e IA_DIA: campo "imagen" — elige UNA palabra de esta lista exacta según el tema: cybersecurity, data-breach, hacker, network, server, cloud, code, ai, robot, phishing, privacy, energy, business, mobile, spain, technology
 • intro: 2-3 líneas. Cálida, directa. Mencionar edición #{EDITION_NUMBER}.
 • radar: EXACTAMENTE 4 ítems, de fuentes distintas.
 • enlaces: EXACTAMENTE 3 recursos (1 artículo, 1 vídeo, 1 quiz/herramienta).
@@ -669,10 +699,10 @@ def build_html(content: Dict, edition: str) -> str:
     ia_texto       = content.get("ia_dia", {}).get("texto", "")
     ia_url         = content.get("ia_dia", {}).get("url", "#")
 
-    # Palabras clave para imágenes Unsplash (espacios → comas para la URL)
-    esto_img = content.get("esto_paso", {}).get("imagen", "cybersecurity technology").replace(" ", ",")
-    caso_img = content.get("caso_real", {}).get("imagen", "hacker security breach").replace(" ", ",")
-    ia_img   = content.get("ia_dia",    {}).get("imagen", "artificial intelligence robot").replace(" ", ",")
+    # URLs de imágenes Unsplash (IDs curados, CDN directo)
+    esto_img_url = _unsplash_url(content.get("esto_paso", {}).get("imagen", "cybersecurity"), 1200, 220)
+    caso_img_url = _unsplash_url(content.get("caso_real", {}).get("imagen", "hacker"),         800, 160)
+    ia_img_url   = _unsplash_url(content.get("ia_dia",    {}).get("imagen", "ai"),            1200, 220)
 
     # ── Radar HTML ──────────────────────────────────────────────────────────
     radar_dot_colors = [RED, YELLOW, CYAN, VIOLET]
@@ -831,7 +861,7 @@ def build_html(content: Dict, edition: str) -> str:
     <!-- ESTO PASÓ -->
     <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
       <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
-        <img src="https://source.unsplash.com/1200x220/?{esto_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <img src="{esto_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
@@ -843,7 +873,7 @@ def build_html(content: Dict, edition: str) -> str:
     <!-- CASO DEL MES -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
       <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://source.unsplash.com/800x160/?{caso_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
+        <img src="{caso_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
@@ -884,7 +914,7 @@ def build_html(content: Dict, edition: str) -> str:
     <!-- IA AL DÍA -->
     <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
       <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
-        <img src="https://source.unsplash.com/1200x220/?{ia_img}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <img src="{ia_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
