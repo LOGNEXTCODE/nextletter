@@ -202,7 +202,7 @@ body {
 .lc-news::before  { background: var(--red); }
 .lc-video::before { background: var(--cyan); }
 .lc-quiz::before  { background: var(--yellow); }
-.link-icon  { font-size: 28px; }
+.link-icon  { width: 28px; height: 28px; display: block; color: currentColor; }
 .link-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
 .link-title { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
 .link-desc  { font-size: 12px; opacity: 0.55; line-height: 1.6; }
@@ -252,8 +252,12 @@ body {
   .topbar-inner { flex-direction: column; gap: 6px; padding: 12px 16px; text-align: center; }
   .topbar-name { flex: none; font-size: 13px; }
   .topbar-center svg { height: 16px; }
-  .topbar-right { flex: none; align-items: center; }
-  .topbar-edition-num, .topbar-edition-date { text-align: center; }
+  .topbar { padding: 8px 0; }
+  .topbar-inner { padding: 0 12px; }
+  .topbar-name { font-size: 10px; }
+  .topbar-center svg { height: 12px; }
+  .topbar-edition-num { font-size: 8px; letter-spacing: 0.5px; }
+  .topbar-edition-date { font-size: 7px; letter-spacing: 0.5px; }
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
 }
@@ -292,7 +296,7 @@ body {
         <div class="logo-row">
           <span class="logo-next">NEXT</span><span class="logo-letter">LETTER</span>
         </div>
-        <div class="header-tagline-big">La carta de los que van un paso por delante</div>
+        <div class="header-tagline-big">Intel real. Sin ruido. Cada mes.</div>
         <div class="header-dots">
           <div class="hdot" style="background:var(--red);animation-delay:0s"></div>
           <div class="hdot" style="background:var(--cyan);animation-delay:0.3s"></div>
@@ -307,7 +311,7 @@ body {
           <div class="stat-label">Edición</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">6</div>
+          <div class="stat-number">5</div>
           <div class="stat-label">Secciones</div>
         </div>
         <div class="stat-item">
@@ -324,7 +328,7 @@ body {
 
   <!-- INTRO -->
   <div class="intro" onmouseenter="trackSection('intro')">
-    Bienvenidos a la NextLetter #01: la newsletter mensual donde los Nexters se enteran de lo que importa antes de que les llegue el susto por otro canal. Primer número, estreno oficial, y el mundo de la ciberseguridad no ha podido arrancar mayo de forma más entretenida (para los atacantes, al menos). Ponte cómodo, que hay materia.
+    Bienvenidos a la NextLetter #01 — la newsletter mensual que LOGNEXT necesitaba y que por fin existe. Mayo llega cargado de brechas, phishing con inventiva y alguna que otra sorpresa desagradable en el supply chain. Ponte cómodo, que hay materia.
   </div>
 
   <!-- SEPARADOR -->
@@ -339,9 +343,9 @@ body {
         <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=220&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
-      <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
-      <div class="card-title">30.000 cuentas de Facebook robadas usando… Google AppSheet</div>
-      <div class="card-text">Un grupo vinculado a Vietnam ha comprometido aproximadamente 30.000 cuentas de Facebook usando Google AppSheet como relay de phishing: los correos maliciosos se enviaban desde una plataforma legítima de Google, lo que les permitía burlar filtros antispam con una eficacia alarmante. El esquema, bautizado como AccountDumpling por Guardio, incluía una tienda clandestina donde los atacantes revendían las cuentas robadas. La lección es clara: que un correo venga de dominio Google no lo convierte en seguro, y eso aplica igual a nuestros entornos corporativos.</div>
+      <div class="section-tag" style="color:var(--red)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg> Esto pasó</div>
+      <div class="card-title">30.000 cuentas de Facebook robadas usando Google AppSheet como pantalla</div>
+      <div class="card-text">Un grupo vinculado a Vietnam ha comprometido aproximadamente 30.000 cuentas de Facebook usando Google AppSheet como relay de phishing: los correos llegaban desde infraestructura legítima de Google, lo que los hacía casi invisibles para los filtros de seguridad. Las cuentas robadas se revendían directamente en una tienda ilícita operada por los propios atacantes. El dato que duele: el ataque no explotó ningún zero-day, solo la confianza que depositamos en dominios que reconocemos como seguros.</div>
       <a href="https://thehackernews.com/2026/05/30000-facebook-accounts-hacked-via.html" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
@@ -351,127 +355,77 @@ body {
         <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
       </div>
-      <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
-      <div class="card-title">El falso parche de Teams que se llevó el Active Directory</div>
-      <div class="card-text">El grupo UNC6692 perfeccionó una táctica de dos fases digna de serie de thriller: primero inundaban el correo de la víctima (bombardeo masivo), y cuando el empleado estaba al límite del estrés, aparecía un contacto en Microsoft Teams ofreciendo ayuda e instando a instalar un «parche urgente». Ese parche era Snow, un conjunto de malware que establecía acceso remoto, se movía lateralmente por la red y terminaba exfiltrando la base de datos de Active Directory, es decir, las llaves de toda la casa. La trampa funciona porque mezcla caos emocional con un canal de confianza. Si alguien te escribe por Teams ofreciéndote solucionar algo que tú no pediste, para, respira y llama a IT.</div>
+      <div class="section-tag" style="color:var(--yellow)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Amenaza del mes</div>
+      <div class="card-title">Teams, correo basura y un 'parche' falso: así robaron todo el Active Directory</div>
+      <div class="card-text">El grupo UNC6692 tiene un método con mucha mala leche: primero inundan el correo corporativo de la víctima con miles de mensajes basura hasta saturarla. Luego, un 'compañero de soporte' aparece en Microsoft Teams ofreciendo solución y convence al empleado de instalar lo que parece un parche legítimo. Lo que instala en realidad es Snow, un conjunto de malware que abre acceso remoto, se mueve lateralmente por la red y termina exfiltrando la base de datos completa de Active Directory. Credenciales, grupos, políticas: todo en manos del atacante. La lección: si alguien de 'soporte' te contacta por Teams sin que tú hayas abierto ticket, desconfía antes de hacer clic.</div>
       <a href="https://unaaldia.hispasec.com/2026/04/unc6692-usa-microsoft-teams-y-bombardeo-de-correo-para-colar-el-malware-snow-y-robar-active-directory.html" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
     <!-- CONSEJO -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
-      <div class="section-tag" style="color:var(--green)">💡 El consejo del mes</div>
-      <div class="card-title">Desconfía del que viene a salvarte</div>
-      <div class="card-text">Si recibes un aluvión de correos raros y acto seguido alguien en Teams te ofrece ayuda con un archivo ejecutable, no lo instales aunque parezca tu propio compañero de mesa. Verifica siempre por un canal distinto (una llamada, un mensaje en otro sistema) que esa persona es quien dice ser. El atacante cuenta con que estés agobiado para que no pienses: no le regales ese momento.</div>
-    </div>
-
-    <!-- RETO -->
-    <div class="card card-reto" onmouseenter="trackSection('reto')">
-      <div class="section-tag" style="color:var(--green)">🎯 El reto de May 2026</div>
-      <div class="reto-badge">RETO ACTIVO</div>
-      <div class="card-title">Reto mayo: audita tus sesiones SSO abiertas</div>
-      <div class="card-text">Entra hoy en tu gestor de cuenta corporativa (Google Workspace, Microsoft 365 o el que uses) y revisa qué aplicaciones de terceros tienen acceso activo mediante SSO: revoca todo lo que no reconozcas o que lleve más de 90 días sin usarse. Tiempo estimado: 10 minutos, y puede que te lleves una sorpresa desagradable.</div>
-      <div class="reto-progress"><div class="reto-progress-bar"></div></div>
-      <div class="reto-label">
-        <span>MAY 2026</span>
-        <span>¿Lo has hecho ya? ✓</span>
+      <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
+      <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/></svg> Consejo del mes</div>
+      <div class="card-title">Antes de instalar cualquier 'parche' que te llegue por Teams, para y pregunta</div>
+      <div class="card-text">Si alguien te contacta por Teams, correo o Slack ofreciéndote instalar algo urgente, abre un ticket oficial con tu equipo de soporte antes de ejecutar nada — aunque el perfil parezca legítimo. Los atacantes saben que la urgencia desactiva el sentido crítico, y que un empleado con el correo saturado y los nervios a flor de piel es el objetivo perfecto. Regla de oro: ningún parche real llega sin que tú lo hayas pedido.</div>
     </div>
 
     <!-- EN EL RADAR -->
     <div class="card card-radar" onmouseenter="trackSection('radar')">
-      <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
+      <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
       <div class="card-title">Lo que no puedes perderte este mes</div>
       <div class="radar-list">
-        <a href="https://thehackernews.com/2026/05/trellix-confirms-source-code-breach.html" target="_blank" class="radar-item" onclick="trackLink('radar_0', this.href)">
+        <a href="https://thehackernews.com/2026/05/poisoned-ruby-gems-and-go-modules.html" target="_blank" class="radar-item" onclick="trackLink('radar_0', this.href)">
   <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">Trellix confirma brecha en su repositorio de código fuente — hasta una empresa de ciberseguridad puede ser víctima</div>
+  <div class="radar-headline">Paquetes Ruby y Go envenenados atacan pipelines de CI para robar credenciales</div>
+  <div class="radar-meta">01/05/2026</div>
+</a>
+<a href="https://thehackernews.com/2026/05/two-cybersecurity-professionals-get-4.html" target="_blank" class="radar-item" onclick="trackLink('radar_1', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">The Hacker News</span></div>
+  <div class="radar-headline">Dos profesionales de ciberseguridad condenados a 4 años por ataques con ransomware BlackCat</div>
+  <div class="radar-meta">01/05/2026</div>
+</a>
+<a href="https://unaaldia.hispasec.com/2026/04/explotacion-activa-de-vulnerabilidades-en-windows-permite-escalar-privilegios-y-afectar-a-defender.html" target="_blank" class="radar-item" onclick="trackLink('radar_2', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">Hispasec / Una al día</span></div>
+  <div class="radar-headline">Explotación activa de BlueHammer y otras técnicas para escalar privilegios en Windows hasta SYSTEM</div>
+  <div class="radar-meta">17/04/2026</div>
+</a>
+<a href="https://thehackernews.com/2026/05/trellix-confirms-source-code-breach.html" target="_blank" class="radar-item" onclick="trackLink('radar_3', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Bleeping Computer</span></div>
+  <div class="radar-headline">Trellix confirma brecha en su repositorio de código fuente</div>
   <div class="radar-meta">02/05/2026</div>
 </a>
-<a href="https://thehackernews.com/2026/05/cybercrime-groups-using-vishing-and-sso.html" target="_blank" class="radar-item" onclick="trackLink('radar_1', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">Grupos criminales combinan vishing y abuso de SSO para ataques ultrarrápidos en entornos SaaS</div>
-  <div class="radar-meta">01/05/2026</div>
-</a>
-<a href="https://thehackernews.com/2026/05/two-cybersecurity-professionals-get-4.html" target="_blank" class="radar-item" onclick="trackLink('radar_2', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">Dos profesionales de ciberseguridad condenados a 4 años de prisión por ataques con el ransomware BlackCat</div>
-  <div class="radar-meta">01/05/2026</div>
-</a>
-<a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="radar-item" onclick="trackLink('radar_3', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Hispasec</span></div>
-  <div class="radar-headline">SQL injection crítica en LiteLLM explotada en horas: en riesgo las claves de proveedores LLM</div>
-  <div class="radar-meta">29/04/2026</div>
-</a>
 
       </div>
     </div>
 
-    <!-- IA AL DÍA -->
-    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
-      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1676299081847-824916de030a?auto=format&fit=crop&w=1200&h=220&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
-      </div>
-      <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
-      <div class="card-title">Cuando tu proxy de IA es la brecha de seguridad</div>
-      <div class="card-text">LiteLLM se ha convertido en la capa de abstracción favorita de los equipos IT para centralizar llamadas a OpenAI, Anthropic, Mistral y otros proveedores desde una sola API interna. Práctico, potente… y ahora con una vulnerabilidad crítica de inyección SQL sin autenticación que fue explotada en ataques reales pocas horas después de hacerse pública. El fallo expone lo que más duele: las credenciales de todos los proveedores de LLM configurados en el proxy, es decir, las claves que pagan las facturas y dan acceso a modelos en producción. La corrección llega en la versión 1.83.7, pero el episodio deja una lección editorial importante: desplegar infraestructura de IA interna no es solo un reto de arquitectura, es superficie de ataque nueva que hay que tratar con la misma disciplina que cualquier API crítica. Si en LOGNEXT tenéis algún proxy de este tipo corriendo, comprobad la versión hoy mismo.</div>
-      <a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
-    </div>
-
-
-    <div class="card card-phishing full-width" onmouseenter="trackSection('phishing_test')">
-      <div class="section-tag" style="color:var(--violet)">&#127919; Pon a prueba tu ojo &#8212; Test del mes</div>
-      <div class="card-title">&#191;Detectar&#237;as este email antes de hacer clic?</div>
-      <div class="card-text">Este es el tipo de correo que usan los atacantes. Tiene todos los ingredientes: urgencia, remitente aparentemente leg&#237;timo y un enlace tentador. &#191;Sabr&#237;as que es falso?</div>
-      <div class="phishing-inner">
-        <div class="phishing-email-preview">
-          <div class="phishing-email-header">
-            <div><strong>De:</strong> soporte@microsoft-365security.com</div>
-            <div><strong>Para:</strong> tu@lognext.com</div>
-            <div class="phishing-email-subject">&#9888;&#65039; URGENTE: Tu cuenta de Microsoft 365 ser&#225; suspendida en 24h</div>
-          </div>
-          <div class="phishing-email-body">
-            Hola,<br><br>
-            Hemos detectado actividad sospechosa en tu cuenta corporativa. Para evitar la suspensi&#243;n inmediata de tu acceso, debes verificar tu identidad en las pr&#243;ximas <strong>24 horas</strong>.<br><br>
-            <a href="javascript:void(0)" onclick="return false;" style="color:#1a73e8;text-decoration:underline;cursor:not-allowed;">&#8594; Verificar mi cuenta ahora</a><br><br>
-            Si no realizas esta verificaci&#243;n, tu acceso quedar&#225; bloqueado y deber&#225;s contactar con el departamento de IT para restaurarlo.<br><br>
-            Atentamente,<br>
-            Equipo de Seguridad de Microsoft
-          </div>
-        </div>
-        <div class="phishing-question">&#191;Es este email leg&#237;timo o un intento de phishing?</div>
-        <div class="phishing-buttons">
-          <button class="phishing-btn phishing-btn-yes" onclick="answerPhishing(false)">&#9888;&#65039; Es phishing &#8212; No har&#237;a clic</button>
-          <button class="phishing-btn phishing-btn-no"  onclick="answerPhishing(true)">&#9989; Parece leg&#237;timo &#8212; Har&#237;a clic</button>
-        </div>
-        <div class="phishing-result" id="phishing-result"></div>
-      </div>
-    </div>
 
     <!-- ENLACES -->
     <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
-      <div class="section-tag" style="color:var(--violet)">🔗 Por si queréis caer en el agujero</div>
+      <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si queréis caer en el agujero</div>
       <div class="links-grid">
-        <a href="https://thehackernews.com/2026/05/poisoned-ruby-gems-and-go-modules.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
-  <span class="link-icon">📰</span>
+        <a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
+  <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></span>
   <span class="link-label">Artículo</span>
-  <span class="link-title">Paquetes Ruby y Go envenenados atacan pipelines de CI para robar credenciales</span>
-  <span class="link-desc">Si tu equipo usa Ruby gems o módulos Go en sus pipelines, este artículo explica exactamente cómo los atacantes los contaminan para robar credenciales de GitHub Actions y establecer persistencia SSH — lectura obligatoria antes de tu próximo merge.</span>
-  <span class="link-source">The Hacker News</span>
+  <span class="link-title">Inyección SQL crítica en LiteLLM: explotada pocas horas después de hacerse pública</span>
+  <span class="link-desc">Si usáis proxies de LLM en vuestros proyectos, este artículo explica exactamente qué puede quedar expuesto y qué versión corrige el fallo — lectura obligatoria antes de la próxima revisión ENS.</span>
+  <span class="link-source">Hispasec / Una al día</span>
 </a>
-<a href="https://www.youtube.com/watch?v=XBkzBrXlle0" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
-  <span class="link-icon">▶️</span>
+<a href="https://www.youtube.com/watch?v=u9dBGWVwMMA" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
+  <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
   <span class="link-label">Vídeo</span>
-  <span class="link-title">¿Cómo funciona un ataque de phishing moderno? — Explicado paso a paso</span>
-  <span class="link-desc">Vídeo educativo de referencia que desmonta en detalle la anatomía de un ataque de phishing actual, desde el reconocimiento hasta la exfiltración, ideal para compartir con cualquier Nexter independientemente de su perfil técnico.</span>
-  <span class="link-source">YouTube / IBM Technology</span>
+  <span class="link-title">Cómo funciona un ataque de phishing moderno paso a paso</span>
+  <span class="link-desc">Demostración visual de cómo los atacantes construyen campañas de phishing usando servicios legítimos como Google para evadir filtros — ideal para entender el caso de AccountDumpling que abre este número.</span>
+  <span class="link-source">YouTube</span>
 </a>
-<a href="https://phishingquiz.withgoogle.com" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
-  <span class="link-icon">🎮</span>
+<a href="https://phishingquiz.withgoogle.com/" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
+  <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
   <span class="link-label">Quiz interactivo</span>
   <span class="link-title">Phishing Quiz de Google — ¿Sabrías detectar un correo malicioso?</span>
-  <span class="link-desc">Herramienta interactiva de Google que te pone a prueba con ejemplos reales de phishing para que compruebes (y demuestres a tu equipo) si sabrías distinguir un correo legítimo de uno malicioso — 8 minutos y aprenderás algo.</span>
-  <span class="link-source">Google / Jigsaw</span>
+  <span class="link-desc">Ocho correos reales y falsos para que pongas a prueba tu ojo clínico: perfecto para compartir con el equipo y ver quién pica antes de que lo haga alguien con peores consecuencias.</span>
+  <span class="link-source">Google Jigsaw</span>
 </a>
 
       </div>
