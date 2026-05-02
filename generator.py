@@ -355,15 +355,14 @@ body {
   .card-title { font-size: 18px; }
   .header { padding: 28px 20px 24px; }
   .card { padding: 24px 20px; }
-  .topbar-inner { flex-direction: column; gap: 6px; padding: 12px 16px; text-align: center; }
-  .topbar-name { flex: none; font-size: 13px; }
-  .topbar-center svg { height: 16px; }
-  .topbar { padding: 8px 0; }
-  .topbar-inner { padding: 0 12px; }
-  .topbar-name { font-size: 10px; }
-  .topbar-center svg { height: 12px; }
-  .topbar-edition-num { font-size: 8px; letter-spacing: 0.5px; }
-  .topbar-edition-date { font-size: 7px; letter-spacing: 0.5px; }
+  .topbar { padding: 6px 0; }
+  .topbar-inner { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: center; padding: 0 8px; gap: 2px; }
+  .topbar-name { flex: 1; font-size: 8px; letter-spacing: -0.5px; min-width: 0; white-space: nowrap; }
+  .topbar-center { flex-shrink: 0; }
+  .topbar-center svg { height: 10px !important; margin-right: 4px !important; }
+  .topbar-right { flex: 1; }
+  .topbar-edition-num { font-size: 7px; letter-spacing: 0.3px; }
+  .topbar-edition-date { font-size: 6px; letter-spacing: 0.3px; }
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
 }
@@ -374,11 +373,18 @@ _JS = r"""
 const cursorLogo = document.getElementById('cursorLogo');
 const ring = document.getElementById('cursorRing');
 if (cursorLogo && ring) {
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  let mx = -200, my = -200, rx = -200, ry = -200, hasMoved = false;
+  cursorLogo.style.opacity = '0';
+  ring.style.opacity = '0';
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     cursorLogo.style.left = mx + 'px';
     cursorLogo.style.top  = my + 'px';
+    if (!hasMoved) {
+      hasMoved = true; rx = mx; ry = my;
+      cursorLogo.style.opacity = '1';
+      ring.style.opacity = '1';
+    }
   });
   function animateRing() {
     rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
@@ -562,7 +568,10 @@ SECCIONES A GENERAR
 4. RADAR: 4 titulares relevantes de fuentes distintas. Breve y directo.
    Incluir org (nombre corto de la fuente) y fecha.
 
-5. ENLACES: 3 recursos:
+5. IA_DIA: Tendencia o incidente relevante sobre IA en ciberseguridad.
+   3-4 líneas. Cómo afecta a equipos IT. URL del artículo fuente.
+
+6. ENLACES: 3 recursos:
    - tipo "articulo": lectura recomendada
    - tipo "video": vídeo educativo o demostrativo (YouTube u otro)
    - tipo "quiz": herramienta interactiva, test o quiz de seguridad
@@ -581,6 +590,7 @@ Responde ÚNICAMENTE con JSON válido con esta estructura exacta:
   "esto_paso": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from: cybersecurity, data-breach, hacker, network, server, cloud, code, ai, robot, phishing, privacy, energy, business, mobile, spain, technology"}},
   "caso_real": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from: cybersecurity, data-breach, hacker, network, server, cloud, code, ai, robot, phishing, privacy, energy, business, mobile, spain, technology"}},
   "consejo":   {{"titulo": "...", "texto": "...", "imagen": "ONE keyword from the same list"}},
+  "ia_dia":    {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from the same list"}},
   "radar": [
     {{"titulo": "...", "org": "...", "url": "...", "fecha": "..."}},
     {{"titulo": "...", "org": "...", "url": "...", "fecha": "..."}},
@@ -641,7 +651,7 @@ def verify_content(content: Dict, edition: str) -> List[str]:
     if not any(c.isdigit() for c in texto_esto):
         issues.append("esto_paso sin dato numérico — añadir cifra de impacto")
 
-    for seccion in ["esto_paso", "caso_real"]:
+    for seccion in ["esto_paso", "caso_real", "ia_dia"]:
         url = content.get(seccion, {}).get("url", "")
         if not url.startswith("http"):
             issues.append(f"{seccion} sin URL válida (tiene: '{url}')")
@@ -683,13 +693,17 @@ def build_html(content: Dict, edition: str) -> str:
     caso_titulo    = content.get("caso_real", {}).get("titulo", "")
     caso_texto     = content.get("caso_real", {}).get("texto", "")
     caso_url       = content.get("caso_real", {}).get("url", "#")
-    consejo_titulo = content.get("consejo", {}).get("titulo", "")
-    consejo_texto  = content.get("consejo", {}).get("texto", "")
+    consejo_titulo = content.get("consejo",  {}).get("titulo", "")
+    consejo_texto  = content.get("consejo",  {}).get("texto", "")
+    ia_titulo      = content.get("ia_dia",   {}).get("titulo", "")
+    ia_texto       = content.get("ia_dia",   {}).get("texto", "")
+    ia_url         = content.get("ia_dia",   {}).get("url", "#")
 
     # URLs de imágenes Unsplash (IDs curados, CDN directo)
     esto_img_url    = _unsplash_url(content.get("esto_paso", {}).get("imagen", "cybersecurity"), 1200, 220)
     caso_img_url    = _unsplash_url(content.get("caso_real", {}).get("imagen", "hacker"),         800, 160)
     consejo_img_url = _unsplash_url(content.get("consejo",  {}).get("imagen", "code"),            800, 160)
+    ia_img_url      = _unsplash_url(content.get("ia_dia",   {}).get("imagen", "ai"),             1200, 180)
 
     # ── Radar HTML ──────────────────────────────────────────────────────────
     radar_dot_colors = [RED, YELLOW, CYAN, VIOLET]
@@ -827,7 +841,7 @@ def build_html(content: Dict, edition: str) -> str:
           <div class="stat-label">Edición</div>
         </div>
         <div class="stat-item">
-          <div class="stat-number">5</div>
+          <div class="stat-number">6</div>
           <div class="stat-label">Secciones</div>
         </div>
         <div class="stat-item">
@@ -889,7 +903,7 @@ def build_html(content: Dict, edition: str) -> str:
     </div>
 
     <!-- EN EL RADAR -->
-    <div class="card card-radar" onmouseenter="trackSection('radar')">
+    <div class="card card-radar full-width" onmouseenter="trackSection('radar')">
       <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
       <div class="card-title">Lo que no puedes perderte este mes</div>
       <div class="radar-list">
@@ -897,6 +911,18 @@ def build_html(content: Dict, edition: str) -> str:
       </div>
     </div>
 
+
+    <!-- IA AL DÍA -->
+    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <div style="height:180px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="{ia_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
+      </div>
+      <div class="section-tag" style="color:var(--blue)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> IA al día</div>
+      <div class="card-title">{ia_titulo}</div>
+      <div class="card-text">{ia_texto}</div>
+      <a href="{ia_url}" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+    </div>
 
     <!-- ENLACES -->
     <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
