@@ -6,31 +6,25 @@
 <title>NextLetter #01 — LOGNEXT</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 521 438'><polygon fill='%23000029' points='175,119 116,119 201,219 115,320 175,320 243,243 243,196'/><polygon fill='%23000029' points='344,119 403,119 318,219 404,320 344,320 276,243 276,196'/><polygon fill='%23FA3C0F' points='92,348 27,408 86,408 149,348'/><polygon fill='%23FA3C0F' points='425,90 489,30 430,30 369,90'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-<!-- Google Analytics GA4 — sustituir G-XXXXXXXXXX por tu ID real -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-XXXXXXXXXX');
-
-  // Evento personalizado: lectura por sección
   function trackSection(section) {
     gtag('event', 'section_read', { section_name: section, edition: '01' });
   }
-  // Evento: clic en enlace externo
   function trackLink(label, url) {
     gtag('event', 'outbound_click', { link_label: label, link_url: url, edition: '01' });
     return true;
   }
-  // Evento: participación en prueba phishing
   function trackPhishing(action) {
     gtag('event', 'phishing_test', { action: action, edition: '01' });
   }
 </script>
-
 <style>
+
 :root {
   --navy:   #000029;
   --red:    #FA3C0F;
@@ -42,9 +36,7 @@
   --grey:   #E1E1E8;
   --dark:   #080820;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-
 body {
   background: linear-gradient(160deg, #0e0e35 0%, #080820 60%, #0a0a2a 100%);
   font-family: 'Space Grotesk', sans-serif;
@@ -53,16 +45,12 @@ body {
   overflow-x: hidden;
   cursor: none;
 }
-
-/* ── CURSOR LOGO LOGNEXT — oculto en móvil ── */
 .cursor-logo, .cursor-ring { display: none; }
 @media (pointer: fine) {
   .cursor-logo {
-    display: block;
-    position: fixed;
+    display: block; position: fixed;
     width: 28px; height: 24px;
-    pointer-events: none;
-    z-index: 9999;
+    pointer-events: none; z-index: 9999;
     transform: translate(-50%, -50%);
     transition: transform 0.15s ease;
     filter: drop-shadow(0 0 5px rgba(250,60,15,0.7));
@@ -72,42 +60,28 @@ body {
     filter: drop-shadow(0 0 10px rgba(250,60,15,1));
   }
   .cursor-ring {
-    display: block;
-    position: fixed;
+    display: block; position: fixed;
     width: 44px; height: 44px;
     border: 1px solid rgba(60,230,230,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
+    border-radius: 50%; pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
     transition: all 0.15s ease;
   }
-  .cursor-ring.hover {
-    width: 58px; height: 58px;
-    border-color: rgba(250,60,15,0.5);
-  }
+  .cursor-ring.hover { width: 58px; height: 58px; border-color: rgba(250,60,15,0.5); }
   body { cursor: none; }
 }
-
-/* ── NEBULOSA CANVAS FONDO ── */
-#nebula-canvas {
-  position: fixed; inset: 0;
-  pointer-events: none; z-index: 0;
-}
+#nebula-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 .bg-grid {
   position: fixed; inset: 0;
   background-image: radial-gradient(circle, rgba(250,60,15,0.08) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none; z-index: 0;
 }
-
-/* ── TOPBAR LOGNEXT ── */
 .topbar {
   background: rgba(0,0,20,0.95);
   border-bottom: 1px solid rgba(250,60,15,0.15);
   padding: 12px 24px;
-  position: sticky; top: 0;
-  z-index: 100;
+  position: sticky; top: 0; z-index: 100;
   backdrop-filter: blur(10px);
 }
 .topbar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; }
@@ -115,139 +89,53 @@ body {
 .topbar-name span { color: var(--red); font-weight: 300; }
 .topbar-center { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .topbar-edition { flex: 1; text-align: right; font-size: 10px; color: var(--red); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; font-weight: 700; }
-
-/* ── WRAPPER ANCHO COMPLETO ── */
-.wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-  position: relative; z-index: 1;
-}
-
-/* ── HEADER ── */
+.wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; position: relative; z-index: 1; }
 .header {
-  background: var(--navy);
-  border-top: 5px solid var(--red);
-  padding: 56px 64px 40px;
-  position: relative; overflow: hidden;
+  background: var(--navy); border-top: 5px solid var(--red);
+  padding: 56px 64px 40px; position: relative; overflow: hidden;
   animation: fadeDown 0.6s ease both;
 }
 .header::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 4px);
   pointer-events: none;
 }
 .header-scan {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 3px;
+  position: absolute; top: 0; left: 0; width: 100%; height: 3px;
   background: linear-gradient(90deg, transparent, var(--red), transparent);
   animation: scan 3s linear infinite; opacity: 0.5;
 }
 @keyframes scan { from{top:0} to{top:100%} }
-
-.header-inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px; align-items: end;
-}
-.logo-row {
-  display: flex; align-items: baseline; gap: 0;
-  margin-bottom: 8px;
-}
-.logo-next {
-  font-size: 88px; font-weight: 700;
-  color: #fff; letter-spacing: -4px; line-height: 1;
-}
-.logo-letter {
-  font-size: 88px; font-weight: 300;
-  color: var(--red); letter-spacing: -4px; line-height: 1;
-}
+.header-inner { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: end; }
+.logo-row { display: flex; align-items: baseline; gap: 0; margin-bottom: 8px; }
+.logo-next { font-size: 88px; font-weight: 700; color: #fff; letter-spacing: -4px; line-height: 1; }
+.logo-letter { font-size: 88px; font-weight: 300; color: var(--red); letter-spacing: -4px; line-height: 1; }
 .header-tagline-big {
-  font-size: 13px; letter-spacing: 2px;
-  text-transform: uppercase; opacity: 0.4;
-  font-family: 'JetBrains Mono', monospace;
-  margin-bottom: 20px;
+  font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4;
+  font-family: 'JetBrains Mono', monospace; margin-bottom: 20px;
 }
 .header-dots { display: flex; gap: 8px; }
 .hdot { width: 8px; height: 8px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
-
-.header-stats {
-  display: flex; flex-direction: column;
-  gap: 16px; align-items: flex-end;
-  border-left: 1px solid rgba(255,255,255,0.08);
-  padding-left: 40px;
-}
+.header-stats { display: flex; flex-direction: column; gap: 16px; align-items: flex-end; border-left: 1px solid rgba(255,255,255,0.08); padding-left: 40px; }
 .stat-item { text-align: right; }
-.stat-number {
-  font-size: 32px; font-weight: 700; color: var(--red); line-height: 1;
-  font-family: 'JetBrains Mono', monospace;
-}
-.stat-label {
-  font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase; opacity: 0.4;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.header-meta {
-  border-top: 1px solid rgba(255,255,255,0.08);
-  margin-top: 24px; padding-top: 16px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.header-issue {
-  font-size: 11px; color: var(--red); font-weight: 700;
-  letter-spacing: 3px; font-family: 'JetBrains Mono', monospace;
-}
-
-/* ── INTRO ── */
-.intro {
-  background: rgba(250,60,15,0.06);
-  border-left: 4px solid var(--red);
-  padding: 24px 40px;
-  margin-top: 4px; font-size: 15px;
-  line-height: 1.9; color: var(--grey);
-  animation: fadeDown 0.6s 0.1s ease both;
-}
-
-/* ── SEPARADOR ── */
-.sep {
-  height: 4px;
-  background: linear-gradient(90deg, var(--red) 0%, var(--red) 33%, var(--cyan) 33%, var(--cyan) 66%, var(--yellow) 66%);
-  margin-top: 4px;
-}
-
-/* ── GRID PRINCIPAL ── */
-.main-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  margin-top: 4px;
-}
+.stat-number { font-size: 32px; font-weight: 700; color: var(--red); line-height: 1; font-family: 'JetBrains Mono', monospace; }
+.stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; font-family: 'JetBrains Mono', monospace; }
+.header-meta { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 24px; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; }
+.header-issue { font-size: 11px; color: var(--red); font-weight: 700; letter-spacing: 3px; font-family: 'JetBrains Mono', monospace; }
+.intro { background: rgba(250,60,15,0.06); border-left: 4px solid var(--red); padding: 24px 40px; margin-top: 4px; font-size: 15px; line-height: 1.9; color: var(--grey); animation: fadeDown 0.6s 0.1s ease both; }
+.sep { height: 4px; background: linear-gradient(90deg, var(--red) 0%, var(--red) 33%, var(--cyan) 33%, var(--cyan) 66%, var(--yellow) 66%); margin-top: 4px; }
+.main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px; }
 .full-width { grid-column: 1 / -1; }
-
-/* ── CARDS ── */
-.card {
-  background: var(--navy);
-  padding: 36px 44px;
-  position: relative; overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  animation: fadeUp 0.5s ease both;
-}
-.card::after {
-  content: ''; position: absolute; inset: 0;
-  opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
-}
+.card { background: var(--navy); padding: 36px 44px; position: relative; overflow: hidden; transition: all 0.3s ease; cursor: pointer; animation: fadeUp 0.5s ease both; }
+.card::after { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
 .card:hover::after { opacity: 1; }
-
 .card-esto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(250,60,15,0.1), transparent 70%); }
 .card-caso::after  { background: radial-gradient(ellipse at 50% 0%, rgba(255,250,150,0.08), transparent 70%); }
 .card-consejo::after { background: radial-gradient(ellipse at 50% 0%, rgba(100,240,125,0.08), transparent 70%); }
 .card-reto::after  { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.08), transparent 70%); }
 .card-phishing::after { background: radial-gradient(ellipse at 50% 0%, rgba(200,150,255,0.1), transparent 70%); }
-
 .card-esto   { box-shadow: inset 0 1px 0 rgba(250,60,15,0.3); }
 .card-caso   { background: #05051f; border-left: 4px solid var(--yellow); }
 .card-consejo { box-shadow: inset 0 1px 0 rgba(100,240,125,0.2); }
@@ -256,304 +144,90 @@ body {
 .card-links  { background: #000029; box-shadow: inset 0 1px 0 rgba(200,150,255,0.2); }
 .card-ia     { background: #000e22; border-left: 4px solid var(--blue); box-shadow: inset 0 1px 0 rgba(55,145,245,0.25); }
 .card-ia::after { background: radial-gradient(ellipse at 50% 0%, rgba(55,145,245,0.1), transparent 70%); }
-
-.section-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; letter-spacing: 4px;
-  text-transform: uppercase; font-weight: 700;
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-tag::after {
-  content: ''; flex: 1; height: 1px;
-  background: currentColor; opacity: 0.12;
-}
-.card-title {
-  font-size: 22px; font-weight: 700;
-  color: #fff; line-height: 1.3; margin-bottom: 16px;
-}
-.card-text {
-  font-size: 14px; line-height: 1.9;
-  color: var(--grey); opacity: 0.85; margin-bottom: 20px;
-}
-.card-link {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 600;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 1px; text-decoration: none;
-  padding: 10px 20px; border: 1px solid currentColor;
-  transition: all 0.25s ease;
-}
+.section-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.section-tag::after { content: ''; flex: 1; height: 1px; background: currentColor; opacity: 0.12; }
+.card-title { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 16px; }
+.card-text  { font-size: 14px; line-height: 1.9; color: var(--grey); opacity: 0.85; margin-bottom: 20px; }
+.card-link { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; text-decoration: none; padding: 10px 20px; border: 1px solid currentColor; transition: all 0.25s ease; }
 .card-link:hover { opacity: 0.95; }
-.card-esto .card-link:hover   { background: var(--red);    color: #fff !important; }
-.card-caso .card-link:hover   { background: var(--yellow); color: var(--navy) !important; }
-.card-consejo .card-link:hover { background: var(--green); color: var(--navy) !important; }
-.card-reto .card-link:hover   { background: var(--cyan);   color: var(--navy) !important; }
+.card-esto .card-link:hover    { background: var(--red);    color: #fff !important; }
+.card-caso .card-link:hover    { background: var(--yellow); color: var(--navy) !important; }
+.card-consejo .card-link:hover { background: var(--green);  color: var(--navy) !important; }
+.card-reto .card-link:hover    { background: var(--cyan);   color: var(--navy) !important; }
 .card-link .arrow { transition: transform 0.2s ease; }
 .card-link:hover .arrow { transform: translateX(4px); }
-
-/* ── RETO ── */
-.reto-badge {
-  display: inline-block; background: var(--green);
-  color: var(--navy); font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  padding: 4px 14px; margin-bottom: 16px;
-}
-.reto-progress {
-  margin-top: 24px; height: 3px;
-  background: rgba(100,240,125,0.15);
-  border-radius: 2px; overflow: hidden;
-}
-.reto-progress-bar {
-  height: 100%; width: 0%;
-  background: var(--green); border-radius: 2px;
-  animation: progressFill 2s 1s ease forwards;
-}
+.reto-badge { display: inline-block; background: var(--green); color: var(--navy); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 4px 14px; margin-bottom: 16px; }
+.reto-progress { margin-top: 24px; height: 3px; background: rgba(100,240,125,0.15); border-radius: 2px; overflow: hidden; }
+.reto-progress-bar { height: 100%; width: 0%; background: var(--green); border-radius: 2px; animation: progressFill 2s 1s ease forwards; }
 @keyframes progressFill { to { width: 65%; } }
-.reto-label {
-  display: flex; justify-content: space-between;
-  font-size: 11px; font-family: 'JetBrains Mono', monospace;
-  margin-top: 8px; opacity: 0.5;
-}
-
-/* ── PHISHING SECTION ── */
-.phishing-inner {
-  background: rgba(200,150,255,0.05);
-  border: 1px solid rgba(200,150,255,0.1);
-  border-radius: 4px; padding: 24px;
-  margin-top: 16px;
-}
-.phishing-email-preview {
-  background: #fff; border-radius: 4px;
-  padding: 16px; margin-bottom: 16px;
-  font-family: Arial, sans-serif; color: #333;
-}
-.phishing-email-header {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px; margin-bottom: 10px;
-  font-size: 12px; color: #666;
-}
-.phishing-email-subject {
-  font-weight: bold; font-size: 14px; color: #111;
-  margin-bottom: 4px;
-}
-.phishing-email-body {
-  font-size: 13px; line-height: 1.6; color: #444;
-}
-.phishing-email-body a {
-  color: #1a73e8; text-decoration: underline;
-}
-.phishing-question {
-  font-size: 15px; font-weight: 600; color: #fff;
-  margin-bottom: 16px; line-height: 1.5;
-}
-.phishing-buttons {
-  display: flex; gap: 12px; flex-wrap: wrap;
-}
-.phishing-btn {
-  padding: 12px 24px; font-size: 13px; font-weight: 600;
-  font-family: 'Space Grotesk', sans-serif;
-  border: none; cursor: pointer;
-  transition: all 0.25s ease; letter-spacing: 0.5px;
-  flex: 1; min-width: 120px;
-}
-.phishing-btn-yes {
-  background: rgba(250,60,15,0.15);
-  color: var(--red); border: 1px solid var(--red);
-}
+.reto-label { display: flex; justify-content: space-between; font-size: 11px; font-family: 'JetBrains Mono', monospace; margin-top: 8px; opacity: 0.5; }
+.phishing-inner { background: rgba(200,150,255,0.05); border: 1px solid rgba(200,150,255,0.1); border-radius: 4px; padding: 24px; margin-top: 16px; }
+.phishing-email-preview { background: #fff; border-radius: 4px; padding: 16px; margin-bottom: 16px; font-family: Arial, sans-serif; color: #333; }
+.phishing-email-header { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; font-size: 12px; color: #666; }
+.phishing-email-subject { font-weight: bold; font-size: 14px; color: #111; margin-bottom: 4px; }
+.phishing-email-body { font-size: 13px; line-height: 1.6; color: #444; }
+.phishing-email-body a { color: #1a73e8; text-decoration: underline; }
+.phishing-question { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 16px; line-height: 1.5; }
+.phishing-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+.phishing-btn { padding: 12px 24px; font-size: 13px; font-weight: 600; font-family: 'Space Grotesk', sans-serif; border: none; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.5px; flex: 1; min-width: 120px; }
+.phishing-btn-yes { background: rgba(250,60,15,0.15); color: var(--red); border: 1px solid var(--red); }
 .phishing-btn-yes:hover { background: var(--red); color: #fff; }
-.phishing-btn-no {
-  background: rgba(100,240,125,0.1);
-  color: var(--green); border: 1px solid var(--green);
-}
-.phishing-btn-no:hover { background: var(--green); color: var(--navy); }
-.phishing-result {
-  display: none; padding: 16px; border-radius: 4px;
-  font-size: 14px; line-height: 1.7; margin-top: 12px;
-}
+.phishing-btn-no  { background: rgba(100,240,125,0.1); color: var(--green); border: 1px solid var(--green); }
+.phishing-btn-no:hover  { background: var(--green); color: var(--navy); }
+.phishing-result { display: none; padding: 16px; border-radius: 4px; font-size: 14px; line-height: 1.7; margin-top: 12px; }
 .phishing-result.show { display: block; }
-.phishing-result.correct {
-  background: rgba(100,240,125,0.1);
-  border: 1px solid rgba(100,240,125,0.3);
-  color: var(--green);
-}
-.phishing-result.wrong {
-  background: rgba(250,60,15,0.1);
-  border: 1px solid rgba(250,60,15,0.3);
-  color: var(--red);
-}
-.phishing-clues {
-  margin-top: 12px; padding: 12px;
-  background: rgba(0,0,0,0.3); border-radius: 4px;
-}
-.phishing-clue {
-  font-size: 12px; font-family: 'JetBrains Mono', monospace;
-  color: var(--grey); opacity: 0.8; margin-bottom: 4px;
-  display: flex; gap: 8px; align-items: flex-start;
-}
-
-/* ── RADAR ── */
+.phishing-result.correct { background: rgba(100,240,125,0.1); border: 1px solid rgba(100,240,125,0.3); color: var(--green); }
+.phishing-result.wrong   { background: rgba(250,60,15,0.1);  border: 1px solid rgba(250,60,15,0.3);  color: var(--red); }
+.phishing-clues { margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 4px; }
+.phishing-clue { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--grey); opacity: 0.8; margin-bottom: 4px; display: flex; gap: 8px; align-items: flex-start; }
 .card-radar { box-shadow: inset 0 1px 0 rgba(60,230,230,0.2); }
 .card-radar::after { background: radial-gradient(ellipse at 50% 0%, rgba(60,230,230,0.07), transparent 70%); }
 .radar-list { display: flex; flex-direction: column; gap: 0; margin-top: 4px; }
-.radar-item {
-  display: block; text-decoration: none; color: var(--grey);
-  padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-  transition: all 0.2s ease;
-}
+.radar-item { display: block; text-decoration: none; color: var(--grey); padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.2s ease; }
 .radar-item:last-child { border-bottom: none; padding-bottom: 0; }
 .radar-item:hover { padding-left: 8px; }
 .radar-source { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .radar-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
-.radar-org {
-  font-size: 9px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; font-family: 'JetBrains Mono', monospace; opacity: 0.6;
-}
+.radar-org { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; opacity: 0.6; }
 .radar-headline { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 4px; }
 .radar-item:hover .radar-headline { color: var(--cyan); }
 .radar-meta { font-size: 10px; opacity: 0.35; font-family: 'JetBrains Mono', monospace; }
-
-/* ── LINKS GRID ── */
-.links-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px; margin-top: 4px;
-}
-.link-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 24px; text-decoration: none; color: var(--grey);
-  transition: all 0.25s ease;
-  display: flex; flex-direction: column; gap: 8px;
-  position: relative; overflow: hidden;
-}
-.link-card::before {
-  content: ''; position: absolute; top: 0; left: 0;
-  width: 100%; height: 2px;
-  transform: scaleX(0); transform-origin: left;
-  transition: transform 0.3s ease;
-}
+.links-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 4px; }
+.link-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 24px; text-decoration: none; color: var(--grey); transition: all 0.25s ease; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden; }
+.link-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
 .link-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.05); }
 .link-card:hover::before { transform: scaleX(1); }
 .lc-news::before  { background: var(--red); }
 .lc-video::before { background: var(--cyan); }
 .lc-quiz::before  { background: var(--yellow); }
-.link-icon { font-size: 28px; }
-.link-label {
-  font-size: 10px; font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 2px; text-transform: uppercase; opacity: 0.4;
-}
-.link-title {
-  font-size: 14px; font-weight: 600;
-  color: #fff; line-height: 1.4;
-}
-.link-source {
-  font-size: 11px; opacity: 0.4;
-  font-family: 'JetBrains Mono', monospace; margin-top: auto;
-}
-
-/* ── FOOTER ── */
-.footer {
-  background: #000015;
-  border-top: 1px solid rgba(250,60,15,0.15);
-  padding: 56px 64px 40px;
-  margin-top: 4px;
-  animation: fadeUp 0.5s 0.6s ease both;
-}
-.footer-inner {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
-  gap: 48px;
-  max-width: 1100px;
-  margin: 0 auto 40px;
-}
-.footer-col-title {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 3px; text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--red); margin-bottom: 6px;
-}
-.footer-col-rule {
-  width: 32px; height: 2px;
-  background: var(--red); margin-bottom: 20px;
-}
-.footer-brand-name {
-  font-size: 28px; font-weight: 700;
-  letter-spacing: -1px; color: #fff;
-  margin-bottom: 12px;
-}
+.link-icon  { font-size: 28px; }
+.link-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
+.link-title { font-size: 14px; font-weight: 600; color: #fff; line-height: 1.4; }
+.link-desc  { font-size: 12px; opacity: 0.55; line-height: 1.6; }
+.link-source { font-size: 11px; opacity: 0.4; font-family: 'JetBrains Mono', monospace; margin-top: auto; }
+.footer { background: #000015; border-top: 1px solid rgba(250,60,15,0.15); padding: 56px 64px 40px; margin-top: 4px; animation: fadeUp 0.5s 0.6s ease both; }
+.footer-inner { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; max-width: 1100px; margin: 0 auto 40px; }
+.footer-col-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; color: var(--red); margin-bottom: 6px; }
+.footer-col-rule { width: 32px; height: 2px; background: var(--red); margin-bottom: 20px; }
+.footer-brand-name { font-size: 28px; font-weight: 700; letter-spacing: -1px; color: #fff; margin-bottom: 12px; }
 .footer-brand-name span { color: var(--red); font-weight: 300; }
-.footer-brand-text {
-  font-size: 13px; line-height: 1.8;
-  opacity: 0.45; max-width: 260px;
-}
-.footer-links-list {
-  list-style: none; display: flex;
-  flex-direction: column; gap: 10px;
-}
-.footer-links-list li a {
-  font-size: 13px; color: var(--grey);
-  text-decoration: none; opacity: 0.55;
-  transition: opacity 0.2s ease, padding-left 0.2s ease;
-  display: flex; align-items: center; gap: 8px;
-  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
-}
+.footer-brand-text { font-size: 13px; line-height: 1.8; opacity: 0.45; max-width: 260px; }
+.footer-links-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links-list li a { font-size: 13px; color: var(--grey); text-decoration: none; opacity: 0.55; transition: opacity 0.2s ease, padding-left 0.2s ease; display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
 .footer-links-list li a:hover { opacity: 1; padding-left: 6px; }
-.footer-links-list li a::before {
-  content: '→'; color: var(--red); font-size: 10px;
-}
-.footer-contact-item {
-  display: flex; align-items: flex-start; gap: 10px;
-  margin-bottom: 12px; font-size: 13px;
-}
-.footer-contact-icon {
-  color: var(--red); flex-shrink: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; margin-top: 2px; opacity: 0.7;
-}
-.footer-contact-text {
-  opacity: 0.55; line-height: 1.5;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-}
-.footer-contact-text a {
-  color: var(--grey); text-decoration: none;
-  transition: color 0.2s ease;
-}
+.footer-links-list li a::before { content: '→'; color: var(--red); font-size: 10px; }
+.footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+.footer-contact-icon { color: var(--red); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-top: 2px; opacity: 0.7; }
+.footer-contact-text { opacity: 0.55; line-height: 1.5; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.footer-contact-text a { color: var(--grey); text-decoration: none; transition: color 0.2s ease; }
 .footer-contact-text a:hover { color: var(--red); }
-
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 24px;
-  display: flex; justify-content: center; align-items: center;
-  max-width: 1100px; margin: 0 auto;
-}
-.footer-copy {
-  font-size: 11px; opacity: 0.3;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 1px;
-}
-.footer-legal {
-  display: flex; gap: 20px; flex-wrap: wrap;
-}
-.footer-legal a {
-  font-size: 10px; opacity: 0.25;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--grey); text-decoration: none; letter-spacing: 1px;
-  transition: opacity 0.2s ease;
-}
-.footer-legal a:hover { opacity: 0.6; }
-
-/* ── ANIMATIONS ── */
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px; display: flex; justify-content: center; align-items: center; max-width: 1100px; margin: 0 auto; }
+.footer-copy { font-size: 11px; opacity: 0.3; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; }
 @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
-
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: linear-gradient(160deg, #0e0e35 0%, #080820 60%, #0a0a2a 100%); }
 ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
-
-/* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .main-grid { grid-template-columns: 1fr; }
   .header-inner { grid-template-columns: 1fr; }
@@ -568,7 +242,6 @@ body {
   .footer { padding: 40px 28px 28px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
-
 @media (max-width: 600px) {
   .logo-next, .logo-letter { font-size: 48px; letter-spacing: -2px; }
   .card-title { font-size: 18px; }
@@ -577,22 +250,15 @@ body {
   .topbar-lognext { display: none; }
   .phishing-buttons { flex-direction: column; }
   .stat-number { font-size: 24px; }
-  .footer-legal { gap: 12px; }
 }
+
 </style>
 </head>
 <body>
 
-<!-- CURSOR LOGO LOGNEXT -->
-<svg class="cursor-logo" id="cursorLogo" viewBox="0 0 521 437.9" xmlns="http://www.w3.org/2000/svg">
-  <polygon fill="#FFFFFF" points="175.2,118.7 115.8,118.7 200.5,219.4 115.4,320 175.2,320 243.1,243.1 243.1,195.6"/>
-  <polygon fill="#FFFFFF" points="343.4,118.7 402.8,118.7 318,219.4 403.2,320 343.4,320 275.5,243.1 275.5,195.6"/>
-  <polygon fill="#FA3C0F" points="92.2,348.1 27.2,407.7 86,407.7 148.5,348.1"/>
-  <polygon fill="#FA3C0F" points="425,89.9 488.1,30.3 429.3,30.3 368.7,89.9"/>
-</svg>
+<svg class="cursor-logo" id="cursorLogo" viewBox="0 0 521 437.9" xmlns="http://www.w3.org/2000/svg"><polygon fill="#FFFFFF" points="175.2,118.7 115.8,118.7 200.5,219.4 115.4,320 175.2,320 243.1,243.1 243.1,195.6"/><polygon fill="#FFFFFF" points="343.4,118.7 402.8,118.7 318,219.4 403.2,320 343.4,320 275.5,243.1 275.5,195.6"/><polygon fill="#FA3C0F" points="92.2,348.1 27.2,407.7 86,407.7 148.5,348.1"/><polygon fill="#FA3C0F" points="425,89.9 488.1,30.3 429.3,30.3 368.7,89.9"/></svg>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NEBULOSA CANVAS -->
 <canvas id="nebula-canvas"></canvas>
 <div class="bg-grid"></div>
 
@@ -601,20 +267,9 @@ body {
   <div class="topbar-inner">
     <span class="topbar-name">NEXT<span>LETTER</span></span>
     <div class="topbar-center">
-      <svg height="22" viewBox="0 0 1920 437.9" xmlns="http://www.w3.org/2000/svg">
-        <polygon fill="#FFFFFF" points="1417.7,117.4 1358.3,117.4 1443,218 1357.9,318.7 1417.7,318.7 1485.6,241.8 1485.6,194.3"/>
-        <polygon fill="#FFFFFF" points="1585.9,117.4 1645.3,117.4 1560.5,218 1645.7,318.7 1585.9,318.7 1518,241.8 1518,194.3"/>
-        <polygon fill="#FA3C0F" points="1334.7,346.7 1269.7,406.4 1328.5,406.4 1391,346.7"/>
-        <polygon fill="#FA3C0F" points="1667.5,88.6 1730.6,28.9 1671.8,28.9 1611.2,88.6"/>
-        <path fill="#FFFFFF" d="M230.7,271.4v47.4H43.3V117.4h52.3v154H230.7z"/>
-        <path fill="#FFFFFF" d="M1175.7,161.1v38.3h161.1v37.4h-161.1v40.8h161.1v41.1h-212.9V117.4h212.9v43.7H1175.7z"/>
-        <path fill="#FFFFFF" d="M1032.6,117.6v195.7h-1.5l-96.8-195.7H826.5v201.2h52.3V123h1.5l96.5,195.7h108.1V117.6H1032.6z"/>
-        <polygon fill="#FFFFFF" points="1685,117.3 1645.5,163.2 1733.8,163.2 1733.8,318.7 1786,318.7 1786,163.2 1876.7,163.2 1876.7,117.3"/>
-        <path fill="#FFFFFF" d="M245.6,217.8c0-68.7,39.1-106.4,130.4-106.4c91,0,130.4,37.9,130.4,106.4c0,68.7-39.4,107-130.4,107C284.7,324.8,245.6,286.8,245.6,217.8z M454,217.8c0-42.1-22.4-62.6-78.1-62.6c-55.7,0-78,20.3-78,62.6c0,42.7,22.5,63.3,78,63.3C431.4,281.1,454,260.2,454,217.8z"/>
-        <path fill="#FFFFFF" d="M791.7,200.8H658.1v36.7h78.4c-6.4,28.8-28.3,43.9-74.3,43.9c-55.4,0-78.6-21-78.6-63.7c0-42.4,22.9-63.2,78.6-63.2c35,0,55.5,9.3,66.6,25.5h58.8c-13.1-44.5-52.8-68.7-125.4-68.7c-91.3,0-130.4,37.6-130.4,106.4c0,69,42.3,107,130.4,107c88.2,0,130.4-38.2,130.4-107C792.6,211.9,792.3,206.3,791.7,200.8z"/>
-      </svg>
+      <svg height="22" viewBox="0 0 1920 437.9" xmlns="http://www.w3.org/2000/svg" style="margin-right:20px;flex-shrink:0;"><polygon fill="#FFFFFF" points="1417.7,117.4 1358.3,117.4 1443,218 1357.9,318.7 1417.7,318.7 1485.6,241.8 1485.6,194.3"/><polygon fill="#FFFFFF" points="1585.9,117.4 1645.3,117.4 1560.5,218 1645.7,318.7 1585.9,318.7 1518,241.8 1518,194.3"/><polygon fill="#FA3C0F" points="1334.7,346.7 1269.7,406.4 1328.5,406.4 1391,346.7"/><polygon fill="#FA3C0F" points="1667.5,88.6 1730.6,28.9 1671.8,28.9 1611.2,88.6"/><path fill="#FFFFFF" d="M230.7,271.4v47.4H43.3V117.4h52.3v154H230.7z"/><path fill="#FFFFFF" d="M1175.7,161.1v38.3h161.1v37.4h-161.1v40.8h161.1v41.1h-212.9V117.4h212.9v43.7H1175.7z"/><path fill="#FFFFFF" d="M1032.6,117.6v195.7h-1.5l-96.8-195.7H826.5v201.2h52.3V123h1.5l96.5,195.7h108.1V117.6H1032.6z"/><polygon fill="#FFFFFF" points="1685,117.3 1645.5,163.2 1733.8,163.2 1733.8,318.7 1786,318.7 1786,163.2 1876.7,163.2 1876.7,117.3"/><path fill="#FFFFFF" d="M245.6,217.8c0-68.7,39.1-106.4,130.4-106.4c91,0,130.4,37.9,130.4,106.4c0,68.7-39.4,107-130.4,107C284.7,324.8,245.6,286.8,245.6,217.8z M454,217.8c0-42.1-22.4-62.6-78.1-62.6c-55.7,0-78,20.3-78,62.6c0,42.7,22.5,63.3,78,63.3C431.4,281.1,454,260.2,454,217.8z"/><path fill="#FFFFFF" d="M791.7,200.8H658.1v36.7h78.4c-6.4,28.8-28.3,43.9-74.3,43.9c-55.4,0-78.6-21-78.6-63.7c0-42.4,22.9-63.2,78.6-63.2c35,0,55.5,9.3,66.6,25.5h58.8c-13.1-44.5-52.8-68.7-125.4-68.7c-91.3,0-130.4,37.6-130.4,106.4c0,69,42.3,107,130.4,107c88.2,0,130.4-38.2,130.4-107C792.6,211.9,792.3,206.3,791.7,200.8z"/></svg>
     </div>
-    <span class="topbar-edition">EDICIÓN #01 · MAYO 2026</span>
+    <span class="topbar-edition">EDICIÓN #01 · MAY 2026</span>
   </div>
 </div>
 
@@ -654,13 +309,13 @@ body {
     </div>
     <div class="header-meta">
       <span style="font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;letter-spacing:2px;">BY LOGNEXT · DEPARTAMENTO IT</span>
-      <span class="header-issue">MAYO 2026</span>
+      <span class="header-issue">MAY 2026</span>
     </div>
   </div>
 
   <!-- INTRO -->
   <div class="intro" onmouseenter="trackSection('intro')">
-    Bienvenidos a la primera edición de NextLetter. Cada mes, sin tecnicismos aburridos ni correos corporativos genéricos — solo lo que necesitáis saber, contado como os lo contaría un compañero que sabe demasiado y no puede callarse. Arrancamos.
+    Bienvenidos a la NextLetter #01 — la newsletter de los Nexters que prefieren enterarse de lo que pasa antes de que les pase a ellos. Este mes arrancamos con fuerza: phishing que usa Google para atacar con Google, malware que llega por Teams y una empresa de ciberseguridad que… fue hackeada. Sí, has leído bien.
   </div>
 
   <!-- SEPARADOR -->
@@ -671,37 +326,44 @@ body {
 
     <!-- ESTO PASÓ -->
     <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
+      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="https://source.unsplash.com/1200x220/?phishing,email,google,trap,dark" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
-      <div class="card-title">Inditex confirma un ciberataque: acceso no autorizado a sus bases de datos de clientes</div>
-      <div class="card-text">El grupo Inditex —la matriz de Zara, Massimo Dutti y otras siete marcas— confirmó en abril que un tercero accedió sin autorización a bases de datos alojadas en un proveedor externo. La compañía aseguró que no se comprometieron datos sensibles como contraseñas o datos bancarios, pero la información comercial de clientes en varios mercados quedó expuesta. El incidente se originó en un antiguo proveedor tecnológico y coincidió en el tiempo con ataques similares a Basic Fit y Booking.com. La lección: la cadena de suministro tecnológica es hoy uno de los vectores de ataque más explotados.</div>
-      <a href="https://www.muycomputerpro.com/2026/04/16/ciberataque-inditex-atacantes-consiguen-acceso-bases-datos" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
+      <div class="card-title">30.000 cuentas de Facebook robadas usando Google AppSheet como cebo</div>
+      <div class="card-text">Un grupo vinculado a Vietnam ha comprometido unas 30.000 cuentas de Facebook usando Google AppSheet como relay de phishing: los correos maliciosos venían firmados por infraestructura legítima de Google, lo que les permitía saltarse filtros antispam con facilidad. Las cuentas robadas se revendían después en una tienda ilícita gestionada por los propios atacantes. La lección para nosotros es clara: si un servicio de confianza puede convertirse en arma, la reputación del remitente ya no es garantía de nada.</div>
+      <a href="https://thehackernews.com/2026/05/30000-facebook-accounts-hacked-via.html" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
     <!-- CASO DEL MES -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
+      <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
+        <img src="https://source.unsplash.com/800x160/?microsoft,teams,social,engineering,hacker" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
-      <div class="card-title">Endesa: 20 millones de clientes con su DNI, IBAN y datos personales en la dark web</div>
-      <div class="card-text">En enero de 2026, un hacker conocido como "Spain" accedió a los sistemas de Endesa y extrajo 1 terabyte de datos: nombres, apellidos, DNIs, teléfonos, direcciones y números de cuenta bancaria (IBAN) de 20 millones de clientes. Lo más peligroso: con el DNI y el IBAN juntos, un estafador puede suplantar tu identidad para cambiar de compañía eléctrica, hacer cargos o extorsionarte. Endesa tardó días en comunicarlo oficialmente. Mientras tanto, los datos ya circulaban en foros de la dark web.</div>
-      <a href="https://raona.com/ciberataque-endesa/" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
+      <div class="card-title">Temporada 1, Episodio 1: 'El parche que no era parche'</div>
+      <div class="card-text">El grupo UNC6692 tenía un plan en dos actos. Primero, bombardeo masivo de correos para saturar la bandeja de entrada de la víctima. Segundo, un mensaje de Teams de alguien que 'solo quería ayudar' con el caos de notificaciones, ofreciendo instalar un parche de emergencia. Ese parche era Snow: malware que establecía control remoto, se movía lateralmente por la red y acababa exfiltrando la base de datos de Active Directory completa. Lo más inquietante es que las herramientas usadas eran legítimas — el malware viajó de polizón.</div>
+      <a href="https://unaaldia.hispasec.com/2026/04/unc6692-usa-microsoft-teams-y-bombardeo-de-correo-para-colar-el-malware-snow-y-robar-active-directory.html" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
     <!-- CONSEJO -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div class="section-tag" style="color:var(--green)">💡 El consejo del mes</div>
-      <div class="card-title">El gestor de contraseñas: el amigo que nunca olvida nada (y tú sí)</div>
-      <div class="card-text">Si usas la misma contraseña en más de un sitio — y sabemos que sí — estás a un breach de distancia de un problema gordo. Un gestor de contraseñas genera contraseñas únicas para cada servicio y las recuerda por ti. Tú solo necesitas recordar una. Bitwarden es gratuito, open source y funciona en todos tus dispositivos.</div>
-      <a href="https://bitwarden.com" class="card-link" style="color:var(--green)" onclick="trackLink('consejo_bitwarden', this.href)" target="_blank">Ver Bitwarden <span class="arrow">→</span></a>
+      <div class="card-title">Desconfía del que viene a 'ayudarte' por Teams</div>
+      <div class="card-text">Si recibes una avalancha rara de correos y acto seguido alguien en Teams te ofrece un parche o una solución rápida, para el carro: ese es exactamente el guion de UNC6692. Verifica siempre la identidad por un canal distinto antes de instalar nada, aunque el perfil parezca un compañero de soporte. Recuerda: el atacante también tiene acceso a la lista de directorio de tu empresa.</div>
     </div>
 
     <!-- RETO -->
     <div class="card card-reto" onmouseenter="trackSection('reto')">
-      <div class="section-tag" style="color:var(--green)">🎯 El reto de mayo</div>
+      <div class="section-tag" style="color:var(--green)">🎯 El reto de May 2026</div>
       <div class="reto-badge">RETO ACTIVO</div>
-      <div class="card-title">Activa el doble factor en tu cuenta personal esta semana</div>
-      <div class="card-text">No en la del trabajo — en esa ya lo tenéis. En tu cuenta de Google, Apple, Instagram, lo que uses. 2 minutos. Una app como Google Authenticator o Authy. Y si alguien roba tu contraseña, que le den.</div>
+      <div class="card-title">Reto del mes: audita tus SSO activos</div>
+      <div class="card-text">Entra en tu panel de cuenta (Google, Microsoft o el que uses) y revisa qué aplicaciones de terceros tienen acceso activo mediante Single Sign-On — elimina las que no reconozcas o ya no uses. No te llevará más de 10 minutos y puede cortarle el paso a un atacante que ya tenga tu contraseña.</div>
       <div class="reto-progress"><div class="reto-progress-bar"></div></div>
       <div class="reto-label">
-        <span>MAYO 2026</span>
+        <span>MAY 2026</span>
         <span>¿Lo has hecho ya? ✓</span>
       </div>
     </div>
@@ -711,74 +373,67 @@ body {
       <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
       <div class="card-title">Lo que no puedes perderte este mes</div>
       <div class="radar-list">
-        <a href="https://www.cosmikal.es/ciberseguridad-en-espana-q1-2026-amenazas-reales-marco-normativo-pendiente-y-un-sector-en-plena-ebullicion/" target="_blank" class="radar-item" onclick="trackLink('incibe_estadisticas', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--red)"></span>
-            <span class="radar-org">INCIBE</span>
-          </div>
-          <div class="radar-headline">122.223 incidentes gestionados en España en 2025 — un 26% más que el año anterior</div>
-          <div class="radar-meta">Abril 2026 · cosmikal.es</div>
-        </a>
-        <a href="https://www.channelpartner.es/seguridad/principales-ciberataques-en-espana-en-2026/" target="_blank" class="radar-item" onclick="trackLink('basic_fit', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--yellow)"></span>
-            <span class="radar-org">Channel Partner</span>
-          </div>
-          <div class="radar-headline">Basic Fit: 4,5 millones de usuarios expuestos en España, Francia y Alemania por acceso no autorizado</div>
-          <div class="radar-meta">Abril 2026 · channelpartner.es</div>
-        </a>
-        <a href="https://bitlifemedia.com/2026/04/radiografia-del-ciberataque-a-inditex-una-brecha-de-terceros-bajo-la-lupa/" target="_blank" class="radar-item" onclick="trackLink('inditex_analisis', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--cyan)"></span>
-            <span class="radar-org">Bit Life Media</span>
-          </div>
-          <div class="radar-headline">Análisis del ciberataque a Inditex: la brecha de terceros que nadie esperaba y todo el mundo debería estudiar</div>
-          <div class="radar-meta">Abril 2026 · bitlifemedia.com</div>
-        </a>
-        <a href="https://unaaldia.hispasec.com/" target="_blank" class="radar-item" onclick="trackLink('hispasec', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--violet)"></span>
-            <span class="radar-org">Hispasec</span>
-          </div>
-          <div class="radar-headline">Microsoft corrige de urgencia un fallo crítico en ASP.NET Core que permite ejecutar código como root</div>
-          <div class="radar-meta">Abril 2026 · unaaldia.hispasec.com</div>
-        </a>
+        <a href="https://thehackernews.com/2026/05/trellix-confirms-source-code-breach.html" target="_blank" class="radar-item" onclick="trackLink('radar_0', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">The Hacker News</span></div>
+  <div class="radar-headline">Trellix confirma brecha en su repositorio de código fuente — una empresa de ciberseguridad, hackeada</div>
+  <div class="radar-meta">02/05/2026</div>
+</a>
+<a href="https://thehackernews.com/2026/05/cybercrime-groups-using-vishing-and-sso.html" target="_blank" class="radar-item" onclick="trackLink('radar_1', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">The Hacker News</span></div>
+  <div class="radar-headline">Grupos Cordial Spider y Snarky Spider atacan entornos SaaS en minutos dejando rastro mínimo</div>
+  <div class="radar-meta">01/05/2026</div>
+</a>
+<a href="https://thehackernews.com/2026/05/two-cybersecurity-professionals-get-4.html" target="_blank" class="radar-item" onclick="trackLink('radar_2', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">The Hacker News</span></div>
+  <div class="radar-headline">Dos profesionales de ciberseguridad condenados a 4 años por facilitar ataques ransomware BlackCat</div>
+  <div class="radar-meta">01/05/2026</div>
+</a>
+<a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="radar-item" onclick="trackLink('radar_3', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Hispasec / Una al día</span></div>
+  <div class="radar-headline">Inyección SQL crítica en LiteLLM explotada en horas: en riesgo claves de proveedores LLM</div>
+  <div class="radar-meta">29/04/2026</div>
+</a>
+
       </div>
     </div>
 
-    <!-- IA AL DÍA — ancho completo -->
+    <!-- IA AL DÍA -->
     <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="https://source.unsplash.com/1200x220/?AI,API,security,vulnerability,code" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
+      </div>
       <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
-      <div class="card-title">Abril de 2026: el mes en que la IA dejó de ser una promesa y se convirtió en trabajo real</div>
-      <div class="card-text">En apenas unas semanas, OpenAI, Anthropic, Google, DeepSeek, Meta y varios actores más lanzaron nuevos modelos en una sucesión sin precedentes. La sensación es clara: ya no competimos por el modelo más impresionante en un benchmark, sino por cuál hace trabajo real — programar, analizar documentos, coordinar agentes, operar durante horas. Para las empresas, la pregunta ha cambiado: ya no es "¿qué modelo gana?" sino "¿qué modelo resuelve mejor nuestro problema concreto?". Para productividad corporativa, análisis documental y asistentes internos, los modelos más maduros de OpenAI y Anthropic destacan en integración. Para tareas de alto volumen, las arquitecturas híbridas ganan peso. Y cuando entran en juego datos sensibles o compliance — como es nuestro caso — la conversación cambia: no basta con elegir un buen modelo.</div>
-      <a href="https://raona.com/modelos-ia-2026-gpt-claude-deepseek/" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia_raona', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+      <div class="card-title">LiteLLM: cuando el proxy de tu IA se convierte en la puerta trasera</div>
+      <div class="card-text">LiteLLM es uno de esos proyectos que ha crecido a toda velocidad porque simplifica la integración de múltiples proveedores LLM detrás de una sola API. Genial sobre el papel, problemático cuando aparece una inyección SQL sin autenticación con CVSS crítico que fue explotada activamente pocas horas después de hacerse pública. El fallo permitía acceder a la base de datos del proxy y, con ella, a las claves API de OpenAI, Anthropic, Azure y similares: básicamente las llaves de toda tu infraestructura IA. Si en LOGNEXT hay algún entorno usando LiteLLM, la versión 1.83.7 no es opcional. Esto es un recordatorio de que la superficie de ataque no para de crecer cada vez que añadimos una capa de abstracción IA a nuestros sistemas — y que el ritmo de adopción está superando al de auditoría.</div>
+      <a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
     </div>
 
-    <!-- PHISHING TEST -->
+
     <div class="card card-phishing full-width" onmouseenter="trackSection('phishing_test')">
-      <div class="section-tag" style="color:var(--violet)">🎯 Pon a prueba tu ojo — Test del mes</div>
-      <div class="card-title">¿Detectarías este email antes de hacer clic?</div>
-      <div class="card-text">Este es el tipo de correo que usan los atacantes. Tiene todos los ingredientes: urgencia, remitente aparentemente legítimo y un enlace tentador. ¿Sabrías que es falso?</div>
+      <div class="section-tag" style="color:var(--violet)">&#127919; Pon a prueba tu ojo &#8212; Test del mes</div>
+      <div class="card-title">&#191;Detectar&#237;as este email antes de hacer clic?</div>
+      <div class="card-text">Este es el tipo de correo que usan los atacantes. Tiene todos los ingredientes: urgencia, remitente aparentemente leg&#237;timo y un enlace tentador. &#191;Sabr&#237;as que es falso?</div>
       <div class="phishing-inner">
         <div class="phishing-email-preview">
           <div class="phishing-email-header">
             <div><strong>De:</strong> soporte@microsoft-365security.com</div>
             <div><strong>Para:</strong> tu@lognext.com</div>
-            <div class="phishing-email-subject">⚠️ URGENTE: Tu cuenta de Microsoft 365 será suspendida en 24h</div>
+            <div class="phishing-email-subject">&#9888;&#65039; URGENTE: Tu cuenta de Microsoft 365 ser&#225; suspendida en 24h</div>
           </div>
           <div class="phishing-email-body">
             Hola,<br><br>
-            Hemos detectado actividad sospechosa en tu cuenta corporativa. Para evitar la suspensión inmediata de tu acceso, debes verificar tu identidad en las próximas <strong>24 horas</strong>.<br><br>
-            <a href="javascript:void(0)" onclick="return false;" style="color:#1a73e8;text-decoration:underline;cursor:not-allowed;">→ Verificar mi cuenta ahora</a><br><br>
-            Si no realizas esta verificación, tu acceso quedará bloqueado y deberás contactar con el departamento de IT para restaurarlo.<br><br>
+            Hemos detectado actividad sospechosa en tu cuenta corporativa. Para evitar la suspensi&#243;n inmediata de tu acceso, debes verificar tu identidad en las pr&#243;ximas <strong>24 horas</strong>.<br><br>
+            <a href="javascript:void(0)" onclick="return false;" style="color:#1a73e8;text-decoration:underline;cursor:not-allowed;">&#8594; Verificar mi cuenta ahora</a><br><br>
+            Si no realizas esta verificaci&#243;n, tu acceso quedar&#225; bloqueado y deber&#225;s contactar con el departamento de IT para restaurarlo.<br><br>
             Atentamente,<br>
             Equipo de Seguridad de Microsoft
           </div>
         </div>
-        <div class="phishing-question">¿Es este email legítimo o un intento de phishing?</div>
+        <div class="phishing-question">&#191;Es este email leg&#237;timo o un intento de phishing?</div>
         <div class="phishing-buttons">
-          <button class="phishing-btn phishing-btn-yes" onclick="answerPhishing(false)">⚠️ Es phishing — No haría clic</button>
-          <button class="phishing-btn phishing-btn-no" onclick="answerPhishing(true)">✅ Parece legítimo — Haría clic</button>
+          <button class="phishing-btn phishing-btn-yes" onclick="answerPhishing(false)">&#9888;&#65039; Es phishing &#8212; No har&#237;a clic</button>
+          <button class="phishing-btn phishing-btn-no"  onclick="answerPhishing(true)">&#9989; Parece leg&#237;timo &#8212; Har&#237;a clic</button>
         </div>
         <div class="phishing-result" id="phishing-result"></div>
       </div>
@@ -788,34 +443,37 @@ body {
     <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
       <div class="section-tag" style="color:var(--violet)">🔗 Por si queréis caer en el agujero</div>
       <div class="links-grid">
-        <a href="https://cybermap.kaspersky.com" class="link-card lc-news" target="_blank" onclick="trackLink('kaspersky_map', this.href)">
-          <span class="link-icon">📰</span>
-          <span class="link-label">Artículo</span>
-          <span class="link-title">El mapa de ciberataques en tiempo real que no podréis dejar de mirar</span>
-          <span class="link-source">Kaspersky Cyberthreat Map</span>
-        </a>
-        <a href="https://www.youtube.com/results?search_query=hackear+wifi+seguridad" class="link-card lc-video" target="_blank" onclick="trackLink('youtube_wifi', this.href)">
-          <span class="link-icon">▶️</span>
-          <span class="link-label">Vídeo · 8 min</span>
-          <span class="link-title">Cómo hackean tu WiFi y qué puedes hacer para evitarlo</span>
-          <span class="link-source">YouTube — S4vitar</span>
-        </a>
-        <a href="https://phishingquiz.withgoogle.com" class="link-card lc-quiz" target="_blank" onclick="trackLink('google_phishing_quiz', this.href)">
-          <span class="link-icon">🎮</span>
-          <span class="link-label">Quiz interactivo</span>
-          <span class="link-title">¿Sabrías detectar este phishing? Pon a prueba tu ojo</span>
-          <span class="link-source">Google Phishing Quiz</span>
-        </a>
+        <a href="https://thehackernews.com/2026/05/cybercrime-groups-using-vishing-and-sso.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
+  <span class="link-icon">📰</span>
+  <span class="link-label">Artículo</span>
+  <span class="link-title">Cómo los grupos Cordial Spider y Snarky Spider explotan SSO y vishing en entornos SaaS</span>
+  <span class="link-desc">Explica en detalle las tácticas de dos grupos que están haciendo mucho daño en entornos cloud corporativos — lectura obligada si gestionas accesos SaaS en LOGNEXT.</span>
+  <span class="link-source">The Hacker News</span>
+</a>
+<a href="https://www.youtube.com/watch?v=XBkzBrXlle0" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
+  <span class="link-icon">▶️</span>
+  <span class="link-label">Vídeo</span>
+  <span class="link-title">What is Phishing? | IBM Technology (YouTube)</span>
+  <span class="link-desc">Explicación clara y visual de los distintos tipos de phishing moderno, incluido el spear phishing y el smishing — ideal para compartir con cualquier Nexter que quiera refrescar conceptos sin morir de aburrimiento.</span>
+  <span class="link-source">IBM Technology / YouTube</span>
+</a>
+<a href="https://phishingquiz.withgoogle.com/" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
+  <span class="link-icon">🎮</span>
+  <span class="link-label">Quiz interactivo</span>
+  <span class="link-title">Phishing Quiz — Google Jigsaw</span>
+  <span class="link-desc">Test interactivo de Google que te pone a prueba con ejemplos reales de correos de phishing para ver si sabrías distinguirlos — puedes hacerlo en 5 minutos y compartir tu resultado con el equipo.</span>
+  <span class="link-source">Google Jigsaw</span>
+</a>
+
       </div>
     </div>
 
   </div><!-- /main-grid -->
 
-  <!-- FOOTER RENOVADO -->
+  <!-- FOOTER -->
   <div class="footer">
     <div class="footer-inner">
 
-      <!-- Col 1: Marca -->
       <div>
         <div class="footer-col-title">Somos Nexters</div>
         <div class="footer-col-rule"></div>
@@ -823,18 +481,17 @@ body {
         <div class="footer-brand-text">La newsletter de LOGNEXT para todos los Nexters. Sin tecnicismos aburridos, sin correos genéricos. Solo lo que importa, cada mes.</div>
       </div>
 
-      <!-- Col 2: Ediciones -->
       <div>
         <div class="footer-col-title">Ediciones</div>
         <div class="footer-col-rule"></div>
         <ul class="footer-links-list">
-          <li><a href="#">#01 — Mayo 2026 <span style="display:inline-flex;align-items:center;gap:5px;margin-left:6px;background:rgba(250,60,15,0.15);border:1px solid rgba(250,60,15,0.4);padding:1px 7px;font-size:9px;letter-spacing:1.5px;color:var(--red);vertical-align:middle;"><span style="width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>NOW</span></a></li>
-          <li><a href="#" style="opacity:0.25;pointer-events:none;">#02 — Junio 2026</a></li>
-          <li><a href="#" style="opacity:0.25;pointer-events:none;">#03 — Julio 2026</a></li>
+          <li><a href="/01/">#01 — Mayo 2026 <span style="display:inline-flex;align-items:center;gap:5px;margin-left:6px;background:rgba(250,60,15,0.15);border:1px solid rgba(250,60,15,0.4);padding:1px 7px;font-size:9px;letter-spacing:1.5px;color:var(--red);vertical-align:middle;"><span style="width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>NOW</span></a></li>
+<li><a href="#" style="opacity:0.25;pointer-events:none;">#02 — Junio 2026</a></li>
+<li><a href="#" style="opacity:0.25;pointer-events:none;">#03 — Julio 2026</a></li>
+
         </ul>
       </div>
 
-      <!-- Col 3: Contacto -->
       <div>
         <div class="footer-col-title">Contacto IT</div>
         <div class="footer-col-rule"></div>
@@ -853,8 +510,6 @@ body {
       </div>
 
     </div>
-
-    <!-- Bottom bar -->
     <div class="footer-bottom">
       <span class="footer-copy">© 2026 LOGNEXT · Todos los derechos reservados.</span>
     </div>
@@ -863,7 +518,7 @@ body {
 </div><!-- /wrapper -->
 
 <script>
-// ── CURSOR ──
+
 const cursorLogo = document.getElementById('cursorLogo');
 const ring = document.getElementById('cursorRing');
 if (cursorLogo && ring) {
@@ -874,10 +529,8 @@ if (cursorLogo && ring) {
     cursorLogo.style.top  = my + 'px';
   });
   function animateRing() {
-    rx += (mx - rx) * 0.1;
-    ry += (my - ry) * 0.1;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
+    rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
     requestAnimationFrame(animateRing);
   }
   animateRing();
@@ -886,14 +539,11 @@ if (cursorLogo && ring) {
     el.addEventListener('mouseleave', () => { cursorLogo.classList.remove('hover'); ring.classList.remove('hover'); });
   });
 }
-
-// ── NEBULOSA ──
 const nc = document.getElementById('nebula-canvas');
 const nx = nc.getContext('2d');
 function resizeNebula() { nc.width = window.innerWidth; nc.height = window.innerHeight; }
 resizeNebula();
 window.addEventListener('resize', resizeNebula);
-
 const nebPoints = Array.from({length: 10}, () => ({
   x: Math.random() * nc.width, y: Math.random() * nc.height,
   r: Math.random() * 250 + 120,
@@ -932,7 +582,9 @@ function drawNebula() {
     if (s.alpha <= 0) { shooters[i] = newShooter(); return; }
     s.x += Math.cos(s.angle) * s.speed; s.y += Math.sin(s.angle) * s.speed;
     const gr = nx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle)*s.len, s.y - Math.sin(s.angle)*s.len);
-    gr.addColorStop(0, `rgba(255,255,255,${s.alpha})`); gr.addColorStop(0.4, `rgba(250,60,15,${s.alpha*0.4})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    gr.addColorStop(0, `rgba(255,255,255,${s.alpha})`);
+    gr.addColorStop(0.4, `rgba(250,60,15,${s.alpha*0.4})`);
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
     nx.strokeStyle = gr; nx.lineWidth = 1.2;
     nx.beginPath(); nx.moveTo(s.x, s.y); nx.lineTo(s.x - Math.cos(s.angle)*s.len, s.y - Math.sin(s.angle)*s.len); nx.stroke();
     if (s.x > nc.width + 100 || s.y > nc.height + 100) shooters[i] = newShooter();
@@ -940,21 +592,20 @@ function drawNebula() {
   requestAnimationFrame(drawNebula);
 }
 drawNebula();
-
-// ── PHISHING TEST ──
 function answerPhishing(clickedYes) {
   const result = document.getElementById('phishing-result');
   if (!clickedYes) {
     trackPhishing('correct');
     result.className = 'phishing-result show correct';
-    result.innerHTML = `<strong>✅ ¡Correcto! Este email es phishing.</strong><br><br>Buen ojo. Aquí tienes las pistas que lo delatan:<div class="phishing-clues"><div class="phishing-clue">⚠️ <span>El dominio del remitente es <strong>microsoft-365security.com</strong>, no microsoft.com</span></div><div class="phishing-clue">⚠️ <span>Microsoft nunca os pedirá verificación por email con <strong>urgencia de 24h</strong></span></div><div class="phishing-clue">⚠️ <span>El enlace "Verificar mi cuenta" lleva a un dominio desconocido, no a microsoft.com</span></div><div class="phishing-clue">✅ <span>Ante la duda: <strong>llamad a IT</strong> antes de hacer clic en cualquier enlace urgente</span></div></div>`;
+    result.innerHTML = '<strong>✅ ¡Correcto! Este email es phishing.</strong><br><br>Buen ojo. Aquí tienes las pistas que lo delatan:<div class="phishing-clues"><div class="phishing-clue">⚠️ <span>El dominio del remitente es <strong>microsoft-365security.com</strong>, no microsoft.com</span></div><div class="phishing-clue">⚠️ <span>Microsoft nunca os pedirá verificación por email con <strong>urgencia de 24h</strong></span></div><div class="phishing-clue">⚠️ <span>El enlace "Verificar mi cuenta" lleva a un dominio desconocido, no a microsoft.com</span></div><div class="phishing-clue">✅ <span>Ante la duda: <strong>llamad a IT</strong> antes de hacer clic en cualquier enlace urgente</span></div></div>';
   } else {
     trackPhishing('incorrect');
     result.className = 'phishing-result show wrong';
-    result.innerHTML = `<strong>❌ ¡Cuidado! Este email es phishing.</strong><br><br>Habrías caído. Estas son las señales de alarma que pasaste por alto:<div class="phishing-clues"><div class="phishing-clue">🚨 <span>El dominio del remitente es <strong>microsoft-365security.com</strong> — NO es Microsoft</span></div><div class="phishing-clue">🚨 <span>La urgencia artificial ("24h") es la táctica más usada para que no pienses</span></div><div class="phishing-clue">🚨 <span>Microsoft nunca suspende cuentas por email sin avisos previos en el portal</span></div><div class="phishing-clue">✅ <span>Regla de oro: <strong>ante la duda, llama a IT</strong> antes de hacer clic</span></div></div>`;
+    result.innerHTML = '<strong>❌ ¡Cuidado! Este email es phishing.</strong><br><br>Habrías caído. Estas son las señales de alarma que pasaste por alto:<div class="phishing-clues"><div class="phishing-clue">🚨 <span>El dominio del remitente es <strong>microsoft-365security.com</strong> — NO es Microsoft</span></div><div class="phishing-clue">🚨 <span>La urgencia artificial ("24h") es la táctica más usada para que no pienses</span></div><div class="phishing-clue">🚨 <span>Microsoft nunca suspende cuentas por email sin avisos previos en el portal</span></div><div class="phishing-clue">✅ <span>Regla de oro: <strong>ante la duda, llama a IT</strong> antes de hacer clic</span></div></div>';
   }
   document.querySelectorAll('.phishing-btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; b.style.cursor = 'default'; });
 }
+
 </script>
 </body>
 </html>
