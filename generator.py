@@ -156,7 +156,7 @@ body {
   .cursor-logo {
     display: block; position: fixed;
     width: 28px; height: 24px;
-    pointer-events: none; z-index: 9999;
+    pointer-events: none; z-index: 999999;
     transform: translate(-50%, -50%);
     transition: transform 0.15s ease;
     filter: drop-shadow(0 0 5px rgba(250,60,15,0.7));
@@ -169,7 +169,7 @@ body {
     display: block; position: fixed;
     width: 44px; height: 44px;
     border: 1px solid rgba(60,230,230,0.5);
-    border-radius: 50%; pointer-events: none; z-index: 9998;
+    border-radius: 50%; pointer-events: none; z-index: 999998;
     transform: translate(-50%, -50%);
     transition: all 0.15s ease;
   }
@@ -827,7 +827,7 @@ def build_html(content: Dict, edition: str) -> str:
         <div class="logo-row">
           <span class="logo-next">NEXT</span><span class="logo-letter">LETTER</span>
         </div>
-        <div class="header-tagline-big">Intel real. Sin ruido. Cada mes.</div>
+        <div class="header-tagline-big">Cinco minutos al mes para ir siempre un paso por delante.</div>
         <div class="header-dots">
           <div class="hdot" style="background:var(--red);animation-delay:0s"></div>
           <div class="hdot" style="background:var(--cyan);animation-delay:0.3s"></div>
@@ -904,16 +904,7 @@ def build_html(content: Dict, edition: str) -> str:
       <a href="{caso_url}" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
-    <!-- 3. EN EL RADAR — ancho completo, grid 2×2 -->
-    <div class="card card-radar full-width" onmouseenter="trackSection('radar')">
-      <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
-      <div class="card-title">Lo que no puedes perderte este mes</div>
-      <div class="radar-grid">
-        {radar_html}
-      </div>
-    </div>
-
-    <!-- 4a. CONSEJO — columna izquierda -->
+    <!-- 3a. CONSEJO DEL MES — columna izquierda -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
         <img src="{consejo_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
@@ -924,9 +915,9 @@ def build_html(content: Dict, edition: str) -> str:
       <div class="card-text">{consejo_texto}</div>
     </div>
 
-    <!-- 4b. RETO — columna derecha -->
+    <!-- 3b. EL RETO DEL MES — columna derecha -->
     <div class="card card-reto" onmouseenter="trackSection('reto')">
-      <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El reto de {mes}</div>
+      <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El reto del mes</div>
       <div class="reto-badge">RETO ACTIVO</div>
       <div class="card-title">{reto_titulo}</div>
       <div class="card-text">{reto_texto}</div>
@@ -937,12 +928,21 @@ def build_html(content: Dict, edition: str) -> str:
       </div>
     </div>
 
+    <!-- 4. EN EL RADAR — ancho completo, grid 2×2 -->
+    <div class="card card-radar full-width" style="background:transparent;border:none;box-shadow:none;" onmouseenter="trackSection('radar')">
+      <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
+      <div class="card-title">Lo que no puedes perderte este mes</div>
+      <div class="radar-grid">
+        {radar_html}
+      </div>
+    </div>
+
     <!-- 5. PHISHING TEST — estático, ancho completo -->
     {_PHISHING_HTML}
 
     <!-- 6. ENLACES — ancho completo -->
-    <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
-      <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si queréis caer en el agujero</div>
+    <div class="card card-links full-width" style="padding-bottom:36px;background:transparent;border:none;box-shadow:none;" onmouseenter="trackSection('enlaces')">
+      <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si quieres caer en el agujero</div>
       <div class="links-grid">
         {enlaces_html}
       </div>

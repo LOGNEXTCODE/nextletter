@@ -18,6 +18,15 @@ def run():
     print(f"  📅 {datetime.now().strftime('%d/%m/%Y %H:%M')}")
     print("="*55 + "\n")
 
+    # Protección: nunca sobreescribir una edición ya publicada
+    edition = os.environ.get("EDITION_NUMBER", "01")
+    output_path = f"{edition}/index.html"
+    if os.path.exists(output_path):
+        raise FileExistsError(
+            f"❌ ERROR: {output_path} ya existe. No se sobreescribe una edición publicada.\n"
+            f"   Si quieres regenerar la edición {edition}, elimina {output_path} manualmente primero."
+        )
+
     # 1. Scraping de fuentes
     print("📡 PASO 1: Recopilando noticias del mes...\n")
     articles = fetch_articles(max_per_source=8)

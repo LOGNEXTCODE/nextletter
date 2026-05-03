@@ -83,14 +83,19 @@ jobs:
       - name: 🌐 Publicar en carpeta de edición (GitHub Pages)
         if: steps.check_date.outputs.skip == 'false'
         run: |
+          EDITION="${{ steps.edition.outputs.number }}"
+          EDITION_FILE="${EDITION}/index.html"
+          if [ -f "$EDITION_FILE" ]; then
+            echo "⛔ $EDITION_FILE ya existe — edición publicada protegida. No se sobreescribe."
+            echo "   Si necesitas regenerar la edición ${EDITION}, elimina ${EDITION_FILE} manualmente."
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Solo carpeta de edición: nextletter.lognext.com/01/, /02/, etc.
-          # La raíz NO tiene index.html — 404 intencionado
-          mkdir -p ${{ steps.edition.outputs.number }}
-          cp index.html ${{ steps.edition.outputs.number }}/index.html
-          git add ${{ steps.edition.outputs.number }}/
-          git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} publicado — $(date +'%B %Y')"
+          mkdir -p "${EDITION}"
+          cp index.html "${EDITION_FILE}"
+          git add "${EDITION}/"
+          git diff --staged --quiet || git commit -m "NextLetter #${EDITION} publicado — $(date +'%B %Y')"
           git push origin main
 
       - name: 🏷️ Nombre de artefacto seguro
