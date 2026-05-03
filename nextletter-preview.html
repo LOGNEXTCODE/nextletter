@@ -438,6 +438,28 @@ body {
 .radar-item:hover .radar-headline { color: var(--cyan); }
 .radar-meta { font-size: 10px; opacity: 0.35; font-family: 'JetBrains Mono', monospace; }
 
+/* ── RADAR GRID ── */
+.radar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+.radar-grid-item {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--grey);
+  transition: all 0.2s ease;
+  display: block;
+  backdrop-filter: blur(4px);
+}
+.radar-grid-item:hover {
+  background: rgba(255,255,255,0.04);
+  padding-left: 26px;
+}
+
 /* ── LINKS GRID ── */
 .links-grid {
   display: grid;
@@ -592,6 +614,7 @@ body {
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .footer { padding: 40px 28px 28px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .radar-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
@@ -693,8 +716,19 @@ body {
   <!-- GRID PRINCIPAL -->
   <div class="main-grid">
 
+    <!-- IA AL DÍA — primera sección, ancho completo -->
+    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <img src="https://images.unsplash.com/photo-1676299081847-824916de030a?auto=format&fit=crop&w=1200&q=95" alt="IA 2026" style="display:block;width:calc(100% + 88px);height:220px;object-fit:cover;margin:-36px -44px 24px -44px;">
+      <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
+      <div class="card-title">Abril de 2026: el mes en que la IA dejó de ser una promesa y se convirtió en trabajo real</div>
+      <div class="card-text">En apenas unas semanas, OpenAI, Anthropic, Google, DeepSeek, Meta y varios actores más lanzaron nuevos modelos en una sucesión sin precedentes. La sensación es clara: ya no competimos por el modelo más impresionante en un benchmark, sino por cuál hace trabajo real — programar, analizar documentos, coordinar agentes, operar durante horas. Para las empresas, la pregunta ha cambiado: ya no es "¿qué modelo gana?" sino "¿qué modelo resuelve mejor nuestro problema concreto?". Para productividad corporativa, análisis documental y asistentes internos, los modelos más maduros de OpenAI y Anthropic destacan en integración. Para tareas de alto volumen, las arquitecturas híbridas ganan peso. Y cuando entran en juego datos sensibles o compliance — como es nuestro caso — la conversación cambia: no basta con elegir un buen modelo.</div>
+      <a href="https://raona.com/modelos-ia-2026-gpt-claude-deepseek/" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia_raona', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+    </div>
+
+    <!-- CIBERSEGURIDAD — Inditex + Endesa en 2 columnas -->
     <!-- ESTO PASÓ -->
-    <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
+    <div class="card card-esto" onmouseenter="trackSection('esto_paso')">
+      <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=95" alt="Ciberseguridad" style="display:block;width:calc(100% + 88px);height:180px;object-fit:cover;margin:-36px -44px 24px -44px;">
       <div class="section-tag" style="color:var(--red)">🗞️ Esto pasó</div>
       <div class="card-title">Inditex confirma un ciberataque: acceso no autorizado a sus bases de datos de clientes</div>
       <div class="card-text">El grupo Inditex —la matriz de Zara, Massimo Dutti y otras siete marcas— confirmó en abril que un tercero accedió sin autorización a bases de datos alojadas en un proveedor externo. La compañía aseguró que no se comprometieron datos sensibles como contraseñas o datos bancarios, pero la información comercial de clientes en varios mercados quedó expuesta. El incidente se originó en un antiguo proveedor tecnológico y coincidió en el tiempo con ataques similares a Basic Fit y Booking.com. La lección: la cadena de suministro tecnológica es hoy uno de los vectores de ataque más explotados.</div>
@@ -703,12 +737,54 @@ body {
 
     <!-- CASO DEL MES -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
+      <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=95" alt="Datos personales" style="display:block;width:calc(100% + 88px);height:180px;object-fit:cover;margin:-36px -44px 24px -44px;">
       <div class="section-tag" style="color:var(--yellow)">😱 El caso del mes</div>
       <div class="card-title">Endesa: 20 millones de clientes con su DNI, IBAN y datos personales en la dark web</div>
       <div class="card-text">En enero de 2026, un hacker conocido como "Spain" accedió a los sistemas de Endesa y extrajo 1 terabyte de datos: nombres, apellidos, DNIs, teléfonos, direcciones y números de cuenta bancaria (IBAN) de 20 millones de clientes. Lo más peligroso: con el DNI y el IBAN juntos, un estafador puede suplantar tu identidad para cambiar de compañía eléctrica, hacer cargos o extorsionarte. Endesa tardó días en comunicarlo oficialmente. Mientras tanto, los datos ya circulaban en foros de la dark web.</div>
       <a href="https://raona.com/ciberataque-endesa/" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
+    <!-- EN EL RADAR — ancho completo, grid 2×2 -->
+    <div class="card card-radar full-width" onmouseenter="trackSection('radar')">
+      <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
+      <div class="card-title">Lo que no puedes perderte este mes</div>
+      <div class="radar-grid">
+        <a href="https://www.cosmikal.es/ciberseguridad-en-espana-q1-2026-amenazas-reales-marco-normativo-pendiente-y-un-sector-en-plena-ebullicion/" target="_blank" class="radar-grid-item" onclick="trackLink('incibe_estadisticas', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--red)"></span>
+            <span class="radar-org">INCIBE</span>
+          </div>
+          <div class="radar-headline">122.223 incidentes gestionados en España en 2025 — un 26% más que el año anterior</div>
+          <div class="radar-meta">Abril 2026 · cosmikal.es</div>
+        </a>
+        <a href="https://www.channelpartner.es/seguridad/principales-ciberataques-en-espana-en-2026/" target="_blank" class="radar-grid-item" onclick="trackLink('basic_fit', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--yellow)"></span>
+            <span class="radar-org">Channel Partner</span>
+          </div>
+          <div class="radar-headline">Basic Fit: 4,5 millones de usuarios expuestos en España, Francia y Alemania por acceso no autorizado</div>
+          <div class="radar-meta">Abril 2026 · channelpartner.es</div>
+        </a>
+        <a href="https://bitlifemedia.com/2026/04/radiografia-del-ciberataque-a-inditex-una-brecha-de-terceros-bajo-la-lupa/" target="_blank" class="radar-grid-item" onclick="trackLink('inditex_analisis', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--cyan)"></span>
+            <span class="radar-org">Bit Life Media</span>
+          </div>
+          <div class="radar-headline">Análisis del ciberataque a Inditex: la brecha de terceros que nadie esperaba y todo el mundo debería estudiar</div>
+          <div class="radar-meta">Abril 2026 · bitlifemedia.com</div>
+        </a>
+        <a href="https://unaaldia.hispasec.com/" target="_blank" class="radar-grid-item" onclick="trackLink('hispasec', this.href)">
+          <div class="radar-source">
+            <span class="radar-dot" style="background:var(--violet)"></span>
+            <span class="radar-org">Hispasec</span>
+          </div>
+          <div class="radar-headline">Microsoft corrige de urgencia un fallo crítico en ASP.NET Core que permite ejecutar código como root</div>
+          <div class="radar-meta">Abril 2026 · unaaldia.hispasec.com</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PRÁCTICA — Consejo + Reto en 2 columnas -->
     <!-- CONSEJO -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div class="section-tag" style="color:var(--green)">💡 El consejo del mes</div>
@@ -728,54 +804,6 @@ body {
         <span>MAYO 2026</span>
         <span>¿Lo has hecho ya? ✓</span>
       </div>
-    </div>
-
-    <!-- EN EL RADAR -->
-    <div class="card card-radar" onmouseenter="trackSection('radar')">
-      <div class="section-tag" style="color:var(--cyan)">📡 En el radar</div>
-      <div class="card-title">Lo que no puedes perderte este mes</div>
-      <div class="radar-list">
-        <a href="https://www.cosmikal.es/ciberseguridad-en-espana-q1-2026-amenazas-reales-marco-normativo-pendiente-y-un-sector-en-plena-ebullicion/" target="_blank" class="radar-item" onclick="trackLink('incibe_estadisticas', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--red)"></span>
-            <span class="radar-org">INCIBE</span>
-          </div>
-          <div class="radar-headline">122.223 incidentes gestionados en España en 2025 — un 26% más que el año anterior</div>
-          <div class="radar-meta">Abril 2026 · cosmikal.es</div>
-        </a>
-        <a href="https://www.channelpartner.es/seguridad/principales-ciberataques-en-espana-en-2026/" target="_blank" class="radar-item" onclick="trackLink('basic_fit', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--yellow)"></span>
-            <span class="radar-org">Channel Partner</span>
-          </div>
-          <div class="radar-headline">Basic Fit: 4,5 millones de usuarios expuestos en España, Francia y Alemania por acceso no autorizado</div>
-          <div class="radar-meta">Abril 2026 · channelpartner.es</div>
-        </a>
-        <a href="https://bitlifemedia.com/2026/04/radiografia-del-ciberataque-a-inditex-una-brecha-de-terceros-bajo-la-lupa/" target="_blank" class="radar-item" onclick="trackLink('inditex_analisis', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--cyan)"></span>
-            <span class="radar-org">Bit Life Media</span>
-          </div>
-          <div class="radar-headline">Análisis del ciberataque a Inditex: la brecha de terceros que nadie esperaba y todo el mundo debería estudiar</div>
-          <div class="radar-meta">Abril 2026 · bitlifemedia.com</div>
-        </a>
-        <a href="https://unaaldia.hispasec.com/" target="_blank" class="radar-item" onclick="trackLink('hispasec', this.href)">
-          <div class="radar-source">
-            <span class="radar-dot" style="background:var(--violet)"></span>
-            <span class="radar-org">Hispasec</span>
-          </div>
-          <div class="radar-headline">Microsoft corrige de urgencia un fallo crítico en ASP.NET Core que permite ejecutar código como root</div>
-          <div class="radar-meta">Abril 2026 · unaaldia.hispasec.com</div>
-        </a>
-      </div>
-    </div>
-
-    <!-- IA AL DÍA — ancho completo -->
-    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
-      <div class="section-tag" style="color:var(--blue)">🤖 IA al día</div>
-      <div class="card-title">Abril de 2026: el mes en que la IA dejó de ser una promesa y se convirtió en trabajo real</div>
-      <div class="card-text">En apenas unas semanas, OpenAI, Anthropic, Google, DeepSeek, Meta y varios actores más lanzaron nuevos modelos en una sucesión sin precedentes. La sensación es clara: ya no competimos por el modelo más impresionante en un benchmark, sino por cuál hace trabajo real — programar, analizar documentos, coordinar agentes, operar durante horas. Para las empresas, la pregunta ha cambiado: ya no es "¿qué modelo gana?" sino "¿qué modelo resuelve mejor nuestro problema concreto?". Para productividad corporativa, análisis documental y asistentes internos, los modelos más maduros de OpenAI y Anthropic destacan en integración. Para tareas de alto volumen, las arquitecturas híbridas ganan peso. Y cuando entran en juego datos sensibles o compliance — como es nuestro caso — la conversación cambia: no basta con elegir un buen modelo.</div>
-      <a href="https://raona.com/modelos-ia-2026-gpt-claude-deepseek/" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia_raona', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
     </div>
 
     <!-- PHISHING TEST -->
@@ -918,12 +946,6 @@ function resizeNebula() { nc.width = window.innerWidth; nc.height = window.inner
 resizeNebula();
 window.addEventListener('resize', resizeNebula);
 
-const nebPoints = Array.from({length: 10}, () => ({
-  x: Math.random() * nc.width, y: Math.random() * nc.height,
-  r: Math.random() * 250 + 120,
-  color: ['rgba(250,60,15','rgba(60,230,230','rgba(200,150,255','rgba(55,145,245','rgba(100,240,125'][Math.floor(Math.random()*5)],
-  speed: (Math.random() - 0.5) * 0.25, angle: Math.random() * Math.PI * 2,
-}));
 const stars = Array.from({length: 150}, () => ({
   x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
   r: Math.random() * 1.2, a: Math.random() * 0.5 + 0.1, tw: Math.random() * Math.PI * 2,
@@ -937,14 +959,6 @@ function newShooter() {
 function drawNebula() {
   nx.fillStyle = 'rgba(8,8,32,0.18)';
   nx.fillRect(0, 0, nc.width, nc.height);
-  nebPoints.forEach(n => {
-    n.angle += 0.003; n.x += Math.cos(n.angle) * n.speed; n.y += Math.sin(n.angle) * n.speed;
-    if (n.x < -n.r) n.x = nc.width + n.r; if (n.x > nc.width + n.r) n.x = -n.r;
-    if (n.y < -n.r) n.y = nc.height + n.r; if (n.y > nc.height + n.r) n.y = -n.r;
-    const g = nx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
-    g.addColorStop(0, n.color + ',0.045)'); g.addColorStop(0.5, n.color + ',0.02)'); g.addColorStop(1, n.color + ',0)');
-    nx.fillStyle = g; nx.beginPath(); nx.arc(n.x, n.y, n.r, 0, Math.PI*2); nx.fill();
-  });
   stars.forEach(s => {
     s.tw += 0.018;
     const a = s.a * (0.5 + Math.sin(s.tw) * 0.5);
