@@ -33,11 +33,10 @@ def run():
     print("\n✍️  PASO 2: Generando NextLetter con Claude API...\n")
     html = generate(articles, warnings=freshness["warnings"])
 
-    # 3. Guardar HTML — index.html para GitHub Pages + copia como preview
-    for path in ("index.html", "nextletter_preview.html"):
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(html)
-    print(f"\n  💾 HTML guardado como index.html y nextletter_preview.html")
+    # 3. Guardar HTML — index.html para GitHub Pages
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"\n  💾 HTML guardado como index.html")
 
     # 4. Enviar borrador al revisor
     print("\n📧 PASO 3: Enviando borrador para revisión...\n")
