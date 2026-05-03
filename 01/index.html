@@ -50,7 +50,7 @@ body {
   .cursor-logo {
     display: block; position: fixed;
     width: 28px; height: 24px;
-    pointer-events: none; z-index: 999999;
+    pointer-events: none; z-index: 9999;
     transform: translate(-50%, -50%);
     transition: transform 0.15s ease;
     filter: drop-shadow(0 0 5px rgba(250,60,15,0.7));
@@ -63,7 +63,7 @@ body {
     display: block; position: fixed;
     width: 44px; height: 44px;
     border: 1px solid rgba(60,230,230,0.5);
-    border-radius: 50%; pointer-events: none; z-index: 999998;
+    border-radius: 50%; pointer-events: none; z-index: 9998;
     transform: translate(-50%, -50%);
     transition: all 0.15s ease;
   }
@@ -299,7 +299,7 @@ body {
         <div class="logo-row">
           <span class="logo-next">NEXT</span><span class="logo-letter">LETTER</span>
         </div>
-        <div class="header-tagline-big">Cinco minutos al mes para ir siempre un paso por delante.</div>
+        <div class="header-tagline-big">Intel real. Sin ruido. Cada mes.</div>
         <div class="header-dots">
           <div class="hdot" style="background:var(--red);animation-delay:0s"></div>
           <div class="hdot" style="background:var(--cyan);animation-delay:0.3s"></div>
@@ -331,7 +331,7 @@ body {
 
   <!-- INTRO -->
   <div class="intro" onmouseenter="trackSection('intro')">
-    Bienvenidos a la NextLetter #01, la newsletter donde te contamos lo que está pasando en ciberseguridad sin rodeos ni burocracia. Mayo ha arrancado con energía —y no del tipo buena—, así que ponte el café y lee esto antes de abrir el correo.
+    Bienvenido a NextLetter #01 — la newsletter mensual donde te contamos lo que realmente importa en ciberseguridad y tecnología, sin relleno corporativo ni bullet points infinitos. Mayo viene cargado: phishing que usa Google como cómplice, malware que llega por Teams y una vulnerabilidad en Linux que ya está siendo explotada activamente. Coge el café, que esto va en serio.
   </div>
 
   <!-- SEPARADOR -->
@@ -347,32 +347,32 @@ body {
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--blue)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> IA al día</div>
-      <div class="card-title">Tu proxy de LLM guarda secretos que no debería: el caso LiteLLM</div>
-      <div class="card-text">Una vulnerabilidad crítica de inyección SQL sin autenticación en LiteLLM fue explotada activamente pocas horas después de hacerse pública, con un CVSS que no deja margen a la tranquilidad. El fallo expone la base de datos del proxy, incluyendo claves de API de proveedores como OpenAI, Anthropic o Azure OpenAI, y secretos operativos que permiten suplantar llamadas a modelos. Para equipos IT que han desplegado LiteLLM como gateway centralizado de IA —una arquitectura cada vez más común—, esto significa que un atacante podría hacer llamadas a tu cuenta de pago sin que te enteres hasta ver la factura. La corrección está en LiteLLM 1.83.7 y, si hubo exposición, toca rotar todas las claves sin excepción.</div>
+      <div class="card-title">Cuando la IA es el objetivo: inyección SQL crítica en LiteLLM explotada en horas</div>
+      <div class="card-text">LiteLLM es el proxy que muchos equipos IT usan para gestionar llamadas a múltiples proveedores de modelos de lenguaje (OpenAI, Anthropic, etc.) desde un único punto. En abril se descubrió una inyección SQL sin autenticación —CVE en LiteLLM— que fue explotada activamente pocas horas después de hacerse pública: los atacantes podían extraer directamente de la base de datos las claves de API de todos los proveedores de LLM configurados. Para equipos IT que están integrando IA en flujos internos, esto es una señal clara: los componentes de infraestructura de IA necesitan el mismo rigor de parcheo y monitorización que cualquier otro servicio crítico. Si usáis LiteLLM, actualizad a la versión 1.83.7 y rotad las claves si hubo exposición.</div>
       <a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
     </div>
 
     <!-- 2a. ESTO PASÓ — columna izquierda -->
     <div class="card card-esto" onmouseenter="trackSection('esto_paso')">
       <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=220&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&h=220&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--red)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg> Esto pasó</div>
-      <div class="card-title">El ransomware 'Sorry' no tiene nada de gracioso: cPanel comprometido a escala masiva</div>
-      <div class="card-text">Una vulnerabilidad crítica en cPanel, identificada como CVE-2026-41940, está siendo explotada de forma masiva para cifrar datos de cientos de sitios web en lo que ya se conoce como los ataques del ransomware 'Sorry'. El fallo permite comprometer el panel de control de hosting sin necesidad de credenciales válidas, convirtiendo cada servidor vulnerable en un objetivo fácil. Si tu equipo gestiona servidores con cPanel, la pregunta no es si parchear, sino cuándo fue la última vez que lo hiciste. Con campañas activas y sin señales de freno, este es el tipo de incidente que puede aparecer en un titular de periódico antes de que termines la semana.</div>
-      <a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
+      <div class="card-title">30.000 cuentas de Facebook robadas usando Google AppSheet como trampolín</div>
+      <div class="card-text">Un grupo vinculado a Vietnam ha comprometido al menos 30.000 cuentas de Facebook usando Google AppSheet como relay de phishing: los correos llegan desde infraestructura legítima de Google, lo que los hace prácticamente invisibles para los filtros de spam. Los atacantes revendían las cuentas robadas a través de su propia tienda ilegal. El patrón es cada vez más común: usar servicios de confianza (Google, Microsoft, AWS) para que el ataque pase el control de seguridad perimetral sin levantar sospechas. Si tu regla es 'si viene de Google es seguro', toca actualizar esa regla.</div>
+      <a href="https://thehackernews.com/2026/05/30000-facebook-accounts-hacked-via.html" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
     <!-- 2b. CASO DEL MES — columna derecha -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
       <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
+        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--yellow)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Amenaza del mes</div>
-      <div class="card-title">Temporada 1, Episodio 1: 'El falso parche de Teams'</div>
-      <div class="card-text">El grupo UNC6692 lleva semanas ejecutando una operación quirúrgica: primero inundan el buzón del objetivo con miles de correos basura hasta que la víctima, desesperada, acepta la ayuda de un 'técnico' que aparece por Teams. Ese técnico amable convence al empleado de instalar un 'parche de emergencia' que en realidad despliega el malware Snow, diseñado para moverse lateralmente por la red y terminar extrayendo la base de datos completa de Active Directory. El control remoto queda instalado, las puertas traseras abiertas, y el atacante se va tan tranquilo. Spoiler: no hay segunda temporada para la empresa afectada si no detectan el movimiento lateral a tiempo.</div>
+      <div class="card-title">Temporada 1, Episodio 5: 'El parche que nunca debiste instalar'</div>
+      <div class="card-text">El grupo UNC6692 tiene un método elegante y brutal. Primero, inundan el correo de un empleado con cientos de mensajes en minutos —el clásico mail bombing— para crear caos y urgencia. Después, alguien que 'parece de soporte' le contacta por Microsoft Teams ofreciendo un parche para solucionar el problema. El empleado lo instala. Lo que acaba de desplegar se llama Snow: una suite maliciosa que abre acceso remoto, se mueve lateralmente por la red y termina exfiltrando la base de datos completa de Active Directory. Game over. El detalle más inquietante: Snow usa herramientas legítimas del sistema para no levantar alertas en el EDR. Si recibes una avalancha de correos y alguien en Teams te ofrece ayuda inmediata, para. Respira. Llama tú primero.</div>
       <a href="https://unaaldia.hispasec.com/2026/04/unc6692-usa-microsoft-teams-y-bombardeo-de-correo-para-colar-el-malware-snow-y-robar-active-directory.html" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
@@ -381,25 +381,25 @@ body {
       <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
       <div class="card-title">Lo que no puedes perderte este mes</div>
       <div class="radar-grid">
-        <a href="https://www.bleepingcomputer.com/news/security/consentfix-v3-attacks-target-azure-with-automated-oauth-abuse/" target="_blank" class="radar-grid-item" onclick="trackLink('radar_0', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">Bleeping Computer</span></div>
-  <div class="radar-headline">ConsentFix v3 automatiza el abuso de OAuth en Azure para escalar ataques a cuentas corporativas</div>
+        <a href="https://thehackernews.com/2026/05/poisoned-ruby-gems-and-go-modules.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_0', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">The Hacker News</span></div>
+  <div class="radar-headline">Paquetes Ruby y Go maliciosos en repos públicos roban credenciales y manipulan GitHub Actions desde pipelines de CI</div>
+  <div class="radar-meta">01/05/2026</div>
+</a>
+<a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" class="radar-grid-item" onclick="trackLink('radar_1', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">Bleeping Computer</span></div>
+  <div class="radar-headline">CVE-2026-41940: fallo crítico en cPanel explotado masivamente en ataques del ransomware 'Sorry'</div>
   <div class="radar-meta">02/05/2026</div>
 </a>
-<a href="https://thehackernews.com/2026/05/poisoned-ruby-gems-and-go-modules.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_1', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">Paquetes Ruby y Go envenenados comprometen pipelines CI/CD para robar credenciales y manipular GitHub Actions</div>
-  <div class="radar-meta">01/05/2026</div>
+<a href="https://unaaldia.hispasec.com/2026/04/cisco-publica-actualizaciones-criticas-para-corregir-varias-vulnerabilidades-en-identity-services-engine-ise.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_2', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">Hispasec</span></div>
+  <div class="radar-headline">Cisco ISE con CVSS 9.9: vulnerabilidades críticas permiten ejecución remota de comandos como root</div>
+  <div class="radar-meta">20/04/2026</div>
 </a>
-<a href="https://thehackernews.com/2026/05/30000-facebook-accounts-hacked-via.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_2', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">30.000 cuentas de Facebook comprometidas usando Google AppSheet como relay de phishing</div>
-  <div class="radar-meta">01/05/2026</div>
-</a>
-<a href="https://unaaldia.hispasec.com/2026/04/explotacion-activa-de-vulnerabilidades-en-windows-permite-escalar-privilegios-y-afectar-a-defender.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_3', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Hispasec</span></div>
-  <div class="radar-headline">Explotación activa de BlueHammer, RedSun y UnDefend en Windows: escalada de privilegios hasta SYSTEM y Defender bloqueado</div>
-  <div class="radar-meta">17/04/2026</div>
+<a href="https://www.bleepingcomputer.com/news/security/consentfix-v3-attacks-target-azure-with-automated-oauth-abuse/" target="_blank" class="radar-grid-item" onclick="trackLink('radar_3', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Bleeping Computer</span></div>
+  <div class="radar-headline">ConsentFix v3: nueva variante automatizada abusa OAuth para comprometer entornos Azure a escala</div>
+  <div class="radar-meta">02/05/2026</div>
 </a>
 
       </div>
@@ -408,20 +408,20 @@ body {
     <!-- 4a. CONSEJO — columna izquierda -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/></svg> Consejo del mes</div>
-      <div class="card-title">Antes de instalar cualquier 'parche urgente', respira</div>
-      <div class="card-text">Si alguien te contacta por Teams, correo o teléfono pidiéndote que instales algo 'de urgencia', verifica la solicitud por un canal diferente al que usaron para contactarte. Ningún parche legítimo necesita que lo instales tú mismo en diez minutos porque si no, el mundo explota. El 100% de los falsos técnicos cuentan con que el estrés anula el sentido crítico.</div>
+      <div class="card-title">Verifica siempre por un canal distinto antes de instalar nada</div>
+      <div class="card-text">Si alguien te contacta por Teams, Slack o correo pidiendo que instales, descargues o hagas clic en algo urgente, confirma la solicitud por teléfono o presencialmente antes de tocar nada —especialmente si acabas de recibir una avalancha de correos raros. Los atacantes cuentan con que el caos te haga bajar la guardia: no les regales ese momento. El canal del ataque nunca debe ser el canal de verificación.</div>
     </div>
 
     <!-- 4b. RETO — columna derecha -->
     <div class="card card-reto" onmouseenter="trackSection('reto')">
       <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El reto de May 2026</div>
       <div class="reto-badge">RETO ACTIVO</div>
-      <div class="card-title">Reto de mayo: audita tus apps de Teams en 20 minutos</div>
-      <div class="card-text">Entra esta semana en la configuración de Microsoft Teams, revisa qué aplicaciones de terceros tienes instaladas y desinstala cualquiera que no reconozcas o que no uses activamente. Comparte tu resultado en el canal de Slack #seguridad con un simple '✅ limpio' o '🚨 encontré algo' — queremos saber cuántos Nexters tienen la casa en orden.</div>
+      <div class="card-title">Reto Mayo: Audita tu huella OAuth este mes</div>
+      <div class="card-text">Entra en tu cuenta corporativa de Microsoft o Google y revisa qué aplicaciones de terceros tienen permisos OAuth activos — elimina las que no reconozcas o no uses desde hace más de 90 días. Comparte en el canal #seguridad cuántas encontraste: el que más aplicaciones fantasma detecte gana el título honorífico de 'Cazador de Tokens' de mayo.</div>
       <div class="reto-progress"><div class="reto-progress-bar"></div></div>
       <div class="reto-label">
         <span>MAY 2026</span>
@@ -464,26 +464,26 @@ body {
     <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
       <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si queréis caer en el agujero</div>
       <div class="links-grid">
-        <a href="https://unaaldia.hispasec.com/2026/04/cisco-publica-actualizaciones-criticas-para-corregir-varias-vulnerabilidades-en-identity-services-engine-ise.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
+        <a href="https://thehackernews.com/2026/05/cybercrime-groups-using-vishing-and-sso.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></span>
   <span class="link-label">Artículo</span>
-  <span class="link-title">Cisco ISE: vulnerabilidades críticas CVSS 9.9 con ejecución remota de comandos como root</span>
-  <span class="link-desc">Si tienes Cisco ISE en tu entorno —y en muchas organizaciones que aspiran al ENS lo tienen—, este artículo de Hispasec detalla exactamente qué parchear y por qué no puede esperar.</span>
-  <span class="link-source">Hispasec / Una al día</span>
+  <span class="link-title">Cibergrupos usan vishing y abuso de SSO en ataques exprés de extorsión SaaS</span>
+  <span class="link-desc">Un análisis técnico de cómo Cordial Spider y Snarky Spider comprometen entornos SaaS completos en horas usando solo ingeniería social y credenciales SSO — lectura obligada si gestionáis identidades federadas.</span>
+  <span class="link-source">The Hacker News</span>
 </a>
 <a href="https://www.youtube.com/watch?v=996OiexHze0" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
   <span class="link-label">Vídeo</span>
-  <span class="link-title">¿Cómo funciona un ataque de OAuth abuse en la práctica? — Demostración técnica</span>
-  <span class="link-desc">Con ConsentFix v3 apuntando a Azure, entender el flujo de un ataque OAuth real desde cero es la mejor vacuna; este vídeo lo explica con entorno de laboratorio y sin teoría innecesaria.</span>
-  <span class="link-source">YouTube / John Hammond</span>
+  <span class="link-title">OAuth 2.0 explained — cómo funciona y por qué se abusa de él</span>
+  <span class="link-desc">Vídeo de OktaDev en YouTube que explica en 20 minutos cómo funciona OAuth 2.0 de verdad, con los flujos exactos que explotan ataques como ConsentFix — ideal para entender qué proteger antes de que te lo pregunten en la auditoría ENS.</span>
+  <span class="link-source">OktaDev / YouTube</span>
 </a>
 <a href="https://phishingquiz.withgoogle.com/" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
   <span class="link-label">Quiz interactivo</span>
-  <span class="link-title">Phishing Quiz de Google — ¿Sabrías detectar un correo malicioso?</span>
-  <span class="link-desc">Ocho escenarios reales de phishing para que pongas a prueba tu ojo clínico; recomendable hacerlo con tu equipo y comparar puntuaciones, sobre todo después del caso UNC6692.</span>
-  <span class="link-source">Google / Jigsaw</span>
+  <span class="link-title">Phishing Quiz de Google — ¿Sabrías detectar un phishing sofisticado?</span>
+  <span class="link-desc">Herramienta interactiva del equipo de Jigsaw (Google) con 8 ejemplos reales de phishing para que entrenes el ojo — perfecta para pasarla por el equipo y ver quién aguanta el tipo ante un Google AppSheet relay.</span>
+  <span class="link-source">Google Jigsaw</span>
 </a>
 
       </div>
