@@ -1,10 +1,10 @@
 name: NextLetter — Generación mensual
 
 on:
-  # Todos los lunes a las 07:00 UTC = 09:00 CEST (hora Madrid en verano)
-  # El paso "Verificar primer lunes" cancela si no es la primera semana del mes
+  # Primer lunes de cada mes a las 07:00 UTC = 09:00 CEST (hora Madrid en verano)
+  # días 1-7 + lunes = siempre el primer lunes del mes
   schedule:
-    - cron: "0 7 * * 1"
+    - cron: "0 7 1-7 * 1"
 
   # Lanzamiento manual desde GitHub Actions (para tests y ediciones urgentes)
   workflow_dispatch:
@@ -89,7 +89,7 @@ jobs:
           # La raíz NO tiene index.html — 404 intencionado
           mkdir -p ${{ steps.edition.outputs.number }}
           cp index.html ${{ steps.edition.outputs.number }}/index.html
-          git add nextletter_preview.html ${{ steps.edition.outputs.number }}/
+          git add ${{ steps.edition.outputs.number }}/
           git diff --staged --quiet || git commit -m "NextLetter #${{ steps.edition.outputs.number }} publicado — $(date +'%B %Y')"
           git push origin main
 
@@ -104,10 +104,10 @@ jobs:
           fi
           echo "name=nextletter-preview-${NUM}" >> $GITHUB_OUTPUT
 
-      - name: 📤 Guardar preview como artefacto
+      - name: 📤 Guardar HTML como artefacto
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.artifact_name.outputs.name }}
-          path: nextletter_preview.html
+          path: index.html
           retention-days: 90
