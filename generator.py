@@ -300,6 +300,9 @@ body {
 .radar-headline { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.4; margin-bottom: 4px; }
 .radar-item:hover .radar-headline { color: var(--cyan); }
 .radar-meta { font-size: 10px; opacity: 0.35; font-family: 'JetBrains Mono', monospace; }
+.radar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+.radar-grid-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px 20px; text-decoration: none; color: var(--grey); transition: all 0.2s ease; display: block; backdrop-filter: blur(4px); }
+.radar-grid-item:hover { background: rgba(255,255,255,0.04); padding-left: 26px; }
 .links-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 4px; }
 .link-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 24px; text-decoration: none; color: var(--grey); transition: all 0.25s ease; display: flex; flex-direction: column; gap: 8px; position: relative; overflow: hidden; }
 .link-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
@@ -349,6 +352,7 @@ body {
   .footer-inner { grid-template-columns: 1fr; gap: 32px; }
   .footer { padding: 40px 28px 28px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .radar-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .logo-next, .logo-letter { font-size: 48px; letter-spacing: -2px; }
@@ -402,12 +406,6 @@ const nx = nc.getContext('2d');
 function resizeNebula() { nc.width = window.innerWidth; nc.height = window.innerHeight; }
 resizeNebula();
 window.addEventListener('resize', resizeNebula);
-const nebPoints = Array.from({length: 10}, () => ({
-  x: Math.random() * nc.width, y: Math.random() * nc.height,
-  r: Math.random() * 250 + 120,
-  color: ['rgba(250,60,15','rgba(60,230,230','rgba(200,150,255','rgba(55,145,245','rgba(100,240,125'][Math.floor(Math.random()*5)],
-  speed: (Math.random() - 0.5) * 0.25, angle: Math.random() * Math.PI * 2,
-}));
 const stars = Array.from({length: 150}, () => ({
   x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
   r: Math.random() * 1.2, a: Math.random() * 0.5 + 0.1, tw: Math.random() * Math.PI * 2,
@@ -421,14 +419,6 @@ function newShooter() {
 function drawNebula() {
   nx.fillStyle = 'rgba(8,8,32,0.18)';
   nx.fillRect(0, 0, nc.width, nc.height);
-  nebPoints.forEach(n => {
-    n.angle += 0.003; n.x += Math.cos(n.angle) * n.speed; n.y += Math.sin(n.angle) * n.speed;
-    if (n.x < -n.r) n.x = nc.width + n.r; if (n.x > nc.width + n.r) n.x = -n.r;
-    if (n.y < -n.r) n.y = nc.height + n.r; if (n.y > nc.height + n.r) n.y = -n.r;
-    const g = nx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
-    g.addColorStop(0, n.color + ',0.045)'); g.addColorStop(0.5, n.color + ',0.02)'); g.addColorStop(1, n.color + ',0)');
-    nx.fillStyle = g; nx.beginPath(); nx.arc(n.x, n.y, n.r, 0, Math.PI*2); nx.fill();
-  });
   stars.forEach(s => {
     s.tw += 0.018;
     const a = s.a * (0.5 + Math.sin(s.tw) * 0.5);
@@ -565,19 +555,22 @@ SECCIONES A GENERAR
 3. CONSEJO: UN consejo práctico que cualquier empleado puede aplicar hoy.
    Concreto, útil, con toque de humor. Máx 3 frases.
 
-4. RADAR: 4 titulares relevantes de fuentes distintas. Breve y directo.
+4. RETO: Una acción concreta que los Nexters pueden completar este mes.
+   Específica, medible, motivadora. Máx 2 frases. No es una recomendación — es un reto activo.
+
+5. RADAR: 4 titulares relevantes de fuentes distintas. Breve y directo.
    Incluir org (nombre corto de la fuente) y fecha.
 
-5. IA_DIA: Tendencia o incidente relevante sobre IA en ciberseguridad.
+6. IA_DIA: Tendencia o incidente relevante sobre IA en ciberseguridad.
    3-4 líneas. Cómo afecta a equipos IT. URL del artículo fuente.
 
-6. ENLACES: 3 recursos:
+7. ENLACES: 3 recursos:
    - tipo "articulo": lectura recomendada
    - tipo "video": vídeo educativo o demostrativo (YouTube u otro)
    - tipo "quiz": herramienta interactiva, test o quiz de seguridad
    Cada uno con descripcion (1 línea de por qué merece la pena) y fuente.
 
-6. INTRO: 2-3 líneas de apertura. Cálida, directa, que enganche.
+8. INTRO: 2-3 líneas de apertura. Cálida, directa, que enganche.
 
 Responde ÚNICAMENTE con JSON válido con esta estructura exacta:
 {{
@@ -590,6 +583,7 @@ Responde ÚNICAMENTE con JSON válido con esta estructura exacta:
   "esto_paso": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from: cybersecurity, data-breach, hacker, network, server, cloud, code, ai, robot, phishing, privacy, energy, business, mobile, spain, technology"}},
   "caso_real": {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from: cybersecurity, data-breach, hacker, network, server, cloud, code, ai, robot, phishing, privacy, energy, business, mobile, spain, technology"}},
   "consejo":   {{"titulo": "...", "texto": "...", "imagen": "ONE keyword from the same list"}},
+  "reto":      {{"titulo": "...", "texto": "..."}},
   "ia_dia":    {{"titulo": "...", "texto": "...", "url": "...", "imagen": "ONE keyword from the same list"}},
   "radar": [
     {{"titulo": "...", "org": "...", "url": "...", "fecha": "..."}},
@@ -670,6 +664,11 @@ def verify_content(content: Dict, edition: str) -> List[str]:
     if len(frases) > 3:
         issues.append(f"consejo.texto con {len(frases)} frases — máx 3")
 
+    reto_text = content.get("reto", {}).get("texto", "")
+    reto_frases = [f for f in re.split(r'[.!?]', reto_text) if f.strip()]
+    if len(reto_frases) > 2:
+        issues.append(f"reto.texto con {len(reto_frases)} frases — máx 2")
+
     enlaces = content.get("enlaces", [])
     if len(enlaces) != 3:
         issues.append(f"enlaces con {len(enlaces)} ítems — necesita exactamente 3")
@@ -695,6 +694,8 @@ def build_html(content: Dict, edition: str) -> str:
     caso_url       = content.get("caso_real", {}).get("url", "#")
     consejo_titulo = content.get("consejo",  {}).get("titulo", "")
     consejo_texto  = content.get("consejo",  {}).get("texto", "")
+    reto_titulo    = content.get("reto",     {}).get("titulo", "")
+    reto_texto     = content.get("reto",     {}).get("texto", "")
     ia_titulo      = content.get("ia_dia",   {}).get("titulo", "")
     ia_texto       = content.get("ia_dia",   {}).get("texto", "")
     ia_url         = content.get("ia_dia",   {}).get("url", "#")
@@ -715,7 +716,7 @@ def build_html(content: Dict, edition: str) -> str:
         r_url    = item.get("url", "#")
         r_fecha  = item.get("fecha", "")
         radar_html += (
-            f'<a href="{r_url}" target="_blank" class="radar-item"'
+            f'<a href="{r_url}" target="_blank" class="radar-grid-item"'
             f' onclick="trackLink(\'radar_{i}\', this.href)">\n'
             f'  <div class="radar-source">'
             f'<span class="radar-dot" style="background:{dot_color}"></span>'
@@ -867,9 +868,21 @@ def build_html(content: Dict, edition: str) -> str:
   <!-- GRID PRINCIPAL -->
   <div class="main-grid">
 
-    <!-- ESTO PASÓ -->
-    <div class="card card-esto full-width" onmouseenter="trackSection('esto_paso')">
-      <div style="height:220px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+    <!-- 1. IA AL DÍA — primera sección, ancho completo -->
+    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
+      <div style="height:200px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
+        <img src="{ia_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
+      </div>
+      <div class="section-tag" style="color:var(--blue)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> IA al día</div>
+      <div class="card-title">{ia_titulo}</div>
+      <div class="card-text">{ia_texto}</div>
+      <a href="{ia_url}" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+    </div>
+
+    <!-- 2a. ESTO PASÓ — columna izquierda -->
+    <div class="card card-esto" onmouseenter="trackSection('esto_paso')">
+      <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
         <img src="{esto_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
@@ -879,9 +892,9 @@ def build_html(content: Dict, edition: str) -> str:
       <a href="{esto_url}" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
-    <!-- CASO DEL MES -->
+    <!-- 2b. CASO DEL MES — columna derecha -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
-      <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
+      <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
         <img src="{caso_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
       </div>
@@ -891,7 +904,16 @@ def build_html(content: Dict, edition: str) -> str:
       <a href="{caso_url}" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
-    <!-- CONSEJO -->
+    <!-- 3. EN EL RADAR — ancho completo, grid 2×2 -->
+    <div class="card card-radar full-width" onmouseenter="trackSection('radar')">
+      <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
+      <div class="card-title">Lo que no puedes perderte este mes</div>
+      <div class="radar-grid">
+        {radar_html}
+      </div>
+    </div>
+
+    <!-- 4a. CONSEJO — columna izquierda -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
         <img src="{consejo_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
@@ -902,29 +924,23 @@ def build_html(content: Dict, edition: str) -> str:
       <div class="card-text">{consejo_texto}</div>
     </div>
 
-    <!-- EN EL RADAR -->
-    <div class="card card-radar full-width" onmouseenter="trackSection('radar')">
-      <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
-      <div class="card-title">Lo que no puedes perderte este mes</div>
-      <div class="radar-list">
-        {radar_html}
+    <!-- 4b. RETO — columna derecha -->
+    <div class="card card-reto" onmouseenter="trackSection('reto')">
+      <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El reto de {mes}</div>
+      <div class="reto-badge">RETO ACTIVO</div>
+      <div class="card-title">{reto_titulo}</div>
+      <div class="card-text">{reto_texto}</div>
+      <div class="reto-progress"><div class="reto-progress-bar"></div></div>
+      <div class="reto-label">
+        <span>{mes_upper}</span>
+        <span>¿Lo has hecho ya? ✓</span>
       </div>
     </div>
 
+    <!-- 5. PHISHING TEST — estático, ancho completo -->
+    {_PHISHING_HTML}
 
-    <!-- IA AL DÍA -->
-    <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
-      <div style="height:180px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
-        <img src="{ia_img_url}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
-      </div>
-      <div class="section-tag" style="color:var(--blue)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> IA al día</div>
-      <div class="card-title">{ia_titulo}</div>
-      <div class="card-text">{ia_texto}</div>
-      <a href="{ia_url}" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
-    </div>
-
-    <!-- ENLACES -->
+    <!-- 6. ENLACES — ancho completo -->
     <div class="card card-links full-width" style="padding-bottom:36px;" onmouseenter="trackSection('enlaces')">
       <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si queréis caer en el agujero</div>
       <div class="links-grid">
