@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.pyo
+index.html
+preview.html
+.env
