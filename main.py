@@ -22,10 +22,11 @@ def run():
     edition = os.environ.get("EDITION_NUMBER", "01")
     output_path = f"{edition}/index.html"
     if os.path.exists(output_path):
-        raise FileExistsError(
-            f"❌ ERROR: {output_path} ya existe. No se sobreescribe una edición publicada.\n"
-            f"   Si quieres regenerar la edición {edition}, elimina {output_path} manualmente primero."
-        )
+        print(f"  ⏭️  Edición #{edition} ya publicada en {output_path}.")
+        print(f"  Las ediciones publicadas no se sobreescriben automáticamente.")
+        print(f"  Para regenerar, elimina {output_path} manualmente.")
+        print("="*55 + "\n")
+        sys.exit(0)
 
     # 1. Scraping de fuentes
     print("📡 PASO 1: Recopilando noticias del mes...\n")

@@ -1,5 +1,8 @@
 name: NextLetter — Generación mensual
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   # Primer lunes de cada mes a las 07:00 UTC = 09:00 CEST (hora Madrid en verano)
   # días 1-7 + lunes = siempre el primer lunes del mes
@@ -85,10 +88,15 @@ jobs:
         run: |
           EDITION="${{ steps.edition.outputs.number }}"
           EDITION_FILE="${EDITION}/index.html"
+          # Si main.py hizo skip (edición ya existe), no hay index.html — nada que publicar
+          if [ ! -f "index.html" ]; then
+            echo "⏭️ No hay index.html generado — main.py hizo skip de edición existente."
+            exit 0
+          fi
+          # Protección adicional: no sobreescribir edición ya publicada
           if [ -f "$EDITION_FILE" ]; then
-            echo "⛔ $EDITION_FILE ya existe — edición publicada protegida. No se sobreescribe."
-            echo "   Si necesitas regenerar la edición ${EDITION}, elimina ${EDITION_FILE} manualmente."
-            exit 1
+            echo "⏭️ ${EDITION_FILE} ya existe — edición publicada protegida. Skip."
+            exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
