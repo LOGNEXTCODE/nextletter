@@ -31,16 +31,16 @@ def run():
 
     # 2. Generar el NextLetter con Claude (+ verificación editorial automática)
     print("\n✍️  PASO 2: Generando NextLetter con Claude API...\n")
-    html = generate(articles, warnings=freshness["warnings"])
+    web_html, content = generate(articles, warnings=freshness["warnings"])
 
     # 3. Guardar HTML — index.html para GitHub Pages
     with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(web_html)
     print(f"\n  💾 HTML guardado como index.html")
 
-    # 4. Enviar borrador al revisor
+    # 4. Enviar borrador al revisor (email compatible con Outlook/Gmail)
     print("\n📧 PASO 3: Enviando borrador para revisión...\n")
-    success = send_draft(html)
+    success = send_draft(content)
 
     if success:
         print("\n" + "="*55)

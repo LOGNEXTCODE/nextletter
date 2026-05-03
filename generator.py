@@ -1001,8 +1001,8 @@ def build_html(content: Dict, edition: str) -> str:
 </html>"""
 
 
-def generate(articles: List[Dict], warnings: List[str] = None) -> str:
-    """Función principal: genera el HTML del NextLetter."""
+def generate(articles: List[Dict], warnings: List[str] = None) -> tuple:
+    """Función principal: devuelve (web_html, content) para web y email."""
     content = select_and_draft(articles, warnings=warnings)
 
     issues = verify_content(content, EDITION_NUMBER)
@@ -1021,7 +1021,7 @@ def generate(articles: List[Dict], warnings: List[str] = None) -> str:
         print("  ✅ Verificación editorial: OK")
 
     html = build_html(content, EDITION_NUMBER)
-    return html
+    return html, content
 
 
 if __name__ == "__main__":
@@ -1030,7 +1030,7 @@ if __name__ == "__main__":
     arts = fetch_articles()
     freshness = validate_freshness(arts)
     print("\n✍️  Generando NextLetter...\n")
-    html = generate(arts, warnings=freshness["warnings"])
+    web_html, content = generate(arts, warnings=freshness["warnings"])
     with open("preview.html", "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(web_html)
     print("\n✅ Preview guardado en preview.html")
