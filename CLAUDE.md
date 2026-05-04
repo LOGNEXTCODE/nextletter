@@ -24,7 +24,7 @@ certificación ENS de LOGNEXT.
 **LOGNEXT S.L.**
 
 - Sede: Av. de Burgos 17, 28036 Madrid
-- Fundada: 2006 · ~222 empleados · Cultura interna: "Nexters"
+- Fundada: 2006 · Cultura interna: "Nexters"
 - Claim: *"Your Meaningful Tech Partner"*
 - Web: https://www.lognext.com
 - Servicios: Consultoría IT, AMS, Infraestructura cloud, Ciberseguridad,

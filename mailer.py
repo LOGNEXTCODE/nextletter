@@ -35,8 +35,9 @@ def get_access_token() -> str:
     }
     response = requests.post(url, data=data)
     response.raise_for_status()
-    print("  ✅ Token de acceso obtenido")
-    return response.json()["access_token"]
+    token = response.json()["access_token"]
+    print(f"  Token obtenido: {token[:20]}...")
+    return token
 
 
 def _build_radar_html(radar_items: list) -> str:
@@ -166,6 +167,7 @@ def send_draft(content: dict) -> bool:
     }
 
     response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
 
     if response.status_code == 202:
         print(f"  ✅ Borrador enviado a {REVIEWER_EMAIL}")

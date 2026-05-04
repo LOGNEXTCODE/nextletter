@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NextLetter #01 — LOGNEXT</title>
+<title>NextLetter #{{EDICION_NUM}} — LOGNEXT</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 521 438'><polygon fill='%23000029' points='175,119 116,119 201,219 115,320 175,320 243,243 243,196'/><polygon fill='%23000029' points='344,119 403,119 318,219 404,320 344,320 276,243 276,196'/><polygon fill='%23FA3C0F' points='92,348 27,408 86,408 149,348'/><polygon fill='%23FA3C0F' points='425,90 489,30 430,30 369,90'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
@@ -13,14 +13,14 @@
   gtag('js', new Date());
   gtag('config', 'G-XXXXXXXXXX');
   function trackSection(section) {
-    gtag('event', 'section_read', { section_name: section, edition: '01' });
+    gtag('event', 'section_read', { section_name: section, edition: '{{EDICION_NUM}}' });
   }
   function trackLink(label, url) {
-    gtag('event', 'outbound_click', { link_label: label, link_url: url, edition: '01' });
+    gtag('event', 'outbound_click', { link_label: label, link_url: url, edition: '{{EDICION_NUM}}' });
     return true;
   }
   function trackPhishing(action) {
-    gtag('event', 'phishing_test', { action: action, edition: '01' });
+    gtag('event', 'phishing_test', { action: action, edition: '{{EDICION_NUM}}' });
   }
 </script>
 <style>
@@ -283,8 +283,8 @@ body {
       <svg height="22" viewBox="0 0 1920 437.9" xmlns="http://www.w3.org/2000/svg" style="margin-right:20px;flex-shrink:0;"><polygon fill="#FFFFFF" points="1417.7,117.4 1358.3,117.4 1443,218 1357.9,318.7 1417.7,318.7 1485.6,241.8 1485.6,194.3"/><polygon fill="#FFFFFF" points="1585.9,117.4 1645.3,117.4 1560.5,218 1645.7,318.7 1585.9,318.7 1518,241.8 1518,194.3"/><polygon fill="#FA3C0F" points="1334.7,346.7 1269.7,406.4 1328.5,406.4 1391,346.7"/><polygon fill="#FA3C0F" points="1667.5,88.6 1730.6,28.9 1671.8,28.9 1611.2,88.6"/><path fill="#FFFFFF" d="M230.7,271.4v47.4H43.3V117.4h52.3v154H230.7z"/><path fill="#FFFFFF" d="M1175.7,161.1v38.3h161.1v37.4h-161.1v40.8h161.1v41.1h-212.9V117.4h212.9v43.7H1175.7z"/><path fill="#FFFFFF" d="M1032.6,117.6v195.7h-1.5l-96.8-195.7H826.5v201.2h52.3V123h1.5l96.5,195.7h108.1V117.6H1032.6z"/><polygon fill="#FFFFFF" points="1685,117.3 1645.5,163.2 1733.8,163.2 1733.8,318.7 1786,318.7 1786,163.2 1876.7,163.2 1876.7,117.3"/><path fill="#FFFFFF" d="M245.6,217.8c0-68.7,39.1-106.4,130.4-106.4c91,0,130.4,37.9,130.4,106.4c0,68.7-39.4,107-130.4,107C284.7,324.8,245.6,286.8,245.6,217.8z M454,217.8c0-42.1-22.4-62.6-78.1-62.6c-55.7,0-78,20.3-78,62.6c0,42.7,22.5,63.3,78,63.3C431.4,281.1,454,260.2,454,217.8z"/><path fill="#FFFFFF" d="M791.7,200.8H658.1v36.7h78.4c-6.4,28.8-28.3,43.9-74.3,43.9c-55.4,0-78.6-21-78.6-63.7c0-42.4,22.9-63.2,78.6-63.2c35,0,55.5,9.3,66.6,25.5h58.8c-13.1-44.5-52.8-68.7-125.4-68.7c-91.3,0-130.4,37.6-130.4,106.4c0,69,42.3,107,130.4,107c88.2,0,130.4-38.2,130.4-107C792.6,211.9,792.3,206.3,791.7,200.8z"/></svg>
     </div>
     <div class="topbar-right">
-      <span class="topbar-edition-num">EDICIÓN #01</span>
-      <span class="topbar-edition-date">MAY 2026</span>
+      <span class="topbar-edition-num">EDICIÓN #{{EDICION_NUM}}</span>
+      <span class="topbar-edition-date">{{EDICION_MES}}</span>
     </div>
   </div>
 </div>
@@ -310,7 +310,7 @@ body {
       </div>
       <div class="header-stats">
         <div class="stat-item">
-          <div class="stat-number">#01</div>
+          <div class="stat-number">#{{EDICION_NUM}}</div>
           <div class="stat-label">Edición</div>
         </div>
         <div class="stat-item">
@@ -325,14 +325,13 @@ body {
     </div>
     <div class="header-meta">
       <span style="font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;letter-spacing:2px;">BY LOGNEXT · DEPARTAMENTO IT</span>
-      <span class="header-issue">MAY 2026</span>
+      <span class="header-issue">{{EDICION_MES}}</span>
     </div>
   </div>
 
   <!-- INTRO -->
   <div class="intro" onmouseenter="trackSection('intro')">
-    Si creíais que mayo iba a ser un mes tranquilo, os equivocabais.<br><br>
-    Dos de los ciberataques más sonados de lo que llevamos de año han golpeado a empresas que todos conocéis — millones de datos de clientes expuestos y las preguntas de siempre sin responder. Mientras tanto, la IA ha dado otro salto que cambia las reglas del juego para todos, incluidos nosotros. Como cada mes, un consejo aplicable hoy, un reto de dos minutos y un test para ver si vuestro ojo detecta lo que no debería llegar a vuestra bandeja. Cinco minutos. Todo lo que necesitáis saber antes de que os lo cuenten.
+    {{INTRO_TEXTO}}
   </div>
 
   <!-- SEPARADOR -->
@@ -344,59 +343,59 @@ body {
     <!-- 1. IA AL DÍA — primera sección, ancho completo -->
     <div class="card card-ia full-width" onmouseenter="trackSection('ia_dia')">
       <div style="height:200px;overflow:hidden;margin:-36px -44px 28px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1676299081847-824916de030a?auto=format&fit=crop&w=1200&h=180&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35;">
+        <img src="{{IA_IMG_URL}}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,14,34,0) 30%,#000e22 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--blue)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> IA al día</div>
-      <div class="card-title">Tu proxy de LLM guarda secretos que no debería: el caso LiteLLM</div>
-      <div class="card-text">Una vulnerabilidad crítica de inyección SQL sin autenticación en LiteLLM fue explotada activamente pocas horas después de hacerse pública, con un CVSS que no deja margen a la tranquilidad. El fallo expone la base de datos del proxy, incluyendo claves de API de proveedores como OpenAI, Anthropic o Azure OpenAI, y secretos operativos que permiten suplantar llamadas a modelos. Para equipos IT que han desplegado LiteLLM como gateway centralizado de IA —una arquitectura cada vez más común—, esto significa que un atacante podría hacer llamadas a tu cuenta de pago sin que te enteres hasta ver la factura. La corrección está en LiteLLM 1.83.7 y, si hubo exposición, toca rotar todas las claves sin excepción.</div>
-      <a href="https://unaaldia.hispasec.com/2026/04/explotacion-rapida-de-una-inyeccion-sql-critica-en-litellm-pone-en-riesgo-claves-de-proveedores-de-llm.html" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
+      <div class="card-title">{{IA_TITULO}}</div>
+      <div class="card-text">{{IA_TEXTO}}</div>
+      <a href="{{IA_URL}}" target="_blank" class="card-link" style="color:var(--blue)" onclick="trackLink('ia_dia', this.href)">Leer el análisis completo <span class="arrow">→</span></a>
     </div>
 
     <!-- 2a. ESTO PASÓ — columna izquierda -->
     <div class="card card-esto" onmouseenter="trackSection('esto_paso')">
       <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&h=220&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
+        <img src="{{NOTICIA_IMG_URL}}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--red)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg> Esto pasó</div>
-      <div class="card-title">El ransomware 'Sorry' no tiene nada de gracioso: cPanel comprometido a escala masiva</div>
-      <div class="card-text">Una vulnerabilidad crítica en cPanel, identificada como CVE-2026-41940, está siendo explotada de forma masiva para cifrar datos de cientos de sitios web en lo que ya se conoce como los ataques del ransomware 'Sorry'. El fallo permite comprometer el panel de control de hosting sin necesidad de credenciales válidas, convirtiendo cada servidor vulnerable en un objetivo fácil. Si tu equipo gestiona servidores con cPanel, la pregunta no es si parchear, sino cuándo fue la última vez que lo hiciste. Con campañas activas y sin señales de freno, este es el tipo de incidente que puede aparecer en un titular de periódico antes de que termines la semana.</div>
-      <a href="https://www.bleepingcomputer.com/news/security/critrical-cpanel-flaw-mass-exploited-in-sorry-ransomware-attacks/" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
+      <div class="card-title">{{NOTICIA_TITULO}}</div>
+      <div class="card-text">{{NOTICIA_TEXTO}}</div>
+      <a href="{{NOTICIA_URL}}" target="_blank" class="card-link" style="color:var(--red)" onclick="trackLink('esto_paso', this.href)">Leer la historia completa <span class="arrow">→</span></a>
     </div>
 
-    <!-- 2b. CASO DEL MES — columna derecha -->
+    <!-- 2b. AMENAZA DEL MES — columna derecha -->
     <div class="card card-caso" onmouseenter="trackSection('caso_mes')">
       <div style="height:180px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
+        <img src="{{AMENAZA_IMG_URL}}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.4;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,5,31,0) 30%,#05051f 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--yellow)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Amenaza del mes</div>
-      <div class="card-title">Temporada 1, Episodio 1: 'El falso parche de Teams'</div>
-      <div class="card-text">El grupo UNC6692 lleva semanas ejecutando una operación quirúrgica: primero inundan el buzón del objetivo con miles de correos basura hasta que la víctima, desesperada, acepta la ayuda de un 'técnico' que aparece por Teams. Ese técnico amable convence al empleado de instalar un 'parche de emergencia' que en realidad despliega el malware Snow, diseñado para moverse lateralmente por la red y terminar extrayendo la base de datos completa de Active Directory. El control remoto queda instalado, las puertas traseras abiertas, y el atacante se va tan tranquilo. Spoiler: no hay segunda temporada para la empresa afectada si no detectan el movimiento lateral a tiempo.</div>
-      <a href="https://unaaldia.hispasec.com/2026/04/unc6692-usa-microsoft-teams-y-bombardeo-de-correo-para-colar-el-malware-snow-y-robar-active-directory.html" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
+      <div class="card-title">{{AMENAZA_TITULO}}</div>
+      <div class="card-text">{{AMENAZA_TEXTO}}</div>
+      <a href="{{AMENAZA_URL}}" target="_blank" class="card-link" style="color:var(--yellow)" onclick="trackLink('caso_mes', this.href)">Ver el caso completo <span class="arrow">→</span></a>
     </div>
 
     <!-- 3a. CONSEJO DEL MES — columna izquierda -->
     <div class="card card-consejo" onmouseenter="trackSection('consejo')">
       <div style="height:160px;overflow:hidden;margin:-36px -44px 24px;position:relative;">
-        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&h=160&q=80" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
+        <img src="{{CONSEJO_IMG_URL}}" loading="lazy" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.3;">
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,41,0) 30%,#000029 100%);"></div>
       </div>
       <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14z"/></svg> Consejo del mes</div>
-      <div class="card-title">Antes de instalar cualquier 'parche urgente', respira</div>
-      <div class="card-text">Si alguien te contacta por Teams, correo o teléfono pidiéndote que instales algo 'de urgencia', verifica la solicitud por un canal diferente al que usaron para contactarte. Ningún parche legítimo necesita que lo instales tú mismo en diez minutos porque si no, el mundo explota. El 100% de los falsos técnicos cuentan con que el estrés anula el sentido crítico.</div>
+      <div class="card-title">{{CONSEJO_TITULO}}</div>
+      <div class="card-text">{{CONSEJO_TEXTO}}</div>
     </div>
 
     <!-- 3b. EL RETO DEL MES — columna derecha -->
     <div class="card card-reto" onmouseenter="trackSection('reto')">
       <div class="section-tag" style="color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> El reto del mes</div>
       <div class="reto-badge">RETO ACTIVO</div>
-      <div class="card-title">Reto de mayo: audita tus apps de Teams en 20 minutos</div>
-      <div class="card-text">Entra esta semana en la configuración de Microsoft Teams, revisa qué aplicaciones de terceros tienes instaladas y desinstala cualquiera que no reconozcas o que no uses activamente. Comparte tu resultado en el canal de Slack #seguridad con un simple '✅ limpio' o '🚨 encontré algo' — queremos saber cuántos Nexters tienen la casa en orden.</div>
+      <div class="card-title">{{RETO_TITULO}}</div>
+      <div class="card-text">{{RETO_TEXTO}}</div>
       <div class="reto-progress"><div class="reto-progress-bar"></div></div>
       <div class="reto-label">
-        <span>MAY 2026</span>
+        <span>{{EDICION_MES}}</span>
         <span>¿Lo has hecho ya? ✓</span>
       </div>
     </div>
@@ -406,32 +405,31 @@ body {
       <div class="section-tag" style="color:var(--cyan)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg> En el radar</div>
       <div class="card-title">Lo que no puedes perderte este mes</div>
       <div class="radar-grid">
-        <a href="https://www.bleepingcomputer.com/news/security/consentfix-v3-attacks-target-azure-with-automated-oauth-abuse/" target="_blank" class="radar-grid-item" onclick="trackLink('radar_0', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">Bleeping Computer</span></div>
-  <div class="radar-headline">ConsentFix v3 automatiza el abuso de OAuth en Azure para escalar ataques a cuentas corporativas</div>
-  <div class="radar-meta">02/05/2026</div>
+        <a href="{{RADAR_1_URL}}" target="_blank" class="radar-grid-item" onclick="trackLink('radar_0', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FA3C0F"></span><span class="radar-org">{{RADAR_1_ORG}}</span></div>
+  <div class="radar-headline">{{RADAR_1_TITULO}}</div>
+  <div class="radar-meta">{{RADAR_1_META}}</div>
 </a>
-<a href="https://thehackernews.com/2026/05/poisoned-ruby-gems-and-go-modules.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_1', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">Paquetes Ruby y Go envenenados comprometen pipelines CI/CD para robar credenciales y manipular GitHub Actions</div>
-  <div class="radar-meta">01/05/2026</div>
+<a href="{{RADAR_2_URL}}" target="_blank" class="radar-grid-item" onclick="trackLink('radar_1', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#FFFA96"></span><span class="radar-org">{{RADAR_2_ORG}}</span></div>
+  <div class="radar-headline">{{RADAR_2_TITULO}}</div>
+  <div class="radar-meta">{{RADAR_2_META}}</div>
 </a>
-<a href="https://thehackernews.com/2026/05/30000-facebook-accounts-hacked-via.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_2', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">The Hacker News</span></div>
-  <div class="radar-headline">30.000 cuentas de Facebook comprometidas usando Google AppSheet como relay de phishing</div>
-  <div class="radar-meta">01/05/2026</div>
+<a href="{{RADAR_3_URL}}" target="_blank" class="radar-grid-item" onclick="trackLink('radar_2', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#3CE6E6"></span><span class="radar-org">{{RADAR_3_ORG}}</span></div>
+  <div class="radar-headline">{{RADAR_3_TITULO}}</div>
+  <div class="radar-meta">{{RADAR_3_META}}</div>
 </a>
-<a href="https://unaaldia.hispasec.com/2026/04/explotacion-activa-de-vulnerabilidades-en-windows-permite-escalar-privilegios-y-afectar-a-defender.html" target="_blank" class="radar-grid-item" onclick="trackLink('radar_3', this.href)">
-  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">Hispasec</span></div>
-  <div class="radar-headline">Explotación activa de BlueHammer, RedSun y UnDefend en Windows: escalada de privilegios hasta SYSTEM y Defender bloqueado</div>
-  <div class="radar-meta">17/04/2026</div>
+<a href="{{RADAR_4_URL}}" target="_blank" class="radar-grid-item" onclick="trackLink('radar_3', this.href)">
+  <div class="radar-source"><span class="radar-dot" style="background:#C896FF"></span><span class="radar-org">{{RADAR_4_ORG}}</span></div>
+  <div class="radar-headline">{{RADAR_4_TITULO}}</div>
+  <div class="radar-meta">{{RADAR_4_META}}</div>
 </a>
 
       </div>
     </div>
 
     <!-- 5. PHISHING TEST — estático, ancho completo -->
-    
     <div class="card card-phishing full-width" onmouseenter="trackSection('phishing_test')">
       <div class="section-tag" style="color:var(--violet)">&#127919; Pon a prueba tu ojo &#8212; Test del mes</div>
       <div class="card-title">&#191;Detectar&#237;as este email antes de hacer clic?</div>
@@ -461,30 +459,30 @@ body {
       </div>
     </div>
 
-    <!-- 6. ENLACES — ancho completo -->
+    <!-- 6. RECURSOS — ancho completo -->
     <div class="card card-links full-width" style="padding-bottom:36px;background:transparent;border:none;box-shadow:none;" onmouseenter="trackSection('enlaces')">
       <div class="section-tag" style="color:var(--violet)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Por si quieres caer en el agujero</div>
       <div class="links-grid">
-        <a href="https://unaaldia.hispasec.com/2026/04/cisco-publica-actualizaciones-criticas-para-corregir-varias-vulnerabilidades-en-identity-services-engine-ise.html" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
+        <a href="{{RECURSOS_1_URL}}" class="link-card lc-news" target="_blank" onclick="trackLink('articulo', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg></span>
   <span class="link-label">Artículo</span>
-  <span class="link-title">Cisco ISE: vulnerabilidades críticas CVSS 9.9 con ejecución remota de comandos como root</span>
-  <span class="link-desc">Si tienes Cisco ISE en tu entorno —y en muchas organizaciones que aspiran al ENS lo tienen—, este artículo de Hispasec detalla exactamente qué parchear y por qué no puede esperar.</span>
-  <span class="link-source">Hispasec / Una al día</span>
+  <span class="link-title">{{RECURSOS_1_TITULO}}</span>
+  <span class="link-desc">{{RECURSOS_1_DESC}}</span>
+  <span class="link-source">{{RECURSOS_1_FUENTE}}</span>
 </a>
-<a href="https://www.youtube.com/watch?v=996OiexHze0" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
+<a href="{{RECURSOS_2_URL}}" class="link-card lc-video" target="_blank" onclick="trackLink('video', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg></span>
   <span class="link-label">Vídeo</span>
-  <span class="link-title">¿Cómo funciona un ataque de OAuth abuse en la práctica? — Demostración técnica</span>
-  <span class="link-desc">Con ConsentFix v3 apuntando a Azure, entender el flujo de un ataque OAuth real desde cero es la mejor vacuna; este vídeo lo explica con entorno de laboratorio y sin teoría innecesaria.</span>
-  <span class="link-source">YouTube / John Hammond</span>
+  <span class="link-title">{{RECURSOS_2_TITULO}}</span>
+  <span class="link-desc">{{RECURSOS_2_DESC}}</span>
+  <span class="link-source">{{RECURSOS_2_FUENTE}}</span>
 </a>
-<a href="https://phishingquiz.withgoogle.com/" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
+<a href="{{RECURSOS_3_URL}}" class="link-card lc-quiz" target="_blank" onclick="trackLink('quiz', this.href)">
   <span class="link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
   <span class="link-label">Quiz interactivo</span>
-  <span class="link-title">Phishing Quiz de Google — ¿Sabrías detectar un correo malicioso?</span>
-  <span class="link-desc">Ocho escenarios reales de phishing para que pongas a prueba tu ojo clínico; recomendable hacerlo con tu equipo y comparar puntuaciones, sobre todo después del caso UNC6692.</span>
-  <span class="link-source">Google / Jigsaw</span>
+  <span class="link-title">{{RECURSOS_3_TITULO}}</span>
+  <span class="link-desc">{{RECURSOS_3_DESC}}</span>
+  <span class="link-source">{{RECURSOS_3_FUENTE}}</span>
 </a>
 
       </div>
@@ -507,10 +505,7 @@ body {
         <div class="footer-col-title">Ediciones</div>
         <div class="footer-col-rule"></div>
         <ul class="footer-links-list">
-          <li><a href="/01/">#01 — Mayo 2026 <span style="display:inline-flex;align-items:center;gap:5px;margin-left:6px;background:rgba(250,60,15,0.15);border:1px solid rgba(250,60,15,0.4);padding:1px 7px;font-size:9px;letter-spacing:1.5px;color:var(--red);vertical-align:middle;"><span style="width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1.5s ease-in-out infinite;"></span>NOW</span></a></li>
-<li><a href="#" style="opacity:0.25;pointer-events:none;">#02 — Junio 2026</a></li>
-<li><a href="#" style="opacity:0.25;pointer-events:none;">#03 — Julio 2026</a></li>
-
+          {{FOOTER_EDICIONES}}
         </ul>
       </div>
 
@@ -533,7 +528,7 @@ body {
 
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2026 LOGNEXT · Todos los derechos reservados.</span>
+      <span class="footer-copy">© {{EDICION_AÑO}} LOGNEXT · Todos los derechos reservados.</span>
     </div>
   </div>
 
@@ -626,7 +621,7 @@ function answerPhishing(clickedYes) {
       body: JSON.stringify({
         fecha: new Date().toLocaleDateString('es-ES'),
         hora: new Date().toLocaleTimeString('es-ES'),
-        edicion: '01',
+        edicion: '{{EDICION_NUM}}',
         respuesta: clickedYes ? 'incorrecto' : 'correcto',
         boton: clickedYes ? 'Parece legítimo - Haría clic' : 'Es phishing - No haría clic'
       })
