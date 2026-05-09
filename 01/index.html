@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="edicion" content="01">
 <title>NextLetter #01 — LOGNEXT</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 521 438'><polygon fill='%23000029' points='175,119 116,119 201,219 115,320 175,320 243,243 243,196'/><polygon fill='%23000029' points='344,119 403,119 318,219 404,320 344,320 276,243 276,196'/><polygon fill='%23FA3C0F' points='92,348 27,408 86,408 149,348'/><polygon fill='%23FA3C0F' points='425,90 489,30 430,30 369,90'/></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H3Y3WBWSLR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  gtag('config', 'G-H3Y3WBWSLR');
   function trackSection(section) {
     gtag('event', 'section_read', { section_name: section, edition: '01' });
   }
@@ -634,6 +635,22 @@ function answerPhishing(clickedYes) {
   document.querySelectorAll('.phishing-btn').forEach(b => { b.disabled = true; b.style.opacity = '0.5'; b.style.cursor = 'default'; });
 }
 
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
+  try {
+    const url = new URL(href, location.href);
+    if (url.hostname !== location.hostname) {
+      gtag('event', 'click_externo', {
+        enlace_url: href,
+        enlace_texto: (a.textContent || '').trim().substring(0, 100),
+        edicion: '01'
+      });
+    }
+  } catch(e) {}
+});
 </script>
 </body>
 </html>
